@@ -1,0 +1,7 @@
+<% if @error %>
+    toastr.error("Erreur")
+<% else %>
+    $("#timeline").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/chronologie') %>")
+    $('#modal').modal('hide')
+    toastr.success("Commentaire ajouté")
+<% end %>

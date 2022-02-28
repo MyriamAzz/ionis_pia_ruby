@@ -1,0 +1,7 @@
+<% if @error %>
+    toastr.error("Ajout impossible")
+<% else %>
+    $('#kt_datatable').KTDatatable('reload');
+    $('#modal').modal('hide')
+    toastr.success("Ajoutée")
+<% end %>

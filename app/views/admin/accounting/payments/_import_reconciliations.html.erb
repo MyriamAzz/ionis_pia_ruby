@@ -1,0 +1,30 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+                Résultat de l'importation
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <% if !@errors.any? %>
+            <div class="alert alert-success mb-5 p-5" role="alert">
+                <h4 class="alert-heading">Importation terminée (<%= @count %>/<%= @count %>)</h4>
+                <p>Tous les paiements présents dans le fichier ont pu être réconciliés.</p>
+            </div>
+            <% else %>
+            <div class="alert alert-warning mb-5 p-5" role="alert">
+                <h4 class="alert-heading">Erreurs (<%= @errors.count %>/<%= @count %>) :</h4>
+                <p>
+                    <% @errors.each do |var| %>
+                    <%= var[0] %> - <%= var[1] %> : <%= var[2] %> <br>
+                    <% end %>
+                </p>
+
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>

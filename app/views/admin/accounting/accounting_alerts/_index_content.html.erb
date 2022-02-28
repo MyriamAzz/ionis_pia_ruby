@@ -1,0 +1,227 @@
+<div class="card card-custom">
+  <div class="card-header flex-wrap border-0 pt-6 pb-0">
+    <div class="card-title">
+      <div class="input-icon">
+        <input type="text" class="form-control" placeholder="Rechercher..." id="kt_datatable_search_query" />
+        <span>
+          <i class="flaticon2-search-1 text-muted"></i>
+        </span>
+      </div>
+    </div>
+    <div class="card-toolbar">
+
+      <% link_to new_admin_settings_campu_path, remote: true, class: "btn btn-success font-weight-bolder" do %>
+      <span class="svg-icon svg-icon-md">
+        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+          viewBox="0 0 24 24" version="1.1">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <rect x="0" y="0" width="24" height="24" />
+            <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+            <path
+              d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+              fill="#000000" />
+          </g>
+        </svg>
+        <!--end::Svg Icon-->
+      </span>Ajouter un campus
+      <% end %>
+      <!--end::Button-->
+    </div>
+  </div>
+  <div class="card-body">
+
+    <!--begin: Datatable-->
+    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+    <!--end: Datatable-->
+  </div>
+</div>
+<script>
+  "use strict";
+  // Class definition
+
+  var KTDatatableStudent = function () {
+    // Private functions
+
+    // basic demo
+    var table = function () {
+
+      var datatable = $('#kt_datatable').KTDatatable({
+        // datasource definition
+        data: {
+          type: 'remote',
+          source: {
+            read: {
+              method: 'GET',
+              url: '/admin/accounting/accounting_alerts/table_json',
+              // sample custom headers
+              // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
+              map: function (raw) {
+                // sample data mapping
+                var dataSet = raw;
+                if (typeof raw.data !== 'undefined') {
+                  dataSet = raw.data;
+                }
+                return dataSet;
+              },
+            },
+          },
+          pageSize: 20,
+          serverPaging: false,
+          serverFiltering: false,
+          serverSorting: false,
+        },
+        pageSizeSelect: [20, 30, 50, 100],
+
+        // layout definition
+        layout: {
+          scroll: false,
+          footer: false,
+          spinner: {
+            message: 'Chargement...',
+          }
+        },
+
+        // column sorting
+        sortable: true,
+
+        pagination: true,
+
+        rows: {
+          beforeTemplate: function (row, data, index) {
+            row.on('click', function (e) {
+              if (!$(e.target).parent().is("span") && !$(e.target).parent().is("label") && !$(e.target)
+                .parent().is("a")) {
+                Rails.ajax({
+                  url: '/admin/accounting/accounting_alerts/' + data.id + '/edit',
+                  type: "get",
+                  data: "",
+                  success: function (data) {},
+                  error: function (data) {}
+                })
+              }
+            });
+          },
+        },
+
+        translate: {
+          records: {
+            processing: "Veuillez patienter...",
+            noRecords: "Aucun résultat"
+          },
+        },
+
+        search: {
+          input: $('#kt_datatable_search_query'),
+          key: 'generalSearch'
+        },
+
+        // columns definition
+        columns: [{
+            field: 'status',
+            title: 'statut',
+            template: function (data) {
+              if (data.status == "waiting") {
+                return '<span class="label label-warning label-inline font-weight-bolder label-lg"><i class="fas fa-spinner text-white mr-2"></i> En attente</span>';
+              } else if (data.status == "done") {
+                return '<span class="label label-success label-inline font-weight-bolder label-lg"> <i class="fas fa-check-circle text-white mr-2"></i> Traité</span>';
+              } else if (data.status == "refused") {
+                return '<span class="label label-danger label-inline font-weight-bolder label-lg"><i class="fas fa-times-circle text-white mr-2"></i>Refusé</span>';
+              }
+            },
+          }, {
+            field: 'centre',
+            title: 'campus',
+            class: ''
+          },
+          {
+            field: 'creator',
+            title: 'créée par',
+          },
+          {
+            field: 'student',
+            title: 'étudiant(e)',
+          }, {
+            field: 'atype',
+            title: 'type',
+            template: function (data) {
+              if (data.atype == "alert_discount") {
+                return '<span class="label label-light-warning label-inline font-weight-bolder label-lg">Remise commerciale</span>';
+              } else if (data.atype == "alert_demission") {
+                return '<span class="label label-light-danger label-inline font-weight-bolder label-lg">Démission</span>';
+              } else if (data.atype == "alert_payment") {
+                return '<span class="label label-light-danger label-inline font-weight-bolder label-lg">Modification échéancier</span>';
+              } else if (data.atype == "alert_other") {
+                return '<span class="label label-light-primary label-inline font-weight-bolder label-lg">Autre</span>';
+              } else if (data.atype == "alert_late_registration") {
+                return '<span class="label label-light-warning label-inline font-weight-bolder label-lg">Souscription tardive</span>';
+              } else if (data.atype == "alert_exclusion") {
+                return '<span class="label label-light-danger label-inline font-weight-bolder label-lg">Exclusion</span>';
+              } else if (data.atype == "alert_change_payment_modality") {
+                return '<span class="label label-light-warning label-inline font-weight-bolder label-lg">Changement modalité</span>';
+              }
+            },
+          },
+
+          {
+            field: 'updated_at',
+            title: 'dernière mise à jour',
+            type: 'date',
+            sortable: false,
+            format: 'MM/DD/YY',
+            template: function (data) {
+              return data.updated_at;
+            },
+          },
+
+          {
+            field: 'Actions',
+            title: '',
+            sortable: false,
+            overflow: 'visible',
+            autoHide: false,
+            template: function (row) {
+              return '\<a href="/admin/manage/students/' + row.student_uuid +
+                '/user_financier_subscriptions/' + row.user_financier_subscription_id + '/preview" data-container="body" data-toggle="tooltip" data-placement="right" title="Voir l\'échancier" method="get" data-remote="true" class="btn btn-light-primary btn-text-info btn-icon mr-1">\
+                                \
+                                \<span class="svg-icon svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Design/Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                    \<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                    \ <rect x="0" y="0" width="24" height="24"/>\
+                                    \ <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="#000000"/>\
+                                    \ <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="#000000" opacity="0.3"/>\
+                                    </g>\
+                                    \</svg><!--end::Svg Icon--></span>\
+                                \
+                        </a>\
+                        \<a href="/admin/manage/students/' + row.student_uuid + '/edit" data-container="body" target="_blank" data-toggle="tooltip" data-placement="right" title="Voir le profil" method="get" class="btn btn-light btn-text-info btn-icon">\
+                          <i class="fas fa-user-cog"></i>\
+                        \</a>\
+                            ';
+
+            },
+          }
+
+        ],
+
+      });
+      datatable.on(
+        'datatable-on-layout-updated',
+        function (e) {
+          $('[data-toggle="tooltip"]').tooltip()
+        });
+    };
+
+    return {
+      // public functions
+      init: function () {
+        table();
+
+      },
+    };
+  }();
+
+  $(document).ready(function () {
+    KTDatatableStudent.init();
+
+  });
+</script>

@@ -1,0 +1,88 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col" class="text-center">
+                <span class="label label-inline label-lg label-default font-weight-bolder">
+                    Non facturé
+                </span>
+            </th>
+            <th scope="col" class="text-center">
+                <span class="label label-inline label-lg label-primary font-weight-bolder">
+                    Facturé
+                </span>
+            </th>
+            <th scope="col" class="text-center">
+                <span class="label label-inline label-lg label-success font-weight-bolder">
+                    Encaissé
+                </span>
+            </th>
+            <th scope="col" class="text-center">
+                <span class="label label-inline label-lg label-warning font-weight-bolder">
+                    Non échu
+                </span>
+            </th>
+            <th scope="col" class="text-center">
+                <span class="label label-inline label-lg label-danger font-weight-bolder">
+                    Échu
+                </span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @centres.each do |centre| %>
+        <tr>
+            <th><%= centre.nom %></th>
+            <td class="text-center">
+                <%= number_to_currency((centre.user_financier_subscription_instalments.stat_not_invoiced.joins(:user_financier_subscription).where("user_financier_subscriptions.school_year_id = ?", session[:stats_filter_school_year]).sum(:montant) / 1000), precision: 0, unit: "") %>
+                K€
+            </td>
+            <td class="text-center">
+                <%= number_to_currency((centre.user_financier_subscription_instalments.stat_invoiced.joins(:user_financier_subscription).where("user_financier_subscriptions.school_year_id = ?", session[:stats_filter_school_year]).sum(:montant)/ 1000), precision: 0, unit: "") %>
+                K€
+            </td>
+            <td class="text-center">
+                <%= number_to_currency((centre.user_financier_subscription_instalments.stat_collected.joins(:user_financier_subscription).where("user_financier_subscriptions.school_year_id = ?", session[:stats_filter_school_year]).sum(:montant)/ 1000), precision: 0, unit: "") %>
+                K€
+            </td>
+            <td class="text-center">
+                <%= number_to_currency((centre.user_financier_subscription_instalments.stat_not_expired.joins(:user_financier_subscription).where("user_financier_subscriptions.school_year_id = ?", session[:stats_filter_school_year]).sum(:montant)/ 1000), precision: 0, unit: "") %>
+                K€
+            </td>
+            <td class="text-center">
+                <%= number_to_currency((centre.user_financier_subscription_instalments.stat_expired.joins(:user_financier_subscription).where("user_financier_subscriptions.school_year_id = ?", session[:stats_filter_school_year]).sum(:montant)/ 1000), precision: 0, unit: "") %>
+                K€
+
+                (<%= percent_calculator((centre.user_financier_subscription_instalments.stat_invoiced.joins(:user_financier_subscription).where("user_financier_subscriptions.school_year_id = ?", session[:stats_filter_school_year]).sum(:montant) - centre.user_financier_subscription_instalments.stat_not_expired.joins(:user_financier_subscription).where("user_financier_subscriptions.school_year_id = ?", session[:stats_filter_school_year]).sum(:montant)), centre.user_financier_subscription_instalments.stat_expired.joins(:user_financier_subscription).where("user_financier_subscriptions.school_year_id = ?", session[:stats_filter_school_year]).sum(:montant)) %>)
+
+            </td>
+        </tr>
+        <% end %>
+        <tr class="bg-primary-o-50">
+            <th>Total</th>
+            <td class="text-center">
+                <%= number_to_currency((@instalments.stat_not_invoiced.sum(:montant) / 1000), precision: 0, unit: "") %>
+                K€
+            </td>
+            <td class="text-center">
+                <%= number_to_currency((@instalments.stat_invoiced.sum(:montant) / 1000), precision: 0, unit: "") %>
+                K€
+            </td>
+            <td class="text-center">
+                <%= number_to_currency((@instalments.stat_collected.sum(:montant) / 1000), precision: 0, unit: "") %>
+                K€
+            </td>
+            <td class="text-center">
+                <%= number_to_currency((@instalments.stat_not_expired.sum(:montant) / 1000), precision: 0, unit: "") %>
+                K€
+            </td>
+            <td class="text-center">
+                <%= number_to_currency((@instalments.stat_expired.sum(:montant) / 1000), precision: 0, unit: "") %>
+                K€
+                (<%= percent_calculator((@instalments.stat_invoiced.sum(:montant) - @instalments.stat_not_expired.sum(:montant)), @instalments.stat_expired.sum(:montant)) %>)
+
+            </td>
+        </tr>
+
+    </tbody>
+</table>

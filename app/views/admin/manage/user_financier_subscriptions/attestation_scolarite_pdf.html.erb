@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_stylesheet_link_tag "pdf" -%>
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+    }
+
+    table {
+        left: 0px;
+        padding-left: 0px;
+        margin-left: 0px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #content {
+        margin-top: 150px;
+    }
+</style>
+
+<body onload='number_pages'>
+    <div id="content">
+        <div style="margin-top: 200px;"></div>
+        <table>
+            <tr>
+                <td style="width: 50%; text-align: left">
+                    <img src="<%= Rails.application.routes.default_url_options[:host] %><%= url_for(@data.user_financier.user.mailer_logo_school) %>"
+                        height="100">
+                </td>
+                <td style="text-align: center">
+
+
+                </td>
+            </tr>
+        </table>
+
+        <div style="text-align: center; font-size: 26px; font-weight: bold; margin-top: 150px; margin-bottom: 50px;">
+            ATTESTATION D’INSCRIPTION
+        </div>
+
+        <div style="margin: 0px 0px 0px 0px ">
+            Je soussigné(e), <%= "#{@program.resp_prenom} #{@program.resp_nom}"%>, <%= @program.resp_fonction %>,
+            Siège social : <br><br>
+            <div style="margin-left: 40px;">
+                <%= @program.adresse %>
+                <br>
+                <%= "#{@program.cp} #{@program.ville}"%>
+            </div>
+            <br>
+            Établissement d’enseignement :<br><br>
+            <div style="margin-left: 40px;">
+                <%= @data.user_financier.centre.adresse %><br>
+                <%= @data.user_financier.centre.cp %> <%= @data.user_financier.centre.ville %><br>
+                Immatriculation N° <%= @data.user_financier.centre.num_immatriculation %>
+            </div>
+            <br>
+            certifie que :<br>
+            <br>
+            <div style="margin-left: 40px;">
+
+                <%= @data.user_financier.etu_prenom %> <%= @data.user_financier.etu_nom %><br>
+            </div>
+            <br>
+            Domicilié(e) au :<br><br>
+            <div style="margin-left: 40px;">
+
+                <%= @data.user_financier.etu_adresse %><br>
+                <%= @data.user_financier.etu_code_postal %> <%= @data.user_financier.etu_ville %>
+            </div>
+            <br>
+            Est inscrit(e) en <%= @data.formation_annee.formation.nom %> dans notre établissement pour l’année
+            universitaire <%= @data.school_year.nom %>.
+            <br><br>
+            Fait à Paris, le <% l(@data.created_at, format: ' %d %B %Y') %> <%= l(Date.today, format: ' %d %B %Y') %>
+            <table style="font-size: 16px; margin-top: 50px;">
+                <tr>
+                    <td style="width: 50%;"></td>
+                    <td>
+                        <%= "#{@program.resp_prenom} #{@program.resp_nom}"%>
+                        <br>
+                        <%= @program.resp_fonction %>
+                        <br>
+                        <%= image_tag @program.resp_signature, width: "200" %>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div
+            style="position: absolute; bottom: -230px; font-size: 13px; text-align: center; color: #a8a8a8; width: 100%">
+            <%= @program.footer_1 %>
+            <br>
+            <%= @program.footer_2 %>
+        </div>
+
+
+    </div>
+</body>
+
+</html>

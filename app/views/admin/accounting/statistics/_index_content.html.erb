@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-12">
+
+        <div class="card card-custom">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Générales</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <%= render_async data_admin_accounting_statistics_path, container_id: 'data_generals', replace_container: false do %>
+                <div class="text-center">
+                    <img src="/assets/loaders/loading-blue.svg" width="40">
+                    <div class="mt-5 font-weight-bold">
+                        Chargement...
+                    </div>
+                </div>
+                <% end %>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-12 mt-7">
+        <%= render "data_students" %>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">
+                Écheanciers
+                <small></small>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <%= link_to new_admin_settings_payment_plan_path, remote: true, class: "btn btn-success font-weight-bolder" do %>
+            <span class="svg-icon svg-icon-md">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                    height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24" />
+                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                        <path
+                            d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+                            fill="#000000" />
+                    </g>
+                </svg>
+            </span>Ajouter une option
+            <% end %>
+        </div>
+    </div>
+    <div class="card-body">
+        <% if current_user.user_admin.current_centre.school_program.payment_plans.any? %>
+        <div class="row">
+            <% current_user.user_admin.current_centre.school_program.payment_plans.each do |plan| %>
+            <div class="d-flex align-items-center col-lg-3 col-xl-2">
+                <!--begin::Symbol-->
+                <div class="symbol symbol-40 symbol-circle symbol-success mr-5">
+                    <span class="symbol-label">
+                        <span class="svg-icon svg-icon-xl svg-icon-white">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                    <path
+                                        d="M6.26193932,17.6476484 C5.90425297,18.0684559 5.27315905,18.1196257 4.85235158,17.7619393 C4.43154411,17.404253 4.38037434,16.773159 4.73806068,16.3523516 L13.2380607,6.35235158 C13.6013618,5.92493855 14.2451015,5.87991302 14.6643638,6.25259068 L19.1643638,10.2525907 C19.5771466,10.6195087 19.6143273,11.2515811 19.2474093,11.6643638 C18.8804913,12.0771466 18.2484189,12.1143273 17.8356362,11.7474093 L14.0997854,8.42665306 L6.26193932,17.6476484 Z"
+                                        fill="#000000" fill-rule="nonzero"
+                                        transform="translate(11.999995, 12.000002) rotate(-180.000000) translate(-11.999995, -12.000002) " />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                    </span>
+                </div>
+                <!--end::Symbol-->
+                <!--begin::Text-->
+                <div class="d-flex flex-column font-weight-bold">
+                    <span class="text-dark text-hover-primary mb-1 font-size-lg">En
+                        <%= plan.plan%> fois</span>
+                    <% if can? :destroy, PaymentPlan %>
+                    <%= link_to admin_settings_payment_plan_path(plan), remote: true, method: :delete, class: "text-danger", data: {confirm: "Confirmez-vous la suppression ?"} do %>
+                    Supprimer
+                    <% end %>
+                    <% end %>
+                </div>
+                <!--end::Text-->
+            </div>
+            <% end %>
+        </div>
+        <% else %>
+        <div class="alert alert-custom alert-warning" role="alert">
+            <div class="alert-icon">
+                <i class="flaticon-warning"></i>
+            </div>
+            <div class="alert-text">Au moins une option doit être paramétrée !</div>
+        </div>
+        <% end %>
+    </div>
+</div>

@@ -1,0 +1,194 @@
+<div class="row">
+
+    <div class="col-xl-3">
+        <!--begin::Stats Widget 32-->
+
+        <div class="card card-custom bg-default  gutter-b mb-2" style="cursor: pointer;"
+            onclick="$('#kt_datatable_echeances_statut').val('Non facturée'); $('#kt_datatable_echeances_statut').change();">
+            <!--begin::Body-->
+            <div class="card-body p-3 pl-4">
+                <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                        <i class="fas fa-info-circle icon-2x"></i>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <!--begin: Title-->
+                        <span class="card-title font-weight-bolder font-size-h2 mb-0 p-0">
+                            <%= @instalments.where(statut: [:inactive]).count %>
+                            <span class="font-weight-bold  font-size-sm">Non facturée(s)</span>
+                        </span>
+                        <span class="font-weight-bold text-muted"><%= (@instalments.where(statut: [:inactive])
+                            .sum(:montant) / 1000).round(0) %>
+                            K€</span>
+                        <!--end::Title-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Stats Widget 32-->
+    </div>
+
+    <div class="col-xl-3 mb-2">
+        <!--begin::Stats Widget 29-->
+
+        <div class="card card-custom bg-primary  gutter-b mb-2" style="cursor: pointer;"
+            onclick="$('#kt_datatable_echeances_statut').val('En attente'); $('#kt_datatable_echeances_statut').change();">
+            <!--begin::Body-->
+            <div class="card-body p-3 pl-4">
+                <div class="d-flex align-items-center">
+                    <div class=" mr-3">
+                        <i class="fas fa-pause-circle text-white icon-2x"></i>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <!--begin: Title-->
+                        <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 p-0">
+                            <%= @instalments.where(statut: :waiting).count %> <span
+                                class="font-weight-bold text-white font-size-sm">En attente</span>
+                        </span>
+                        <span
+                            class="text-white font-weight-bold"><%= (@instalments.where(statut: :waiting).sum(:montant) / 1000).round(0) %>
+                            K€</span>
+                        <!--end::Title-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Stats Widget 29-->
+    </div>
+    <div class="col-xl-3 mb-2">
+        <!--begin::Stats Widget 29-->
+        <div class="card card-custom bg-warning  gutter-b mb-2" style="cursor: pointer;"
+            onclick="$('#kt_datatable_echeances_statut').val('En cours'); $('#kt_datatable_echeances_statut').change();">
+            <!--begin::Body-->
+            <div class="card-body p-3 pl-4">
+                <div class="d-flex align-items-center">
+                    <div class=" mr-3">
+                        <i class="fas fa-sync-alt text-white icon-2x"></i>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <!--begin: Title-->
+                        <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 p-0">
+                            <%= @instalments.where(statut: :wip).count %> <span
+                                class="font-weight-bold  font-size-sm">En cours</span>
+                        </span>
+                        <span
+                            class="font-weight-bold text-white"><%= (@instalments.where(statut: :wip).sum(:montant) / 1000).round(0) %>
+                            K€</span>
+                        <!--end::Title-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Stats Widget 29-->
+    </div>
+    <div class="col-xl-3 mb-2">
+        <!--begin::Stats Widget 30-->
+        <div class="card card-custom bg-success  gutter-b mb-2" style="cursor: pointer;"
+            onclick="$('#kt_datatable_echeances_statut').val('Payée'); $('#kt_datatable_echeances_statut').change();">
+            <!--begin::Body-->
+            <div class="card-body p-3 pl-4">
+                <div class="d-flex align-items-center">
+                    <div class=" mr-3">
+                        <i class="fas fa-check text-white icon-2x"></i>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <!--begin: Title-->
+                        <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 p-0">
+                            <%= @instalments.where(statut: :done).count %> <span
+                                class="font-weight-bold  font-size-sm">Payée(s)</span>
+                        </span>
+                        <span
+                            class="font-weight-bold text-white"><%= (@instalments.where(statut: :done).sum(:montant) / 1000).round(0) %>
+                            K€</span>
+                        <!--end::Title-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+    </div>
+    <div class="col-xl-3 mb-2">
+        <div class="card card-custom bg-gray-600  gutter-b mb-2" style="cursor: pointer;"
+            onclick="$('#kt_datatable_echeances_statut').val('Annulée'); $('#kt_datatable_echeances_statut').change();">
+            <!--begin::Body-->
+            <div class="card-body p-3 pl-4">
+                <div class="d-flex align-items-center">
+                    <div class=" mr-3">
+                        <i class="fas fa-times text-white icon-2x"></i>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <!--begin: Title-->
+                        <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 p-0">
+                            <%= @instalments.where(statut: :canceled).count %> <span
+                                class="font-weight-bold  font-size-sm">Annulée(s)</span>
+                        </span>
+                        <span
+                            class="font-weight-bold text-white"><%= (@instalments.where(statut: :canceled).sum(:montant) / 1000).round(0) %>
+                            K€</span>
+                        <!--end::Title-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+    </div>
+    <div class="col-xl-3 mb-2">
+        <!--begin::Stats Widget 31-->
+        <div class="card card-custom bg-danger  gutter-b mb-2" style="cursor: pointer;"
+            onclick="$('#kt_datatable_echeances_statut').val('Échouée'); $('#kt_datatable_echeances_statut').change();">
+            <!--begin::Body-->
+            <div class="card-body p-3 pl-4">
+                <div class="d-flex align-items-center">
+                    <div class=" mr-3">
+                        <i class="fas fa-exclamation-triangle text-white icon-2x"></i>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <!--begin: Title-->
+                        <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 p-0">
+                            <%= @instalments.where(statut: :failed).count %> <span
+                                class="font-weight-bold  font-size-sm">Échouée(s)</span>
+                        </span>
+                        <span
+                            class="font-weight-bold text-white"><%= (@instalments.where(statut: :failed, refunded: false, rescheduled: false).sum(:montant) / 1000).round(0) %>
+                            K€</span>
+                        <!--end::Title-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Stats Widget 31-->
+    </div>
+
+    <div class="col-xl-3 mb-2">
+        <!--begin::Stats Widget 32-->
+
+        <div class="card card-custom bg-dark  gutter-b mb-2" style="cursor: pointer;"
+            onclick="$('#kt_datatable_echeances_statut').val('Refusée'); $('#kt_datatable_echeances_statut').change();">
+            <!--begin::Body-->
+            <div class=" card-body p-3 pl-4">
+                <div class="d-flex align-items-center">
+                    <div class=" mr-3">
+                        <i class="fas fa-radiation text-white icon-2x"></i>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <!--begin: Title-->
+                        <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 p-0">
+                            <%= @instalments.where(statut: :refused).count %> <span
+                                class="font-weight-bold  font-size-sm">Refusée(s)</span>
+                        </span>
+                        <span
+                            class="font-weight-bold text-white"><%= (@instalments.where(statut: :refused, refunded: false, rescheduled: false).sum(:montant) / 1000).round(0) %>
+                            K€</span>
+                        <!--end::Title-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Stats Widget 32-->
+    </div>
+</div>

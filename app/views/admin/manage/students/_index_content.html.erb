@@ -1,0 +1,124 @@
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::List Widget 1-->
+        <div class="card card-custom card-stretch gutter-b">
+            <!--begin::Header-->
+            <div class="card-header border-0 pt-5">
+                <div class="card-title align-items-start flex-column">
+                    <% if can? :export, :student %>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light-primary dropdown-toggle font-weight-bold"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                class="fas fa-download"></i>
+                            Exportation</button>
+                        <div class="dropdown-menu" style="">
+                            <%= link_to export_admin_manage_students_path(format: :csv), class: "dropdown-item", method: :get do %>
+                            Export - général
+                            <% end %>
+                            <%= link_to export_reinscription_admin_manage_students_path(format: :csv), class: "dropdown-item", method: :get do %>
+                            Export - réinscriptions en attente
+                            <% end %>
+
+                        </div>
+                    </div>
+                    <% end %>
+                </div>
+                <div class="card-toolbar">
+                    <div class="dropdown dropdown-inline">
+                        <% if can? :init_import, :student %>
+                        <%= link_to init_import_admin_manage_students_path, class: "btn btn-light-primary font-weight-bold", method: :get, remote: true do %>
+                        <i class="fas fa-file-import"></i>
+                        Importer
+                        <% end %>
+                        <% end %>
+
+
+                        <% if can? :create, :student %>
+                        <%= link_to new_admin_manage_student_path, class: "btn btn-success font-weight-bold", method: :get, remote: true do %>
+                        <i class="fas fa-plus-circle"></i>
+                        Créer un nouvel étudiant & financier
+                        <% end %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-8">
+                <div class="mb-7">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 my-2 my-md-0">
+                                    <div class="input-icon">
+                                        <input type="text" class="form-control" placeholder="Rechercher..."
+                                            id="kt_datatable_search_query" />
+                                        <span>
+                                            <i class="flaticon2-search-1 text-muted"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 my-2 my-md-0">
+                                    <div class="d-flex align-items-center">
+                                        <select class="form-control form-control-lg" id="select_school_year">
+                                            <option value="-1">Toutes années</option>
+                                            <% current_user.user_admin.current_centre.school_program.school_years.each do |school_year| %>
+                                            <option value="<%= school_year.id %>"
+                                                <%= session[:students_filter_school_year] == school_year.id ? '' : 'selected' %>>
+                                                Année
+                                                <%= school_year.nom%></option>
+                                            <% end %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 my-2 my-md-0">
+                                    <div class="d-flex align-items-center">
+                                        <select class="form-control" id="kt_datatable_search_centre">
+                                            <% if @centres.count > 1 %>
+                                            <option value="">Tous les campus</option>
+                                            <% end %>
+                                            <% @centres.each do |centre| %>
+                                            <option value="<%= centre.nom %>"><%= centre.nom %></option>
+                                            <% end %>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 my-2 my-md-0">
+                                    <div class="d-flex align-items-center">
+                                        <select class="form-control" id="kt_datatable_search_formation">
+                                            <option value="">Toutes les formations</option>
+                                            <% current_user.user_admin.current_centre.school_program.formations.pluck(:nom).uniq.each do |formation| %>
+                                            <option value="<%= formation %>"><%= formation %>
+                                            </option>
+                                            <% end %>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 my-2 my-md-0">
+                                    <div class="d-flex align-items-center">
+                                        <select class="form-control" id="kt_datatable_search_statut">
+                                            <option value="">Tous les statuts</option>
+                                            <% UserFinancierSubscription.select_statut_humanized.each_with_index do |status, index| %>
+                                            <option value="<%= index %>"><%= status %>
+                                            </option>
+                                            <% end %>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::List Widget 1-->
+    </div>
+</div>
+<!--end::Row-->

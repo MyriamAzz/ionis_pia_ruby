@@ -1,0 +1,46 @@
+<% render "index_content_done" %>
+
+
+<div class="card card-custom gutter-b">
+    <div class="card-header card-header-tabs-line">
+        <div class="card-toolbar">
+            <ul class="nav nav-tabs nav-boldest nav-tabs-line nav-tabs-line-3x">
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="" data-toggle="tab" href="#kt_tab_pane_1_4">
+                        <span class="nav-text">En attente</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" onclick="datatable_render_dones();" href="#kt_tab_pane_2_4">
+                        <span class="nav-text">Traitées</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-toolbar">
+            <% if can? :manage, :invoice %>
+            <% link_to process_all_admin_accounting_invoices_path, class: "btn btn-light-success font-weight-bold process-all", method: :post, remote: true, data: { confirm: "Êtes-vous sûr de vouloir traiter tous éléments en attentes ?", disable_with: "<img src='/assets/loaders/tail-spin.svg' width='18' class='mr-2' /> Traitement en cours..." } do %>
+            <i class="flaticon2-reload"></i>
+            Traiter tous les éléments
+            <% end %>
+
+            <button class="btn btn-primary font-weight-bold" type="button" id="kt_datatable_process_selected"
+                data-disable-with="<img src='/assets/loaders/tail-spin.svg' width='18' class='mr-2' /> Traitement en cours..."
+                style="display: none;">
+                <i class="flaticon2-reload
+                            "></i> Traiter la sélection</button>
+            <% end %>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="kt_tab_pane_1_4" role="tabpanel"
+                aria-labelledby="kt_tab_pane_1_4">
+                <%= render "index_content_waitings" %>
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_2_4" role="tabpanel" aria-labelledby="kt_tab_pane_2_4">
+
+            </div>
+        </div>
+    </div>
+</div>

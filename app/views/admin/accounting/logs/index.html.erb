@@ -1,0 +1,91 @@
+<%= render "admin/layouts/head" %>
+<!--end::Head-->
+<!--begin::Body-->
+<%= render "admin/layouts/header" %>
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+                    <!--begin::Title-->
+                    <h2 class="text-white font-weight-bold my-2 mr-5">Journaux & Exports</h2>
+                    <!--end::Title-->
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+
+                        <!--end::Item-->
+
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+            <div class="d-flex align-items-center">
+                <!--begin::Button-->
+                <%= link_to export_rf_without_mandate_admin_accounting_logs_path(format: :csv), method: :get, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+                <i class="fas fa-bug"></i>
+                Export RF sans mandat
+                <% end %>
+                <%= link_to export_codes_tiers_admin_accounting_logs_path(format: :csv), method: :get, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+                <i class="fas fa-barcode"></i>
+                Export Codes Tiers
+                <% end %>
+                <%= link_to export_ibans_admin_accounting_logs_path(format: :csv), method: :get, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+                <i class="fas fa-money-check"></i>
+                Export IBANs
+                <% end %>
+                <!--end::Button-->
+                <select class="" id="select_school_year">
+                    <% current_user.user_admin.current_centre.school_program.school_years.each do |school_year| %>
+                    <option value="<%= school_year.id %>"
+                        <%= session[:logs_filter_school_year] == school_year.id ? '' : 'selected' %>>
+                        Année
+                        <%= school_year.nom%></option>
+                    <% end %>
+                </select>
+            </div>
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Dashboard-->
+            <div id="index_content">
+                <%= render partial: "index_content" %>
+            </div>
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+<%= render "admin/layouts/footer" %>
+<%= render "index_js" %>
+<script>
+    $(function () {
+        $('#select_school_year').selectpicker('val', "<%= session[:logs_filter_school_year] %>");
+
+        $('#select_school_year').on('change', function () {
+            var school_year_id = $(this).val();
+            Rails.ajax({
+                url: "/admin/accounting/logs/filter?school_year=" + school_year_id,
+                type: "get",
+                success: function (data) {},
+                error: function (data) {}
+            })
+        });
+    });
+</script>
+</body>
+<!--end::Body-->
+
+</html>

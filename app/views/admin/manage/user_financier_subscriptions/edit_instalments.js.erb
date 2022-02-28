@@ -1,0 +1,54 @@
+$("#modal").html("<%= escape_javascript(render 'edit_instalments') %>");
+$("#modal").modal("show");
+
+var amount = <%= @school_fees %>
+
+
+$(document).on("change", ".input-mode", function () {
+  input = $(this).parent().parent().find(".input-status");
+  if ($(this).val() == "prelevement") {
+      input.prop( "disabled", true );
+      input.prop('selectedIndex',0);
+  } else {
+    input.prop( "disabled", false );
+  }
+});
+
+$(document).on("change", ".input-checksum", function () {
+  var sum = 0;
+  $(".input-checksum").each(function (e) {
+    if ($(this).data("rescheduled") == false) {
+    sum += +$(this).val();
+    }
+  });
+  if (sum > amount) {
+    $(".alert_amount").html(sum)
+    $("#alert_amount").show("500")
+ } else 
+ {
+    $("#alert_amount").hide("500")
+ }
+});
+
+$(document).on("change", ".input-type", function () {
+  var sum = 0;
+  input = $(this).parent().parent().find("input[type=number]");
+  if ($(this).val() == "frais_scolarite") {
+    if (!input.hasClass("input-checksum")) {
+      input.addClass("input-checksum");
+    }
+  } else {
+    input.removeClass("input-checksum");
+  }
+  $(".input-checksum").each(function () {
+    sum += +$(this).val();
+  });
+
+ if (sum > amount) {
+    $(".alert_amount").html(sum)
+    $("#alert_amount").show("500")
+ } else 
+ {
+    $("#alert_amount").hide("500")
+ }
+});

@@ -1,0 +1,9 @@
+<% if @error %>
+toastr.error("Erreur")
+<% else %>
+$("#payment_plans").html("<%= escape_javascript(render 'index') %>");
+$("#payment_calendars").html("<%= escape_javascript(render 'admin/settings/payment_calendars/index') %>");
+
+$("#modal").modal("hide");
+toastr.success("Ajoutée")
+<% end %>

@@ -1,0 +1,187 @@
+<div class="card card-custom bgi-no-repeat gutter-b mt-3"
+    style="background-position: right top; background-size: 30% auto; background-image: url(/assets/media/svg/shapes/abstract-1.svg)">
+    <div class="card-body d-flex p-0">
+        <div
+            class="flex-grow-1 p-8 card-rounded bgi-no-repeat d-flex flex-column justify-content-center align-items-start">
+            <h4 class=" font-weight-bolder m-0 text-info font-size-h5"><i class=""></i>
+                <span class="svg-icon svg-icon-default svg-icon-2x mr-2">
+                    <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-12-10-081610/theme/html/demo2/dist/../src/media/svg/icons/Code/Info-circle.svg--><svg
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24" />
+                            <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                            <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1" />
+                            <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1" />
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon--></span>
+                Retrouvez le détail de votre
+                compte :
+                informations
+                personnelles et
+                étudiant(e)
+                à charge.</h4>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <!--begin::Content-->
+    <div class="col-lg-12">
+        <!--begin::Card-->
+        <div class="card card-custom card-stretch">
+            <!--begin::Header-->
+            <div class="card-header py-3">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">Informations Personnelles</h3>
+                    <span class="text-muted font-weight-bold font-size-sm mt-1">Visualisation</span>
+                </div>
+
+            </div>
+            <!--end::Header-->
+            <!--begin::Form-->
+            <!--begin::Body-->
+            <div class="card-body">
+                <%= form_for current_user, url: user_profil_path, method: :patch, remote: true do |f| %>
+                <div class="row">
+                    <label class="col-xl-2"></label>
+                    <div class="col-lg-9 col-xl-6">
+                        <h5 class="font-weight-bold mb-6">Étudiant(e)</h5>
+                    </div>
+                </div>
+                <%= f.fields_for :user_financier do |user_financier|%>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Nom</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :etu_nom, class: "form-control form-control-lg form-control-solid", :required => true, disabled: true %>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Prénom</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :etu_prenom, class: "form-control form-control-lg form-control-solid", :required => true, disabled: true %>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Email</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.email_field :etu_email, class: "form-control form-control-lg form-control-solid", :required => true, disabled: true %>
+                        <span class="form-text text-muted">À titre informatif. l'étudiant(e) ne peut pas se
+                            connecter
+                            sur la plateforme.</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Téléphone</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :etu_tel, class: "form-control form-control-lg form-control-solid", :required => false, disabled: true %>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Adresse</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :etu_adresse, class: "form-control form-control-lg form-control-solid", :required => false, disabled: true %>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Ville</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :etu_ville, class: "form-control form-control-lg form-control-solid", :required => false, disabled: true %>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Code Postal</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :etu_code_postal, class: "form-control form-control-lg form-control-solid", :required => false, disabled: true %>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-xl-2"></label>
+                    <div class="col-lg-9 col-xl-6">
+                        <h5 class="font-weight-bold mt-10 mb-6">Responsable Financier</h5>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Login</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= f.text_field :username, class: "form-control form-control-lg ", :required => true, disabled: true %>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Nom</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :nom, class: "form-control form-control-lg ", :required => true %>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Prénom</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :prenom, class: "form-control form-control-lg ", :required => true %>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Email</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= f.email_field :email, class: "form-control form-control-lg ", :required => true %>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Téléphone</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :tel, class: "form-control form-control-lg ", :required => false %>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Adresse</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :adresse, class: "form-control form-control-lg ", :required => true %>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Code postal</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :code_postal, class: "form-control form-control-lg ", :required => true %>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Ville</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :ville, class: "form-control form-control-lg ", :required => true %>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label">Pays</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <%= user_financier.text_field :pays, class: "form-control form-control-lg", :required => true %>
+                    </div>
+                </div>
+                <% end %>
+                <% if can? :update, :profil %>
+                <div class="form-group row">
+                    <label class="col-xl-2 col-lg-2 col-form-label"></label>
+                    <div class="col-lg-9 col-xl-6">
+                        <button type="submit" class="btn btn-success mr-2" form="edit_user_<%= current_user.id %>"
+                            data-disabled-with="Enregistrement...">Enregistrer les modifications</button>
+                        <button type="reset" form="edit_user_<%= current_user.id %>"
+                            class="btn btn-secondary">Annuler</button>
+                    </div>
+                </div>
+                <% end %>
+
+                <% end %>
+            </div>
+            <!--end::Body-->
+            <!--end::Form-->
+        </div>
+    </div>
+    <div id="change_password" class="col-lg-12">
+        <%= render "change_password" %>
+    </div>
+    <!--end::Content-->
+</div>

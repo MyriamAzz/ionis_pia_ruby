@@ -1,0 +1,63 @@
+<% if @reste == 0 %>
+<div class="alert alert-danger mt-10 mb-5 p-5" role="alert">
+    <h4 class="alert-heading mb-5">Opération impossible !</h4>
+    <p>Toutes les écheances ont été réglées ou sont en cours de prélèvement chez GoCardless.<br>Vous ne pouvez donc pas
+        appliquer un nouvel échéancier.</p>
+</div>
+<% else %>
+<%= hidden_field_tag(:mode, @mode)%>
+<%= hidden_field_tag(:discount, @discount)%>
+<h5 class="pl-3 text-warning"><i class="fas fa-angle-double-down mr-2 mt-10"></i> Nouvel écheancier après remise
+</h5>
+<table class="table table-hover mt-3">
+    <thead>
+        <tr class="d-flex">
+            <th class="col-3">Écheance</th>
+            <th class="col-3">Montant (€)</th>
+            <th class="col-2">Type</th>
+            <th class="col-2">Mode</th>
+            <th class="col-2">Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if @mode %>
+        <% @user_financier_subscription.user_financier_subscription_instalments.where(v_type: :frais_scolarite).each do |instalment| %>
+        <tr class="d-flex echeance-line">
+            <td class="col-3"><%= instalment.echeance.strftime("%d/%m/%Y") %></td>
+            <td class="col-3">
+                <% if !instalment.is_in_process_gocardless %>
+                <strike><%= instalment.montant %>€ </strike>&emsp; ⭢ <span
+                    class="text-warning font-weight-bolder pl-4"><%= instalment.montant - @discount  %>€</span>
+                <% else %>
+                <%= instalment.montant %>€
+                <% end %>
+            </td>
+            <td class="col-2"><%= instalment.v_type.humanize %></td>
+            <td class="col-2"><%= instalment.v_mode.humanize %></td>
+            <td class="col-2"><%= instalment.statut_humanized_label.html_safe %></td>
+        </tr>
+        <% end %>
+        <% else %>
+        <% done = false %>
+        <% @user_financier_subscription.user_financier_subscription_instalments.where(v_type: :frais_scolarite).each do |instalment| %>
+        <tr class="d-flex echeance-line">
+            <td class="col-3"><%= instalment.echeance.strftime("%d/%m/%Y") %></td>
+            <td class="col-3">
+                <% if !instalment.is_in_process_gocardless && done == false %>
+                <% done = true %>
+                <strike><%= instalment.montant %>€ </strike>&emsp; ⭢ <span
+                    class="text-warning font-weight-bolder pl-4"><%= instalment.montant - @discount  %>€</span>
+                <% else %>
+                <%= instalment.montant %>€
+                <% end %>
+            </td>
+            <td class="col-2"><%= instalment.v_type.humanize %></td>
+            <td class="col-2"><%= instalment.v_mode.humanize %></td>
+            <td class="col-2"><%= instalment.statut_humanized_label.html_safe %></td>
+        </tr>
+        <% end %>
+        <% end %>
+    </tbody>
+</table>
+
+<% end %>

@@ -1,0 +1,14 @@
+count = 0
+UserFinancierSubscription.where(statut_etu: :contrat_pro, frais_inscription_done: true).each do |sub| 
+sub.user_financier_subscription_instalments.where(v_type: :frais_inscription).each do |instal|
+    ab = false
+instal.log_sales.where(code_journal: "VT3", credit: 0, compte_general: instal.user_financier_subscription.formation_annee.formation.centre.compte_client_sage).each do |log|
+p log.id
+ab = true
+end
+if ab 
+    count += 1
+end
+end
+end
+p count

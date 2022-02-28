@@ -1,0 +1,13 @@
+<% if @error %>
+    toastr.error("Opération impossible")
+<% else %>
+    <% if @compta %>
+    toastr.success("Reprogrammation enregistrée")
+    $('#kt_datatable_echeances').KTDatatable('reload');
+    $('#modal').modal('hide')
+    <% else %>
+    toastr.success("Reprogrammation enregistrée")
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/paiements') %>")
+    $('#modal').modal('hide')
+    <% end %>
+<% end %>

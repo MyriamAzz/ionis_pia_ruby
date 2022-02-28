@@ -1,0 +1,109 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ajout d'une souscription</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <%= form_for @user_financier_subscription ,:url => { :controller => "user_financier_subscriptions", :action => "create" }, remote: :true do |f| %>
+            <% if !@student.user_financier.etu_famille_ionis.nil? %>
+            <div class="alert alert-info mb-10" role="alert">
+                Le candidat indique avoir un proche "<strong><%= @student.user_financier.etu_famille_ionis_prenom %>
+                    <%= @student.user_financier.etu_famille_ionis_nom %></strong>" dans l'ecole
+                <%= @student.user_financier.etu_famille_ionis %>. Il peut à ce titre profiter d'une remise commerciale.
+            </div>
+            <% end %>
+            <div class="form-group row">
+                <div class="col-lg-8">
+                    <label for="">Statut
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :statut_etu, UserFinancierSubscription.statut_etus.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+                <div class="checkbox-list mt-11 ml-5">
+                    <label class="checkbox">
+                        <%= f.check_box :redoublant, {}, name: "redoublant", value: true %>
+                        <span></span>Redoublant</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    <label for="">Type
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :s_type, UserFinancierSubscription.s_types.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+            </div>
+            <div class="form-group row" style="display: none;" id="etudiant_confirm_reinscription">
+                <div class="col-lg-12">
+                    <div class="checkbox-list">
+                        <label class="checkbox">
+                            <%= f.check_box :etudiant_confirm_reinscription, {}, name: "etudiant_confirm_reinscription", value: true %>
+                            <span></span><strong>Confirmer la réincription par l'étudiant(e) - envoi
+                                email</strong></label>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="form-group row">
+
+                <div class="col-lg-6">
+                    <label for="">Pour l'année scolaire
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :school_year_id, options_for_select(@school_years.map { |value| [value.nom, value.id] }), {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+
+                <div class="col-lg-6">
+                    <label for="">Mois de rentrée
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :month_start, @user_financier_subscription.select_month_start, {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+            </div>
+
+
+
+
+            <div class="form-group row">
+                <div class="col-lg-8">
+                    <label for="">Formation
+                        <span class="text-danger">*</span></label>
+                    <%= select_tag :formation_id, options_for_select(@formations.map { |value| [value.nom, value.id] }), { :include_blank => true, class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+                <div class="col-lg-4">
+                    <label for="">Base tarifaire
+                        <span class="text-danger">*</span></label>
+                    <%= select_tag :base_school_year_id, options_for_select(@school_years.map { |value| [value.nom, value.id] }), { :include_blank => true, class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    <label for="">Modalité de paiement
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :modalite, current_user.user_admin.current_centre.school_program.payment_plans.collect {|p| [ "En #{p.plan}", p.plan ] }, {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label for="">Mode paiement inscription
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :payment_mode_inscription, UserFinancierSubscription.payment_mode_inscriptions.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+                <div class="col-lg-6">
+                    <label for="">Mode paiement scolarité
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :payment_mode_scolarite, UserFinancierSubscription.payment_mode_scolarites.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" value="submit"
+                form="new_user_financier_subscription">Valider</button>
+        </div>
+        <% end %>
+    </div>
+</div>

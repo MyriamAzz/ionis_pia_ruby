@@ -1,0 +1,26 @@
+<div class='nested-fields'>
+    <% if f.object.school_year_id.nil? %>
+    <%= f.hidden_field :school_year_id, value: school_year_id %>
+    <% else %>
+    <%= f.hidden_field :school_year_id %>
+    <% end %>
+    <div class="form-group row">
+        <div class="col-lg-3">
+            <label for="exampleSelect1">Frais inscription
+                <span class="text-danger">*</span></label>
+            <%= f.number_field :frais_inscription, class: "form-control font-weight-bold", :required => true %>
+        </div>
+        <div class="col-lg-3">
+            <label for="exampleSelect1">Frais techniques
+                <span class="text-danger">*</span></label>
+            <%= f.number_field :frais_technique, class: "form-control font-weight-bold", :required => true %>
+        </div>
+        <% f.object.formation.centre.school_program.payment_plans.each do |plan| %>
+        <div class="col-lg-2 mb-3">
+            <label for="exampleSelect1">Réglement <%= plan.plan %> fois
+                <span class="text-danger">*</span></label>
+            <%= f.number_field "modalite_#{plan.plan}", class: "form-control font-weight-bold", :required => true %>
+        </div>
+        <% end %>
+    </div>
+</div>

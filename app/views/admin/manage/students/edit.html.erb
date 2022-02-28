@@ -1,0 +1,75 @@
+<%= render "admin/layouts/head" %>
+<!--end::Head-->
+<!--begin::Body-->
+<%= render "admin/layouts/header" %>
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+                    <!--begin::Title-->
+                    <h2 class="text-white font-weight-bold my-2 mr-5">Étudiant & Responsable Financier
+                    </h2>
+                    <!--end::Title-->
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+
+                        <%= link_to admin_manage_students_path, class: "text-white text-hover-white opacity-75 hover-opacity-100" do %>
+                        Retour à la liste
+                        <% end %>
+                        <!--end::Item-->
+
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+            <div class="d-flex align-items-center" id="btn_header_edit">
+                <!--begin::Button-->
+                <%= render "btn_header_edit" %>
+                <!--end::Button-->
+
+            </div>
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Dashboard-->
+            <%= render partial: "modal" %>
+            <div id="index_content">
+                <%= render partial: "edit_content" %>
+            </div>
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+<%= render "admin/layouts/footer" %>
+<script>
+    $(document).on("change", ".checkbox-relaunch", function () {
+        var value = $(this).is(":checked");
+        var uuid = $(this).data("user-uuid");
+        Rails.ajax({
+            url: "/admin/manage/students/" + uuid + "/change_relaunch?value=" + value,
+            type: "get",
+            success: function (data) {},
+            error: function (data) {}
+        })
+    });
+</script>
+
+</body>
+<!--end::Body-->
+
+</html>

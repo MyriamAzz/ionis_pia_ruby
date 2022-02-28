@@ -1,0 +1,2 @@
+class UserAdminSchool < ApplicationRecord
+end

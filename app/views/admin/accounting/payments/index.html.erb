@@ -1,0 +1,118 @@
+<%= render "admin/layouts/head" %>
+<!--end::Head-->
+<!--begin::Body-->
+<%= render "admin/layouts/header" %>
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+  <!--begin::Subheader-->
+  <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Info-->
+      <div class="d-flex align-items-center flex-wrap mr-1">
+        <!--begin::Heading-->
+        <div class="d-flex flex-column">
+          <!--begin::Title-->
+          <h2 class="text-white font-weight-bold my-2 mr-5">Échéances</h2>
+          <!--end::Title-->
+          <!--begin::Breadcrumb-->
+          <div class="d-flex align-items-center font-weight-bold my-2">
+            <!--begin::Item-->
+
+            <!--end::Item-->
+          </div>
+          <!--end::Breadcrumb-->
+        </div>
+        <!--end::Heading-->
+      </div>
+      <div class="d-flex align-items-center">
+        <!--begin::Button-->
+        <%= link_to init_import_reconciliation_admin_accounting_payments_path, method: :get, remote: true, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+        <i class="fas fa-tasks"></i>
+        Import réconciliations
+        <% end %>
+        <%= link_to export_alert_frais_scolarite_admin_accounting_payments_path(format: :csv), method: :get, remote: false, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+        <i class="fas fa-exclamation-triangle"></i> Export alertes frais scolarité
+        <% end %>
+        <%= link_to export_ca_admin_accounting_payments_path(format: :csv), method: :get, remote: false, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+        <i class="fas fa-euro-sign"></i>
+        Export CA
+        <% end %>
+        <% link_to export_admin_accounting_payments_path(format: :csv), method: :get, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+        <i class="fas fa-cloud-download-alt"></i>
+        Export échéances payées & rejetées
+        <% end %>
+        <div class="dropdown">
+          <button class="btn btn btn-transparent-white font-weight-bold py-3 px-6 mr-2 dropdown-toggle" type="button"
+            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-cloud-download-alt"></i>
+            Export échéances
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <%= link_to export_admin_accounting_payments_path(format: :csv), method: :get, class: "dropdown-item" do %>
+            Payées & rejetées non exportées
+            <% end %>
+            <%= link_to export_done_failed_all_admin_accounting_payments_path(format: :csv), method: :get, class: "dropdown-item" do %>
+            Payées & rejetées complet
+            <% end %>
+            <%= link_to export_expired_admin_accounting_payments_path(format: :csv), method: :get, class: "dropdown-item" do %>
+            Expirées +15jours
+            <% end %>
+            <%= link_to export_all_expired_admin_accounting_payments_path(format: :csv), method: :get, class: "dropdown-item" do %>
+            Expirées
+            <% end %>
+          </div>
+        </div>
+        <%= link_to export_all_admin_accounting_payments_path(format: :csv), method: :get, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+        <i class="fas fa-cloud-download-alt"></i>
+        Export complet
+        <% end %>
+        <!--end::Button-->
+        <select class="" id="select_school_year">
+          <% current_user.user_admin.current_centre.school_program.school_years.each do |school_year| %>
+          <option value="<%= school_year.id %>"
+            <%= session[:students_filter_school_year] == school_year.id ? '' : 'selected' %>>
+            Année
+            <%= school_year.nom%></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+  </div>
+  <!--end::Subheader-->
+  <!--begin::Entry-->
+  <div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container-fluid">
+      <%= render partial: "modal" %>
+      <!--begin::Dashboard-->
+      <div id="index_content">
+        <%= render partial: "index_content" %>
+      </div>
+      <!--end::Dashboard-->
+    </div>
+    <!--end::Container-->
+  </div>
+  <!--end::Entry-->
+</div>
+<!--end::Content-->
+<%= render "admin/layouts/footer" %>
+<%= render "index_js" %>
+<script>
+  $(function () {
+    $('#select_school_year').selectpicker('val', "<%= session[:payments_filter_school_year] %>");
+
+    $('#select_school_year').on('change', function () {
+      var school_year_id = $(this).val();
+      Rails.ajax({
+        url: "/admin/accounting/payments/filter?school_year=" + school_year_id,
+        type: "get",
+        success: function (data) {},
+        error: function (data) {}
+      })
+    });
+  });
+</script>
+</body>
+<!--end::Body-->
+
+</html>

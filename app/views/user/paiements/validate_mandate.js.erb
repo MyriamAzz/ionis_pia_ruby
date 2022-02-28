@@ -1,0 +1,5 @@
+<% if @error %>
+toastr.error("Erreur")
+<% else %>
+$("#modal").html("<%= escape_javascript(render 'validate_mandate') %>")
+<% end %>

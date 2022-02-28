@@ -1,0 +1,362 @@
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::List Widget 1-->
+        <!--begin::Header-->
+        <div class="mb-7">
+            <div class="row align-items-center">
+                <div class="col-lg-12 col-xl-12">
+                    <div class="row mb-7">
+                        <div class="col-md-2 my-md-0">
+                            <div class="input-icon">
+                                <input type="text" class="form-control" placeholder="Rechercher..."
+                                    id="kt_datatable_search_query" />
+                                <span>
+                                    <i class="flaticon2-search-1 text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 my-md-0">
+                            <div class="d-flex align-items-center">
+                                <select class="form-control" id="kt_datatable_done_search_campus">
+                                    <% if @centres.count > 1 %>
+                                    <option value="">Tous les campus</option>
+                                    <% end %>
+                                    <% @centres.each do |centre| %>
+                                    <option value="<%= centre.nom %>"><%= centre.nom %></option>
+                                    <% end %>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-2 my-md-0">
+                            <div class="d-flex align-items-center">
+                                <select class="form-control" id="kt_datatable_done_search_type">
+                                    <% UserFinancierSubscriptionInstalment.v_types.each do |v_type| %>
+                                    <option value="<%= v_type[0].humanize %>"><%= v_type[0].humanize %></option>
+                                    <% end %>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-2 my-md-0">
+                            <div class="d-flex align-items-center">
+                                <select class="form-control" id="kt_datatable_done_search_subscription_type">
+                                    <option value="">Filtre type</option>
+                                    <option>Inscription</option>
+                                    <option>Réinscription</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-2 my-md-0">
+                            <div class="d-flex align-items-center">
+                                <select class="form-control" id="kt_datatable_done_search_commentaire">
+                                    <option value="">Filtre particularité</option>
+                                    <option value="Non">Sans particularité</option>
+                                    <option value="Oui">Avec particularité</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 my-md-0">
+                            <div class="d-flex align-items-center">
+                                <select class="form-control" id="kt_datatable_done_search_modalite">
+                                    <option value="">Filtre modalité</option>
+                                    <% current_user.user_admin.current_centre.school_program.payment_plans.each do |plan| %>
+                                    <option value="<%= plan.plan %>"><%= plan.plan %> fois</option>
+
+                                    <% end %>
+
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_done"></div>
+
+        </div>
+        <!--end::Body-->
+
+        <!--end::List Widget 1-->
+    </div>
+</div>
+<script>
+    var KTDatatableRemoteAjaxDone = function () {
+        // Private functions
+
+        var ktDatatableDone = function () {
+
+            var datatable = $('#kt_datatable_done').KTDatatable({
+
+                // datasource definition
+                data: {
+                    saveState: {
+                        cookie: false
+                    },
+                    type: 'remote',
+                    source: {
+                        read: {
+                            method: 'GET',
+                            url: "<%= table_json_done_admin_accounting_invoices_path %>",
+                            // sample custom headers
+                            // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
+                            map: function (raw) {
+                                // sample data mapping
+                                var dataSet = raw;
+                                if (typeof raw.data !== 'undefined') {
+                                    dataSet = raw.data;
+                                }
+                                return dataSet;
+                            },
+                        },
+                    },
+                    pageSize: 10,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false,
+                },
+
+
+                // layout definition
+                layout: {
+                    scroll: false,
+                    footer: false,
+                    spinner: {
+                        message: 'Chargement...',
+                    }
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#kt_datatable_search_done_query'),
+                    key: 'generalSearch',
+                },
+
+                translate: {
+                    records: {
+                        processing: "Veuillez patienter...",
+                        noRecords: "Aucun résultat"
+                    },
+                },
+
+                // columns definition
+                columns: [{
+                        field: 'etu_nom',
+                        title: 'Étudiant',
+                        sortable: false,
+                        template: function (data) {
+                            return '<div class="">\
+									<div class="text-dark-75 font-weight-bolder font-size-lg mb-0">' + data.etu_nom + ' ' + data.etu_prenom + '</div>\
+									<span class="text-muted font-weight-bold text-hover-primary">' + data.statut_etu + '</span>\
+								</div>\
+							</div>';
+                        }
+                    },
+                    {
+                        field: 'formation',
+                        title: 'Formation',
+
+                    },
+                    {
+                        field: 'modalite',
+                        title: 'modalite',
+
+
+                    },
+                    {
+                        field: 'type',
+                        title: 'Frais',
+                    },
+                    {
+                        field: 's_type',
+                        title: 'Type',
+                        sortable: false,
+                        // callback function support for column rendering
+                        template: function (row) {
+                            if (row.s_type == "Inscription") {
+                                return '<span class="label label-success label-dot mr-2"></span><span class="font-weight-bold text-success">Inscription</span>\
+                                <div class="text-muted font-weight-bold text-hover-primary">' + row
+                                    .payment_mode + ' ' +
+                                    row
+                                    .modalite + '</div';
+                            } else {
+                                return '<span class="label label-warning label-dot mr-2"></span><span class="font-weight-bold text-warning">Réinscription</span>\
+                                <div class="text-muted font-weight-bold text-hover-primary">' + row
+                                    .payment_mode + ' ' +
+                                    row
+                                    .modalite + '</div';
+
+                            }
+                        },
+                    }, {
+                        field: 'rum',
+                        title: 'Mandat',
+                        autoHide: true,
+                        // width: 110,
+                    },
+                    {
+                        field: 'centre',
+                        title: 'Campus',
+                        autoHide: true,
+                        // width: 150,
+                        // callback function support for column rendering
+                        template: function (row) {
+                            return '<span class="label label-lg label-light-info font-weight-bold label-inline">' +
+                                row.centre + '</span>';
+                        },
+                    },
+                    {
+                        field: 'special_case',
+                        title: 'Particularité',
+                        sortable: false,
+                        // width: 110,
+                        autoHide: true,
+                    }, {
+                        field: 'done_at',
+                        title: 'Date traitement',
+                        // width: 125,
+                        sortable: false,
+                        type: 'date',
+                        format: 'DD/MM/YYYY H:M',
+                    }, {
+                        field: 'Actions',
+                        title: '',
+                        sortable: false,
+                        // width: 130,
+                        overflow: 'visible',
+                        autoHide: false,
+                        template: function (row) {
+                            return '\<a class="btn btn-light-warning font-weight-bold btn-icon mr-1" data-remote="true" data-method="get" href="/admin/manage/students/' +
+                                row.user_id + '/user_financier_subscriptions/' +
+                                row.RecordID + '">\
+                                            \ <i class="fas fa-info-circle"></i>\
+                                \</a>\
+                            \<a href="/admin/accounting/invoices/' + row.RecordID + '/echeancier" data-container="body" data-toggle="tooltip" data-placement="right" title="Voir l\'échancier" method="get" data-remote="true" class="btn btn-light-primary btn-text-info btn-icon mr-1">\
+                                \<span class="svg-icon svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Design/Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                    \<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                    \ <rect x="0" y="0" width="24" height="24"/>\
+                                    \ <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="#000000"/>\
+                                    \ <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="#000000" opacity="0.3"/>\
+                                    </g>\
+                                    \</svg><!--end::Svg Icon--></span>\
+                                \
+                        </a>\
+                        \<a href="/admin/manage/students/' + row.uuid + '/edit" data-container="body" target="_blank" data-toggle="tooltip" data-placement="right" title="Voir le profil" method="get" class="btn btn-light btn-text-info btn-icon">\
+                        <i class="fas fa-user-cog"></i>\
+                        \</a>\
+                            ';
+                        },
+                    }
+                ],
+
+            });
+
+            $('#kt_datatable_done_search_campus').on('change', function () {
+                datatable.search($(this).val().toLowerCase(), 'centre');
+            });
+
+            $('#kt_datatable_done_search_type').on('change', function () {
+                datatable.search($(this).val().toLowerCase(), 'type');
+            });
+
+            $('#kt_datatable_done_search_commentaire').on('change', function () {
+                datatable.search($(this).val().toLowerCase(), 'special_case');
+            });
+
+            $('#kt_datatable_done_search_subscription_type').on('change', function () {
+                datatable.search($(this).val().toLowerCase(), 's_type');
+            });
+
+            $('#kt_datatable_done_search_modalite').on('change', function () {
+                datatable.search($(this).val().toLowerCase(), 'modalite');
+            });
+
+            $('#kt_datatable_done_search_campus, #kt_datatable_done_search_type, #kt_datatable_done_search_commentaire, #kt_datatable_done_search_subscription_type, #kt_datatable_done_search_modalite')
+                .selectpicker();
+            datatable.on(
+                'datatable-on-check datatable-on-uncheck',
+                function (e) {
+                    var checkedNodes = datatable.rows('.datatable-row-active').nodes();
+                    var count = checkedNodes.length;
+                    if (count > 0) {
+                        $('.export-all').hide();
+                        $('#kt_datatable_export_selected').show();
+                    } else {
+                        $('.export-all').show();
+                        datatable.find('.checkbox-all > [type="checkbox"]').prop("checked", false);
+                        $('#kt_datatable_export_selected').hide();
+                    }
+                    var ids = datatable.rows('.datatable-row-active').
+                    nodes().
+                    find('.checkbox > [type="checkbox"]').
+                    map(function (i, chk) {
+                        return $(chk).val();
+                    });
+                });
+
+            datatable.on(
+                'datatable-on-layout-updated',
+                function (e) {
+                    $('[data-toggle="tooltip"]').tooltip()
+                });
+
+
+            $('#kt_datatable_export_selected').on('click', function (e) {
+                $("#kt_datatable_export_selected").prop("disabled", true);
+                $("#kt_datatable_export_selected").html(
+                    "<img src='/assets/loaders/tail-spin.svg' width='18' class='mr-2' /> Génération en cours..."
+                );
+                var ids = datatable.rows('.datatable-row-active').
+                nodes().
+                find('.checkbox > [type="checkbox"]').
+                map(function (i, chk) {
+                    return $(chk).val();
+                }).get();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: "GET",
+                    url: "<%= export_selected_admin_accounting_invoices_path %>",
+                    data: {
+                        'records': ids
+                    },
+                    success: function (data) {
+                        $("#kt_datatable_export_selected").prop("disabled", false);
+                        $("#kt_datatable_export_selected").html(
+                            "<i class='flaticon2-download'></i> Exporter la sélection");
+
+                    },
+                });
+            })
+        };
+
+        return {
+            // public functions
+            init: function () {
+                ktDatatableDone();
+            },
+        };
+    }();
+    jQuery(document).ready(function () {
+        function sleep(time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        }
+        sleep(100).then(() => {
+            KTDatatableRemoteAjaxDone.init();
+            $('#kt_datatable_done_search_type').change();
+
+        });
+    });
+</script>

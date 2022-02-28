@@ -1,0 +1,11 @@
+<% if @error %>
+    toastr.error("Erreur")
+<% else %>
+    <% if @student %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/paiements') %>")
+    <% else %>
+    $('#kt_datatable').KTDatatable('reload');
+    <% end %>
+    $('#modal').modal('hide');
+    toastr.success("Modifiée");
+<% end %>

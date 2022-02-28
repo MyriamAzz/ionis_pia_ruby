@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Charts Widget 6-->
+        <div class="card card-custom card-stretch gutter-b">
+            <!--begin::Header-->
+            <div class="card-header h-auto border-0">
+                <div class="card-title py-5">
+                    <h3 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder">Prospects</span>
+                    </h3>
+                </div>
+                <div class="card-toolbar">
+
+                </div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body pt-0">
+                <div class="d-flex align-items-center flex-wrap">
+                    <!--begin: Item-->
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1 bg-primary rounded p-3">
+                        <div class="d-flex flex-column text-dark-75">
+                            <span
+                                class="font-weight-bolder font-size-h4  text-white"><%= @prospects.pending.count %></span>
+                            <span class="font-weight-bolder  text-white">En attente</span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1 bg-success rounded p-3">
+                        <div class="d-flex flex-column text-dark-75">
+                            <span
+                                class="font-weight-bolder font-size-h4  text-white"><%= @prospects.active.count %></span>
+                            <span class="font-weight-bolder  text-white">Actifs</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1 bg-warning rounded p-3">
+                        <div class="d-flex flex-column text-dark-75">
+                            <span
+                                class="font-weight-bolder font-size-h4  text-white"><%= @prospects.archived.count %></span>
+                            <span class="font-weight-bolder  text-white">Archivés</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1 bg-danger rounded p-3">
+                        <div class="d-flex flex-column text-dark-75">
+                            <span
+                                class="font-weight-bolder font-size-h4 text-white"><%= @prospects.abandon.count %></span>
+                            <span class="font-weight-bolder text-white">En abandon</span>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Charts Widget 6-->
+    </div>
+
+
+    <div class="col-xl-12">
+        <!--begin::Charts Widget 6-->
+        <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+            <div class="card-header h-auto border-0">
+                <div class="card-title py-5">
+                    <h3 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder">Évolutions</span>
+                    </h3>
+                </div>
+                <div class="card-toolbar">
+
+                </div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body">
+                <%= timeline [
+                ["Washington", "1789-04-29", "1797-03-03"],
+                ["Adams", "1797-03-03", "1801-03-03"],
+                ["Jefferson", "1801-03-03", "1809-03-03"]
+              ] %>
+
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Charts Widget 6-->
+    </div>
+
+
+
+</div>

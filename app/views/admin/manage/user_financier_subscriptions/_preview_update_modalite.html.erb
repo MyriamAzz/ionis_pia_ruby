@@ -1,0 +1,61 @@
+<% if @reste == 0 && @montant != 0  %>
+<div class="alert alert-danger mt-10 mb-5 p-5" role="alert">
+    <h4 class="alert-heading mb-5">Opération impossible !</h4>
+    <p>Toutes les écheances ont été réglées ou sont en cours de prélèvement chez GoCardless.<br>Vous ne pouvez donc pas
+        appliquer un nouvel échéancier.</p>
+    <p>Le montant global de la nouvelle modalité peut être aussi égal ou inferieur au(x) prélèvement(s) en cours.</p>
+</div>
+<% else %>
+<%= hidden_field_tag(:modalite, @modalite)%>
+<h5 class="pl-3 text-warning"><i class="fas fa-angle-double-down mr-2 mt-10"></i> Nouvel écheancier à mettre en place
+    - Modalité <%= @modalite %> fois</h5>
+
+<% if @remise > 0 %>
+<div class="alert alert-light mt-5 font-weight-bold" role="alert">Une remise est appliquée à cette souscription,
+    l'echéancier est donc
+    revu
+    en fonction.</div>
+<% end %>
+<table class="table table-hover mt-3">
+    <thead>
+        <tr class="d-flex">
+            <th class="col-3">Écheance</th>
+            <th class="col-3">Montant (€)</th>
+            <th class="col-2">Type</th>
+            <th class="col-2">Mode</th>
+            <th class="col-2">Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% (1..@modalite).each do |i| %>
+        <tr class="d-flex echeance-line">
+            <td class="col-3">
+                <%= date_field_tag("echeances[#{i}][date]", Date.today + i.months , class: "form-control form-control-solid")%>
+            </td>
+            <td class="col-3">
+                <% if @remise > 0 %>
+                <%= hidden_field_tag("echeances[#{i}][montant_initial]", @reste)%>
+                <%= text_field_tag("echeances[#{i}][montant]", (@reste - @remise), class: "form-control form-control-solid")%>
+                <% @remise = 0 %>
+                <% else %>
+                <%= text_field_tag("echeances[#{i}][montant]", @reste, class: "form-control form-control-solid")%>
+                <% end %>
+            </td>
+            <td class="col-2">Frais scolarité</td>
+            <td class="col-2"><%= @user_financier_subscription.payment_mode_scolarite.humanize %></td>
+            <td class="col-2"><span class="label label-success label-inline font-weight-bold">À créer</span></td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<a class="btn btn-light-danger font-weight-bold" id="btn-modalite-remove-line" onclick="RemoveLine()"><i
+        class="fas fa-minus-square"></i> Retirer une
+    écheance</a>
+<% end %>
+
+<script>
+    function RemoveLine(e) {
+        $('.echeance-line:last').remove();
+    }
+</script>

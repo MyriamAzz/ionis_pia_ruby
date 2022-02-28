@@ -1,0 +1,185 @@
+<% if f.object.done? %>
+<tr class='nested-fields'>
+    <th class=" pt-6">
+        <%= f.object.facture.blank? ? "N/C" : f.object.facture %>
+    </th>
+    <td>
+        <%= f.date_field :echeance, class: "form-control form-control-solid", :required => true, disabled: false, data: {rescheduled: false} %>
+    </td>
+    <td>
+        <%= f.number_field :montant, class: "form-control form-control-solid #{(f.object.frais_scolarite?) ? 'input-checksum' : ''}", :required => true, disabled: false %>
+    </td>
+    <td>
+        <%= f.select :v_type, UserFinancierSubscriptionInstalment.v_types.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control form-control-solid input-type", :required => true, disabled: false } %>
+    </td>
+    <td>
+        <%= f.select :v_mode, UserFinancierSubscriptionInstalment.v_modes.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control form-control-solid", :required => true, disabled: false } %>
+    </td>
+    <td class="pt-4">
+        <span class="switch switch-primary switch-icon ">
+            <label>
+                <%= f.check_box :need_accounted, class: "", disabled: true  %>
+                <span></span>
+            </label>
+        </span>
+    </td>
+    <td class='bg-success'>
+        <%= f.select :statut, UserFinancierSubscriptionInstalment.statut_form_select.map { |value| [value[0].humanize, value[1]] }, {}, { class: "form-control form-control-solid", :required => true, disabled: (f.object.prelevement? ? true : false)  } %>
+    </td>
+</tr>
+<% elsif f.object.wip? %>
+<tr class='nested-fields'>
+    <th class=" pt-6">
+        <%= f.object.facture.blank? ? "N/C" : f.object.facture %>
+    </th>
+    <td>
+        <%= f.date_field :echeance, class: "form-control form-control-solid", :required => true, readonly: true %>
+    </td>
+    <td>
+        <%= f.number_field :montant, class: "form-control form-control-solid #{(f.object.frais_scolarite?) ? 'input-checksum' : ''}", :required => true, readonly: true, data: {rescheduled: false} %>
+    </td>
+    <td>
+        <%= f.select :v_type, UserFinancierSubscriptionInstalment.v_types.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control form-control-solid input-type", :required => true, disabled: true } %>
+    </td>
+    <td>
+        <%= f.select :v_mode, UserFinancierSubscriptionInstalment.v_modes.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control form-control-solid", :required => true, disabled: true } %>
+    </td>
+    <td class="pt-4">
+        <span class="switch switch-primary switch-icon ">
+            <label>
+                <%= f.check_box :need_accounted, class: "", disabled: true  %>
+                <span></span>
+            </label>
+        </span>
+    </td>
+    <td class='bg-warning'>
+        <%= f.select :statut, UserFinancierSubscriptionInstalment.statut_form_select.map { |value| [value[0].humanize, value[1]] }, {}, { class: "form-control form-control-solid", :required => true,  disabled: (f.object.prelevement? ? true : false)  } %>
+    </td>
+
+</tr>
+<% elsif f.object.waiting? %>
+<tr class='nested-fields'>
+    <th class=" pt-6">
+        <%= f.object.facture.blank? ? "N/C" : f.object.facture %>
+    </th>
+    <td>
+        <%= f.date_field :echeance, class: "form-control form-control-solid", :required => true %>
+    </td>
+    <td>
+        <%= f.number_field :montant, class: "form-control form-control-solid #{(f.object.frais_scolarite?) ? 'input-checksum' : ''}", :required => true, data: {rescheduled: false} %>
+    </td>
+    <td>
+        <%= f.select :v_type, UserFinancierSubscriptionInstalment.v_types.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control form-control-solid input-type", :required => true } %>
+    </td>
+    <td>
+        <%= f.select :v_mode, UserFinancierSubscriptionInstalment.v_modes.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control form-control-solid", :required => true } %>
+    </td>
+    <td class="pt-4">
+        <span class="switch switch-primary switch-icon ">
+            <label>
+                <%= f.check_box :need_accounted, class: "", disabled: true  %>
+                <span></span>
+            </label>
+        </span>
+    </td>
+    <td class='bg-primary'>
+        <%= f.select :statut, UserFinancierSubscriptionInstalment.statut_form_select.map { |value| [value[0].humanize, value[1]] }, {}, { class: "form-control form-control-solid", :required => true,  disabled: ((f.object.prelevement? && !f.object.waiting? ) ? true : false)  } %>
+    </td>
+
+</tr>
+<% elsif f.object.inactive? %>
+<tr class='nested-fields'>
+    <th class="pt-6">
+        <%= f.object.facture.blank? ? "N/C" : f.object.facture %>
+    </th>
+    <td>
+        <%= f.date_field :echeance, class: "form-control ", :required => true %>
+    </td>
+    <td>
+        <%= f.number_field :montant, class: "form-control #{(f.object.frais_scolarite?) ? 'input-checksum' : ''}", :required => true, data: {rescheduled: false} %>
+    </td>
+    <td>
+        <%= f.select :v_type, UserFinancierSubscriptionInstalment.v_types.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control input-type", :required => true } %>
+    </td>
+    <td>
+        <%= f.select :v_mode, UserFinancierSubscriptionInstalment.v_modes.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control ", :required => true } %>
+    </td>
+    <td class="pt-4">
+        <span class="switch switch-primary switch-icon ">
+            <label>
+                <%= f.check_box :need_accounted, class: "", disabled: true  %>
+                <span></span>
+            </label>
+        </span>
+    </td>
+    <td class='bg-gray-200'>
+        <%= f.select :statut, UserFinancierSubscriptionInstalment.statut_form_select.map { |value| [value[0].humanize, value[1]] }, {}, { class: "form-control ", :required => true, disabled: (f.object.prelevement? ? true : false)  } %>
+    </td>
+
+</tr>
+<% elsif f.object.failed? or f.object.canceled? or f.object.refused? %>
+<tr class='nested-fields'>
+    <th class=" pt-6">
+        <%= f.object.facture.blank? ? "N/C" : f.object.facture %>
+    </th>
+    <td>
+        <%= f.date_field :echeance, class: "form-control form-control-solid", :required => true, disabled: false %>
+    </td>
+    <td>
+        <%= f.number_field :montant, class: "form-control form-control-solid #{(f.object.frais_scolarite?) ? 'input-checksum' : ''}", :required => true, disabled: false, data: {rescheduled: f.object.rescheduled} %>
+    </td>
+    <td>
+        <%= f.select :v_type, UserFinancierSubscriptionInstalment.v_types.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control form-control-solid input-type", :required => true, disabled: false } %>
+    </td>
+    <td>
+        <%= f.select :v_mode, UserFinancierSubscriptionInstalment.v_modes.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control form-control-solid", :required => true,  disabled: (f.object.prelevement? ? true : false)  } %>
+    </td>
+    <td class="pt-4">
+        <span class="switch switch-primary switch-icon ">
+            <label>
+                <%= f.check_box :need_accounted, class: "", disabled: true  %>
+                <span></span>
+            </label>
+        </span>
+    </td>
+    <td class='bg-danger'>
+        <%= f.select :statut, UserFinancierSubscriptionInstalment.statut_form_select.map { |value| [value[0].humanize, value[1]] }, {}, { class: "form-control form-control-solid", :required => true, disabled: (f.object.prelevement? ? true : false) } %>
+    </td>
+
+</tr>
+<% else %>
+<tr class='nested-fields'>
+    <%= f.hidden_field :custom_line, value: true %>
+    <th class="pt-6">
+        À générer
+    </th>
+    <td>
+        <%= f.date_field :echeance, class: "form-control ", :required => true %>
+    </td>
+    <td>
+        <%= f.number_field :montant, class: "form-control", :required => true, data: {rescheduled: false} %>
+    </td>
+    <td>
+        <%= f.select :v_type, UserFinancierSubscriptionInstalment.v_types.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control input-type", :required => true } %>
+    </td>
+    <td>
+        <%= f.select :v_mode, UserFinancierSubscriptionInstalment.v_modes.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control input-mode", :required => true } %>
+    </td>
+    <td class="pt-4">
+        <span class="switch switch-primary switch-icon ">
+            <label>
+                <% if current_user.compta? or current_user.super_admin? %>
+                <%= f.check_box :need_accounted, class: "", disabled: false, checked: false  %>
+                <% else %>
+                <%= f.check_box :need_accounted, class: "", disabled: true, checked: false  %>
+                <% end %>
+                <span></span>
+            </label>
+        </span>
+    </td>
+    <td class=''>
+        <%= f.select :statut, UserFinancierSubscriptionInstalment.statut_form_select.map { |value| [value[0].humanize, value[1]] }, {}, { class: "form-control input-status", :required => true } %>
+    </td>
+
+</tr>
+<% end %>

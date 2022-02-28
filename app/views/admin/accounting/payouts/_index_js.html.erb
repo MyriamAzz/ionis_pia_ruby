@@ -1,0 +1,174 @@
+<script>
+    "use strict";
+    // Class definition
+
+    var KTDatatableRemoteAjax = function () {
+        // Private functions
+
+        var ktDatatablePayouts = function () {
+
+            var datatablePayouts = $('#kt_datatable_payouts').KTDatatable({
+
+                // datasource definition
+                data: {
+                    saveState: {
+                        cookie: false
+                    },
+                    type: 'remote',
+                    source: {
+                        read: {
+                            method: 'GET',
+                            url: "<%= json_admin_accounting_payouts_path %>",
+                            // sample custom headers
+                            // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
+                            map: function (raw) {
+                                // sample data mapping
+                                var dataSet = raw;
+                                if (typeof raw.data !== 'undefined') {
+                                    dataSet = raw.data;
+                                }
+                                return dataSet;
+                            },
+                        },
+                    },
+                    pageSize: 10,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false,
+                },
+
+
+                // layout definition
+                layout: {
+                    scroll: false,
+                    footer: false,
+                    spinner: {
+                        message: 'Chargement...',
+                    }
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#kt_datatable_search_query'),
+                    key: 'generalSearch',
+                },
+
+                translate: {
+                    records: {
+                        processing: "Veuillez patienter...",
+                        noRecords: "Aucun résultat"
+                    },
+                },
+
+                // columns definition
+                columns: [{
+                        field: 'gc_status',
+                        title: 'statut',
+                        sortable: false,
+                        width: 80,
+                        template: function (data) {
+                            if (data.gc_status == "pending") {
+                                return '<span class="label label-light-warning label-inline font-weight-bolder label-lg">Remise commerciale</span>';
+                            } else if (data.gc_status == "paid") {
+                                return '<span class="font-weight-bolder"><span class="label label-dot label-xl label-success mr-2"></span> Payé</span>';
+                            } else if (data.gc_status == "bounced") {
+                                return '<span class="label label-light-danger label-inline font-weight-bolder label-lg">Modification échéancier</span>';
+                            }
+                        },
+                    },
+                    {
+                        field: 'gc_id',
+                        title: 'ID Gocardless',
+                        sortable: false,
+                    },
+                    {
+                        field: 'gc_reference',
+                        title: 'reference',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'gc_arrival_at',
+                        title: 'date',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'gc_amount',
+                        title: 'montant',
+                        sortable: false,
+
+                    },
+
+
+                    {
+                        field: 'exported',
+                        title: 'Exporté',
+                        width: 80,
+                        autoHide: false,
+                        sortable: false,
+                        class: "text-center",
+                        template: function (row) {
+                            if (row.exported == true) {
+                                return '<i class="fas fa-check-circle text-success icon-lg"></i>';
+                            } else {
+                                return '<i class="fas fa-check-circle text-dark-25 icon-lg"></i>';
+                            }
+                        },
+                    },
+                    {
+                        field: 'exported_at',
+                        title: 'Exporté le',
+                        width: 80,
+                        autoHide: false,
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'Actions',
+                        title: '',
+                        sortable: false,
+                        overflow: 'visible',
+                        class: 'text-right',
+                        autoHide: false,
+                        template: function (row) {
+                            return '<a href="/admin/accounting/payouts/' + row.id + '/export" data-container="body" target="_blank" method="get" class="btn btn-light-primary btn-sm mr-1">\
+                                <i class="fas fa-file-download"></i> Exporter\
+                        \</a>';
+
+                        },
+
+                    }
+
+                ],
+
+            });
+
+
+
+            datatablePayouts.on(
+                'datatable-on-layout-updated',
+                function (e) {
+                    $('[data-toggle="tooltip"]').tooltip()
+                });
+
+
+
+        };
+
+        return {
+            // public functions
+            init: function () {
+                ktDatatablePayouts();
+            },
+        };
+    }();
+
+    jQuery(document).ready(function () {
+        KTDatatableRemoteAjax.init();
+    });
+</script>

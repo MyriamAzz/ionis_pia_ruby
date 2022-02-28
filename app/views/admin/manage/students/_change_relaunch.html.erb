@@ -1,0 +1,26 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ne pas relancer</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <%= form_tag dont_relaunch_admin_manage_student_path, method: :patch, :id => 'form_change_relaunch', remote: :true do %>
+
+            <div class="form-group">
+                <label for="exampleSelect1">Commentaire
+                    <span class="text-danger">*</span></label>
+                <%= text_area_tag :descr, nil, class: "form-control", :required => true, maxlength: 250, rows: 5 %>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" value="submit"
+                form="form_change_relaunch">Enregistrer</button>
+        </div>
+        <% end %>
+    </div>
+</div>

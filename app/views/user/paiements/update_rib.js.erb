@@ -1,0 +1,7 @@
+<% if @error %>
+    toastr.error("Modification impossible / RIB non accepté")
+<% else %>
+    $("#rib").html("<%= escape_javascript(render partial: 'user/paiements/rib') %>")
+    $('#modal').modal('hide')
+    toastr.success("La modification sera prise en compte pour les prochains prélèvements")
+<% end %>

@@ -1,0 +1,6 @@
+<% if @error %>
+    toastr.error("Suppression impossible")
+<% else %>
+    toastr.success("Suppression effective")
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/formations') %>")
+<% end %>

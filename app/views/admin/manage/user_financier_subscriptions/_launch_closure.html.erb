@@ -1,0 +1,61 @@
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Appliquer une clôture</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <%= form_for @user_financier_subscription ,:url => { :controller => "user_financier_subscriptions", :action => "apply_closure" }, method: :post, remote: :true do |f| %>
+
+            <h5 class="pl-3"><i class="fas fa-angle-double-down mr-2"></i> Échéancier actuel
+                - Modalité <%= @user_financier_subscription.modalite %> fois</h5>
+            <table class="table table-hover mt-3">
+                <thead>
+                    <tr class="d-flex">
+                        <th class="col-2">Écheance</th>
+                        <th class="col-2">Montant (€)</th>
+                        <th class="col-2">Type</th>
+                        <th class="col-2">Mode</th>
+                        <th class="col-2">Statut</th>
+                        <th class="col-2 bg-danger-o-50">À rembourser</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @user_financier_subscription.user_financier_subscription_instalments.each do |instalment| %>
+                    <tr class="d-flex">
+                        <td class="col-2"><%= instalment.echeance.strftime("%d/%m/%Y") %></td>
+                        <td class="col-2"><%= instalment.montant %>€</td>
+                        <td class="col-2"><%= instalment.v_type.humanize %></td>
+                        <td class="col-2"><%= instalment.v_mode.humanize %></td>
+                        <td class="col-2"><%= instalment.statut_humanized_label.html_safe %></td>
+                        <td class="col-2 bg-danger-o-50">
+                            <label class="checkbox checkbox-danger checkbox-lg">
+                                <input type="checkbox" name="instalments[]" value="<%= instalment.id %>">
+                                <span class="mr-2"></span> Marquer
+                            </label>
+                        </td>
+                    </tr>
+                    <% end %>
+
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <label><strong>Type de clôture</strong></label>
+                <%= select_tag :type, options_for_select([["Démission avant rentrée", 0], ["Démission", 1], ["Exclusion", 2]]), {include_blank: true, class: "form-control form-control-lg", required: true } %>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" id="btn_submit" value="submit"
+                form="edit_user_financier_subscription_<%= @user_financier_subscription.id %>"
+                onclick="return confirm('Confirmez-vous la modification ?')">Valider la
+                clôture</button>
+        </div>
+        <% end %>
+    </div>
+</div>

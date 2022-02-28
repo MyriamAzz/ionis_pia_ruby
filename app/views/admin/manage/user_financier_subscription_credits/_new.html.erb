@@ -1,0 +1,53 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Création avoir</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <%= form_for @user_financier_subscription_credit ,:url => { :controller => "user_financier_subscription_credits", :action => "create" }, remote: :true do |f| %>
+            <div class="row">
+                <div class="form-group col-12" id="col_credit_invoice_ref">
+                    <label>Pour la facture numéro *</label>
+                    <%= f.select :user_financier_subscription_instalment_id, @user_financier_subscription.user_financier_subscription_instalments.where.not(statut: [:inactive]).collect {|p| [ p.facture, p.id ] }, {}, {:class=>'form-control', required: true} %>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Date *</label>
+                        <%= f.date_field :echeance, class: "form-control", required: true %>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Montant *</label>
+                        <%= f.number_field :montant, class: "form-control", required: true, step: "0.01" %>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Code journal *</label>
+                        <%= f.select :code_export, UserFinancierSubscriptionCredit.list_code_export, {}, {:class=>'form-control', required: true} %>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Libellé *</label>
+                        <%= f.text_field :libelle, :class=>'form-control', required: true %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" value="submit"
+                form="new_user_financier_subscription_credit">Valider</button>
+        </div>
+        <% end %>
+    </div>
+</div>

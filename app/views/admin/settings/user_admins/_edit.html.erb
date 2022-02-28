@@ -1,0 +1,100 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modification utilisateur</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <%= form_for @user_admin,:url => { :controller => "user_admins", :action => "update" }, remote: :true do |f| %>
+
+            <%= f.fields_for :user do |ff| %>
+
+            <div class="form-group">
+                <div class="checkbox-inline">
+                    <label class="checkbox checkbox-warning">
+                        <%= ff.check_box :archived %>
+                        <span></span>Archiver</label>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label>Rôle principal</label>
+                <div class="radio-inline">
+                    <label class="radio">
+                        <%= ff.radio_button :role, :admin, checked: true  %>
+                        <span></span>Administratif</label>
+                    <% if !current_user.supervisor? && !current_user.admin? %>
+                    <label class="radio">
+                        <%= ff.radio_button :role, :supervisor %>
+                        <span></span>Superviseur</label>
+                    <label class="radio">
+                        <%= ff.radio_button :role, :compta %>
+                        <span></span>Comptabilité</label>
+                    <% if current_user.super_admin? %>
+                    <label class="radio">
+                        <%= ff.radio_button :role, :super_admin %>
+                        <span></span>Administrateur</label>
+                    <% end %>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <%= ff.text_field :email, class: "form-control", placeholder: "Email", :required => true %>
+            </div>
+            <div class="form-group">
+                <label>Login</label>
+                <%= ff.text_field :username, class: "form-control", placeholder: "Login", :required => true %>
+            </div>
+            <% end %>
+            <div class="form-group">
+                <label>Nom</label>
+                <%= f.text_field :nom, class: "form-control", placeholder: "Nom", :required => true %>
+            </div>
+            <div class="form-group">
+                <label>Prénom</label>
+                <%= f.text_field :prenom, class: "form-control", placeholder: "Prénom", :required => true %>
+            </div>
+            <h6 class="mb-5">Gestion des droits</h6>
+            <% if current_user.super_admin? %>
+            <div class="form-group">
+                <div class="checkbox-inline">
+                    <label class="checkbox">
+                        <input type="checkbox" name="school_programs[]"
+                            value="<%=current_user.user_admin.current_centre.school_program.id %>"
+                            <%= @user_admin.user.admin_school_programs.include?(current_user.user_admin.current_centre.school_program) ? 'checked' : '' %>>
+                        <span></span>Accès admin : utilisateurs/campus/formations/années
+                        scolaires/modalités</label>
+                </div>
+            </div>
+            <% end %>
+            <div class="form-group">
+                <label>Campus</label>
+                <div class="checkbox-inline">
+                    <% current_user.user_admin.current_centre.school_program.centres.each do |centre| %>
+                    <label class="checkbox">
+                        <input type="checkbox" name="centres[]" value="<%= centre.id %>"
+                            <%= @user_admin.user.centres.include?(centre) ? 'checked' : '' %>>
+                        <span></span><%= centre.nom %></label>
+                    <% end %>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <% if can? :destroy, UserAdmin %>
+            <%= link_to admin_settings_user_admin_path(@user_admin), remote: true, method: :delete, class: "btn btn-light-danger", data: {confirm: "Confirmez-vous la suppression ?"} do %>
+            Supprimer
+            <% end %>
+            <% end %>
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" value="submit"
+                form="edit_user_admin_<%= @user_admin.id %>">Enregistrer</button>
+        </div>
+        <% end %>
+    </div>
+</div>

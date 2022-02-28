@@ -1,0 +1,6 @@
+<% if @error %>
+    toastr.error("Ajout impossible")
+<% else %>
+    toastr.success("Formations clonées")
+    $('#modal').modal('hide')
+<% end %>

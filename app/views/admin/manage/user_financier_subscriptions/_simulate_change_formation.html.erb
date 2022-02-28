@@ -1,0 +1,56 @@
+<%= form_for @user_financier_subscription ,:url => { :controller => "user_financier_subscriptions", :action => "apply_change_formation" }, method: :post, :html => {id: "form-apply-change-formation"}, remote: :true do |f| %>
+<%= hidden_field_tag("formation_annee", @formation_annee.id)%>
+
+<h5 class="pl-3 text-warning"><i class="fas fa-angle-double-down mr-2 mt-10"></i> Nouvel écheancier à mettre en place
+    - Modalité <%= @user_financier_subscription.modalite %> fois</h5>
+<% if @remise > 0 %>
+<div class="alert alert-light mt-5 font-weight-bold" role="alert">Une remise est appliquée à cette souscription,
+    l'echéancier est donc
+    revu
+    en fonction.</div>
+<% end %>
+<table class="table table-hover mt-3">
+    <thead>
+        <tr class="d-flex">
+            <th class="col-3">Écheance</th>
+            <th class="col-3">Montant (€)</th>
+            <th class="col-2">Type</th>
+            <th class="col-2">Mode</th>
+            <th class="col-2">Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% (1..@user_financier_subscription.modalite).each do |i| %>
+        <tr class="d-flex echeance-line">
+            <td class="col-3">
+                <%= date_field_tag("echeances[#{i}][date]", Date.today + i.months , class: "form-control ")%>
+            </td>
+            <td class="col-3">
+                <% if @remise > 0 && @user_financier_subscription.reduction_type_all? %>
+                <%= hidden_field_tag("echeances[#{i}][montant_initial]", @montant)%>
+                <%= text_field_tag("echeances[#{i}][montant]", (@montant - @remise), class: "form-control ")%>
+                <% elsif @remise > 0 && @user_financier_subscription.reduction_type_one? %>
+                <%= hidden_field_tag("echeances[#{i}][montant_initial]", @montant)%>
+                <%= text_field_tag("echeances[#{i}][montant]", (@montant - @remise), class: "form-control ")%>
+                <% @remise = 0%>
+                <% else %>
+                <%= text_field_tag("echeances[#{i}][montant]", @montant, class: "form-control ")%>
+                <% end %>
+            </td>
+            <td class="col-2">Frais scolarité</td>
+            <td class="col-2"><%= @user_financier_subscription.payment_mode_scolarite.humanize %></td>
+            <td class="col-2"><span class="label label-success label-inline font-weight-bold">À créer</span></td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<a class="btn btn-light-danger font-weight-bold" id="btn-modalite-remove-line" onclick="RemoveLine()"><i
+        class="fas fa-minus-square"></i> Retirer une
+    écheance</a>
+<% end %>
+<script>
+    function RemoveLine(e) {
+        $('.echeance-line:last').remove();
+    }
+</script>

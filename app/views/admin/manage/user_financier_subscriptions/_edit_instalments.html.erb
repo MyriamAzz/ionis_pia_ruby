@@ -1,0 +1,58 @@
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modification de l'échéancier</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-danger font-weight-bolder" id="alert_amount" role="alert"
+                style="<%= @amount > @school_fees ? '' : 'display: none;' %>">
+                La somme
+                des frais de scolarité (<span class="alert_amount"><%= @amount %></span>€)
+                ne cadre pas avec le
+                coût de la formation (<%= @school_fees %>€).
+            </div>
+            <%= form_for @user_financier_subscription ,:url => { :controller => "user_financier_subscriptions", :action => "update_instalments" }, remote: :true do |f| %>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Écheance</th>
+                        <th>Montant (€)</th>
+                        <th>Type</th>
+                        <th>Mode</th>
+                        <th>Comptabiliser</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-edit">
+
+                    <div id='instalments'>
+                        <%= f.fields_for :user_financier_subscription_instalments, f.object.user_financier_subscription_instalments do |instalment| %>
+                        <%= render '/admin/manage/user_financier_subscriptions/instalments_fields', :f => instalment %>
+                        <% end %>
+                    </div>
+
+                </tbody>
+            </table>
+            <% if @user_financier_subscription.can_update %>
+            <div class='links'>
+                <%= link_to_add_association f, :user_financier_subscription_instalments, class: 'btn btn-success font-weight-bold', :"data-association-insertion-node" => "tbody#tbody-edit", :"data-association-insertion-method" => "append", partial: '/admin/manage/user_financier_subscriptions/instalments_fields' do %>
+                <i class="fas fa-plus"></i> Ajouter une ligne
+                <% end %>
+            </div>
+            <% end %>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" value="submit"
+                form="edit_user_financier_subscription_<%= @user_financier_subscription.id %>"
+                onclick="return confirm('Confirmez-vous la modification ?')">Appliquer les
+                modifications</button>
+        </div>
+        <% end %>
+    </div>
+</div>

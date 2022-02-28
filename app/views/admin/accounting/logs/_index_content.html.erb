@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::List Widget 1-->
+        <div class="card card-custom card-stretch gutter-b">
+            <!--begin::Header-->
+            <div class="card-header border-0 pt-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <div class="input-icon">
+                        <input type="text" class="form-control" placeholder="Rechercher..."
+                            id="kt_datatable_search_query" />
+                        <span>
+                            <i class="flaticon2-search-1 text-muted"></i>
+                        </span>
+                    </div>
+                </h3>
+                <div class="card-toolbar">
+                    <div class="dropdown dropdown-inline">
+                        <%= link_to export_unprocessed_admin_accounting_logs_path, class: "btn btn-success font-weight-bold export-all", method: :get, remote: true, data: { disable_with: "<img src='/assets/loaders/tail-spin.svg' width='18' class='mr-2' /> Génération en cours..." } do %>
+                        <i class="fas fa-file-export"></i>
+                        Entrées non traitées
+                        <% end %>
+                        <%= link_to export_all_admin_accounting_logs_path, class: "btn btn-light-warning font-weight-bold export-all", method: :get, remote: true, data: { disable_with: "<img src='/assets/loaders/tail-spin.svg' width='18' class='mr-2' /> Génération en cours..." } do %>
+                        <i class="fas fa-file-export"></i>
+                        Toutes les entrées
+                        <% end %>
+                        <button class="btn btn-light-primary font-weight-bold" type="button"
+                            id="kt_datatable_export_selected" style="display: none;">
+                            <i class="fas fa-file-export"></i> Exporter la sélection</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-8">
+
+                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_logs"></div>
+
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::List Widget 1-->
+    </div>
+</div>

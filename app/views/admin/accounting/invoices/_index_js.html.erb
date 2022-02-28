@@ -1,0 +1,23 @@
+<script>
+    function datatable_render_dones() {
+        $('#kt_datatable_process_selected').hide();
+        $('#kt_tab_pane_2_4').html('<%= escape_javascript(render partial: "index_content_done") %>');
+    }
+    $(function () {
+        $('#select_school_year')
+            .selectpicker();
+        $('#select_school_year').selectpicker('val', "<%= session[:students_filter_school_year] %>");
+
+        $('#select_school_year').on('change', function () {
+            var school_year_id = $(this).val();
+            Rails.ajax({
+                url: "/admin/accounting/invoices/filter?school_year=" + school_year_id,
+                type: "get",
+                success: function (data) {},
+                error: function (data) {}
+            })
+        });
+
+
+    });
+</script>

@@ -1,0 +1,131 @@
+<%= render partial: "layouts/mailer_top" %>
+<span
+    style="display:none !important;font-size:0px;line-height:0;color:#FFFFFF;visibility:hidden;opacity:0;height:0;width:0;mso-hide:all">Nous
+    lançons dès à présent les réinscriptions en année
+    supérieure.</span>
+<table class="es-content" cellspacing="0" cellpadding="0" align="center"
+    style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%">
+    <tr style="border-collapse:collapse">
+        <td align="center" style="padding:0;Margin:0">
+            <table class="es-content-body"
+                style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;width:640px"
+                cellspacing="0" cellpadding="0" align="center">
+                <tr style="border-collapse:collapse">
+                    <td align="left" style="padding:0;Margin:0;padding-left:20px;padding-right:20px">
+                        <table width="100%" cellspacing="0" cellpadding="0"
+                            style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                            <tr style="border-collapse:collapse">
+                                <td valign="top" align="center" style="padding:0;Margin:0;width:600px">
+                                    <table
+                                        style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:3px;background-color:#FFFFFF"
+                                        width="100%" cellspacing="0" cellpadding="0" bgcolor="#ffffff"
+                                        role="presentation">
+                                        <tr style="border-collapse:collapse">
+                                            <td align="center"
+                                                style="Margin:0;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:40px">
+                                                <h2
+                                                    style="Margin:0;line-height:31px;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:26px;font-style:normal;font-weight:bold;color:#444444">
+                                                    Réinscription <%= @subscription.school_year.nom %></h2>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-collapse:collapse">
+                                            <td align=""
+                                                style="Margin:0;padding-top:10px;padding-bottom:15px;padding-left:20px;padding-right:20px">
+                                                <p
+                                                    style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333">
+                                                    <span class="product-description">Bonjour,</span></p>
+                                                <p
+                                                    style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333">
+                                                    <br></p>
+                                                <p
+                                                    style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333">
+                                                    <span class="product-description">
+                                                        Nous lançons dès à présent les réinscriptions en année
+                                                        supérieure.
+                                                        <br><br>
+                                                        Afin de pouvoir réinscrire votre enfant et simplifier la
+                                                        réinscription pour la prochaine
+                                                        rentrée, nous avons mis en place une plateforme nommée
+                                                        PLATEFORME D’INSCRIPTION ADMINISTRATIVE (PIA) sur laquelle
+                                                        votre enfant pourra <strong>remplir le dossier de réinscription.
+                                                            Nous
+                                                            lui avons envoyé un mail afin qu’il se réinscrive avant le 7
+                                                            juin <%= Date.today.year %>.</strong>
+                                                        <br><br>
+
+                                                        <strong>
+                                                            Une fois son dossier complété, vous recevrez un message afin
+                                                            de
+                                                            vous connecter à votre tour à la plateforme, vérifier les
+                                                            informations bancaires et éventuellement signer le mandat
+                                                            SEPA
+                                                            si le mode de paiement choisi est le prélèvement.
+                                                        </strong>
+                                                        <br><br>
+
+                                                        <strong>Vous pourrez également sur cette plateforme suivre
+                                                            l’avancée des
+                                                            paiements des frais de scolarité</strong> pendant toute
+                                                        l’année.
+                                                        <br><br>
+
+                                                        <a target="_blank" href="<%= root_url() %>">Cliquez
+                                                            ici</a> pour vous connecter et entrez les identifiants que
+                                                        vous avez dû recevoir par mail de la part de
+                                                        informatique@e-artsup.net. (vérifiez dans vos
+                                                        spams)
+                                                        <br><br>
+                                                        Dans le cas où le Conseil de Classe serait amené à prononcer une
+                                                        exclusion ou si votre enfant ne souhaite pas poursuivre ses
+                                                        études à e-artsup (en cas de redoublement par exemple) nous
+                                                        annulerons la réinscription.<br>
+                                                        En cas de <strong>redoublement</strong> (dans la même
+                                                        filière), les frais de scolarité sont divisés par deux
+                                                        (hors le premier versement de 590€). Nous ajusterons
+                                                        donc le montant des paiements suite à l’avis du Conseil
+                                                        de Classe si le cas se présente.
+                                                        <br><br>
+
+                                                        Pour les étudiants qui souhaitent faire un <strong>contrat
+                                                            en
+                                                            alternance</strong>
+                                                        mais qui ne l’ont pas encore signé, veuillez remplir le
+                                                        dossier
+                                                        de réinscription en indiquant un mode de règlement pour la
+                                                        totalité de la scolarité. Dès que le contrat sera signé,
+                                                        nous
+                                                        bloquerons les échéances de paiement. Si jamais votre enfant
+                                                        signe son contrat après le prélèvement de la 1ère échéance, nous
+                                                        vous rembourserons le trop-perçu. Les <strong>étudiants
+                                                            en contrat de
+                                                            professionnalisation</strong> devront s’acquitter à la
+                                                        réinscription des
+                                                        590€ qui ne sont pas pris en charge par les OPCA.
+                                                        <br><br>
+                                                        Si votre enfant <strong>ne souhaite pas se
+                                                            réinscrire</strong> pour l’année suivante, vous
+                                                        devez nous tenir informés par courrier adressé au
+                                                        directeur de l’école avant <strong>le 7 juin
+                                                            <%= Date.today.year %></strong>.
+                                                        <br><br>
+                                                        Pour toute information complémentaire, vous pouvez contacter
+                                                        l’administration de votre campus.
+                                                        <br><br>
+                                                        Cordialement,<br>
+                                                        L'école e-artsup.
+                                                    </span></p>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<%= render partial: "layouts/mailer_bottom" %>

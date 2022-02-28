@@ -1,0 +1,6 @@
+<% if @error %>
+toastr.warning("Édition impossible")
+<% else %>
+$("#modal").html("<%= escape_javascript(render 'edit') %>");
+$("#modal").modal("show");
+<% end %>

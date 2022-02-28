@@ -1,0 +1,25 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Export chiffre d'affaires</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <i aria-hidden="true" class="ki ki-close"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <%= form_tag(export_ca_admin_accounting_payments_path(format: :csv), method: :get, id: "init_export_ca") do |f| %>
+        <div class="form-group row">
+          <div class="col-lg-12">
+            <label for="">Année scolaire
+              <span class="text-danger">*</span></label>
+            <%= select_tag :school_year_id, options_for_select(@school_years.map { |value| [value.nom, value.id] }), { prompt: "", class: "form-control font-weight-bolder", :required => true } %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+        <button type="submit" class="btn btn-success font-weight-bold" value="submit" form="init_export_ca">Lancer l'export</button>
+      </div>
+    <% end %>
+  </div>
+</div>

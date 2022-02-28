@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<!--begin::Head-->
+
+<head>
+  <meta charset="utf-8" />
+  <title><%= SITE_NAME %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <!--begin::Fonts-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+  <!--end::Fonts-->
+  <!--begin::Page Vendors Styles(used by this page)-->
+  <!--end::Page Vendors Styles-->
+  <!--begin::Global Theme Styles(used by all pages)-->
+  <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+  <link href="/assets/custom.css" rel="stylesheet" type="text/css" />
+
+  <!--end::Global Theme Styles-->
+  <!--begin::Layout Themes(used by all pages)-->
+  <!--end::Layout Themes-->
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/assets/favicon/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <%= javascript_include_tag 'application' %>
+</head>

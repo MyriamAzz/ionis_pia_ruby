@@ -1,0 +1,118 @@
+<div class="card card-custom">
+    <!--begin::Header-->
+    <div class="card-header py-3">
+        <div class="card-title align-items-start flex-column">
+            <h3 class="card-label font-weight-bolder text-dark">Informations Personnelles</h3>
+            <span class="text-muted font-weight-bold font-size-sm mt-1">Modifier les informations de l'étudiant
+                ou du responsable financier</span>
+        </div>
+        <% if can? :update, :student %>
+        <div class="card-toolbar">
+            <button type="submit" class="btn btn-success mr-2" form="edit_user_<%= @student.id %>"
+                data-disable-with="Enregistrement...">Enregistrer</button>
+            <button type="reset" form="edit_user_<%= @student.id %>" class="btn btn-secondary">Annuler</button>
+        </div>
+        <% end %>
+    </div>
+    <!--end::Header-->
+    <!--begin::Form-->
+    <!--begin::Body-->
+    <div class="card-body">
+        <%= form_for @student, url: admin_manage_student_path(@student.uuid), method: :patch, remote: true do |f| %>
+        <%= f.fields_for :user_financier do |user_financier|%>
+        <div class="row">
+
+            <div class="col-12">
+                <h5 class="font-weight-bold mt-6 mb-6">Étudiant(e)</h5>
+            </div>
+            <div class="form-group col-6">
+                <label>Nom</label>
+                <%= user_financier.text_field :etu_nom, class: "form-control form-control-lg", :required => true %>
+            </div>
+            <div class="form-group col-6">
+                <label>Prénom</label>
+                <%= user_financier.text_field :etu_prenom, class: "form-control form-control-lg", :required => true %>
+            </div>
+
+            <div class="form-group col-6">
+                <label>Email</label>
+
+                <%= user_financier.email_field :etu_email, class: "form-control form-control-lg", :required => true %>
+
+            </div>
+
+            <div class="form-group col-6">
+                <label>Téléphone</label>
+
+                <%= user_financier.text_field :etu_tel, class: "form-control form-control-lg", :required => false %>
+            </div>
+
+            <div class="form-group col-12">
+                <label>Adresse</label>
+
+                <%= user_financier.text_field :etu_adresse, class: "form-control form-control-lg", :required => false %>
+            </div>
+
+            <div class="form-group col-6">
+                <label>Ville</label>
+
+                <%= user_financier.text_field :etu_ville, class: "form-control form-control-lg", :required => false %>
+            </div>
+
+            <div class="form-group col-6">
+                <label>Code Postal</label>
+
+                <%= user_financier.text_field :etu_code_postal, class: "form-control form-control-lg", :required => false %>
+            </div>
+
+
+            <div class="col-12">
+                <h5 class="font-weight-bold mt-6 mb-6">Responsable Financier</h5>
+            </div>
+            <div class="form-group col-6">
+                <label>Nom</label>
+
+                <%= user_financier.text_field :nom, class: "form-control form-control-lg", :required => true %>
+            </div>
+            <div class="form-group col-6">
+                <label>Prénom</label>
+
+                <%= user_financier.text_field :prenom, class: "form-control form-control-lg", :required => true %>
+            </div>
+            <div class="form-group col-6">
+                <label>Email</label>
+
+                <%= f.email_field :email, class: "form-control form-control-lg", :required => true %>
+            </div>
+            <div class="form-group col-6">
+                <label>Téléphone</label>
+
+                <%= user_financier.text_field :tel, class: "form-control form-control-lg", :required => false %>
+            </div>
+            <div class="form-group col-6">
+                <label>Adresse</label>
+
+                <%= user_financier.text_field :adresse, class: "form-control form-control-lg", :required => true %>
+            </div>
+            <div class="form-group col-6">
+                <label>Code postal</label>
+
+                <%= user_financier.text_field :code_postal, class: "form-control form-control-lg", :required => true %>
+            </div>
+            <div class="form-group col-6">
+                <label>Ville</label>
+
+                <%= user_financier.text_field :ville, class: "form-control form-control-lg", :required => true %>
+            </div>
+            <div class="form-group col-6">
+                <label>Pays</label>
+
+                <%= user_financier.text_field :pays, class: "form-control form-control-lg", :required => true %>
+            </div>
+            <% end %>
+            <% end %>
+        </div>
+        <!--end::Body-->
+        <!--end::Form-->
+    </div>
+</div>

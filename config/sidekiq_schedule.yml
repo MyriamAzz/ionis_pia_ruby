@@ -1,0 +1,8 @@
+# config/schedule.yml
+GoCardlessDaily:
+  cron: "0 4 * * *" 
+  class: "GoCardlessDailyWorker"
+
+GoCardlessSyncPayouts:
+  cron: "0 5 * * *" 
+  class: "GoCardlessSyncPayoutsWorker"

@@ -1,0 +1,12 @@
+:concurrency: 5
+:pidfile: tmp/sidekiq.pid
+development:
+  :logfile: ./log/sidekiq_development.log
+staging:
+  :concurrency: 5
+production:
+  :concurrency: 5
+  :logfile: ./log/sidekiq_production.log
+:queues:
+  - default
+  - gocardless

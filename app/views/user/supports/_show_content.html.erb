@@ -1,0 +1,21 @@
+<!--begin::Section-->
+<div class="card card-custom p-6 mb-8 mb-lg-0">
+    <div class="card-body">
+        <!--begin::Content-->
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 class="text-dark mb-6">Vous avez une question ? Contactez-nous !</h4>
+                <p class="text-dark-50 font-size-lg">Nous vous répondrons dans les plus brefs délais.</p>
+            </div>
+            <!--end::Content-->
+            <!--begin::Button-->
+            <div class="col-lg-12">
+                <a href="mailto:<%= current_user.user_financier.centre.school_program.email_contact %>"
+                    class="btn font-weight-bolder text-uppercase font-size-lg btn-info py-3 px-6">Envoyer un
+                    message</a>
+            </div>
+            <!--end::Button-->
+        </div>
+    </div>
+</div>
+<!--end:: content-->

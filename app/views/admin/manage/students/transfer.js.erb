@@ -1,0 +1,6 @@
+<% if @error %>
+    toastr.error("Transfert impossible")
+<% else %>
+    $("#index_content").html("<%= escape_javascript(render partial: 'admin/manage/students/edit_content') %>")
+    toastr.success("Transfert validé")
+<% end %>

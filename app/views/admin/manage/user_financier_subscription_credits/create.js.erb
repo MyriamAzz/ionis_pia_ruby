@@ -1,0 +1,7 @@
+<% if @error %>
+    toastr.error("Erreur")
+<% else %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/paiements') %>")
+    toastr.success("Enregistré")
+    $('#modal').modal('hide')
+<% end %>

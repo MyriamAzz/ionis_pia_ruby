@@ -1,0 +1,42 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modification souscription</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <%= form_for @user_financier_subscription ,:url => { :controller => "user_financier_subscriptions", :action => "update" }, remote: :true do |f| %>
+
+
+            <div class="form-group">
+                <label for="">Mois de rentrée
+                    <span class="text-danger">*</span></label>
+                <%= f.select :month_start, @user_financier_subscription.select_month_start, {}, { class: "form-control font-weight-bolder", :required => true } %>
+            </div>
+
+
+            <strong>Mode de paiement par défaut</strong>
+            <div class="form-group mt-3 row">
+                <div class="col-lg-6">
+                    <label for="">Frais inscription
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :payment_mode_inscription, UserFinancierSubscription.payment_mode_inscriptions.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+                <div class="col-lg-6">
+                    <label for="">Frais scolarité
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :payment_mode_scolarite, UserFinancierSubscription.payment_mode_scolarites.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" value="submit"
+                form="edit_user_financier_subscription_<%= @user_financier_subscription.id %>">Modifier</button>
+        </div>
+        <% end %>
+    </div>
+</div>

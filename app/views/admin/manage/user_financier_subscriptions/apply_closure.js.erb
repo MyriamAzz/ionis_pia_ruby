@@ -1,0 +1,7 @@
+<% if @error %>
+    toastr.error("Modification impossible")
+<% else %>
+    toastr.success("Clôture enregistrée")
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/formations') %>")
+    $('#modal').modal('hide')
+<% end %>

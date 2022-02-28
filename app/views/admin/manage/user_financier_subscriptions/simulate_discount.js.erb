@@ -1,0 +1,10 @@
+<% if @error == "empty" %>
+toastr.error("Veuillez saisir une remise en Euros ou en Pourcentage")
+<% else %>
+$("#preview-discount").html("<%= escape_javascript(render 'simulate_discount') %>")
+<% if @discount > 0%>
+$("#btn_submit").show("")
+<% else %>
+$("#btn_submit").hide("")
+<% end %>
+<% end %>

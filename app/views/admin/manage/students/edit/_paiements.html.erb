@@ -1,0 +1,300 @@
+<div class="card card-custom">
+    <!--begin::Header-->
+    <div class="card-header py-3">
+        <div class="card-title align-items-start flex-column">
+            <h3 class="card-label font-weight-bolder text-dark">Échéanciers</h3>
+            <span class="text-muted font-weight-bold font-size-sm mt-1">Visualisation des échéanciers et éditions des
+                factures</span>
+        </div>
+
+    </div>
+    <!--end::Header-->
+    <!--begin::Form-->
+    <!--begin::Body-->
+    <% if !@student.user_financier.user_financier_subscriptions.where.not(statut: :waiting_admin).any? %>
+    <div class="card-body">
+        <div class="text-center pt-10 pb-10" style="background-position: right bottom; background-size: auto 100%;">
+            <div class="mb-5"><span class="svg-icon svg-icon-4x">
+                    <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Code\Warning-1-circle.svg--><svg
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24" />
+                            <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                            <rect fill="#000000" x="11" y="7" width="2" height="8" rx="1" />
+                            <rect fill="#000000" x="11" y="16" width="2" height="2" rx="1" />
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon--></span>
+            </div>
+            <h4 class="text-danger font-weight-bolder m-0">Aucun échéancier existant pour
+                l'instant</h4>
+            <p class="text-dark-50 my-5 font-size-xl font-weight-bold">Les échéanciers sont générés
+                automatiquement en fonction des inscriptions aux formations.
+                <br>Veuillez verifier que l'étudiant(e) a bien une formation active, ou en attente de
+                traitement.
+            </p>
+        </div>
+    </div>
+    <% end %>
+    <!--end::Body-->
+    <!--end::Form-->
+</div>
+
+<% @student.user_financier.user_financier_subscriptions.order(created_at: :desc).each do |subscription| %>
+<% @school_fees = subscription.formation_annee.read_attribute("modalite_#{subscription.modalite}") %>
+<% @amount = subscription.user_financier_subscription_instalments.stat_turnover.sum(:montant)  %>
+<div class="card card-custom gutter-b mt-5">
+    <!--begin::Body-->
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <!--begin::Pic-->
+            <div class="flex-shrink-0 mr-4 symbol symbol-65 symbol-circle">
+                <span class="symbol-label">
+                    <span class="svg-icon svg-icon-3x svg-icon-primary">
+                        <!--begin::Svg Icon | path:/metronic/theme/html/demo2/dist/assets/media/svg/icons/Shopping/Cart3.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                <path
+                                    d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
+                                    fill="#000000" fill-rule="nonzero"></path>
+                                <path
+                                    d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
+                                    fill="#000000" opacity="0.3"></path>
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                </span>
+            </div>
+            <!--end::Pic-->
+            <!--begin::Info-->
+            <div class="d-flex flex-column mr-auto">
+                <!--begin: Title-->
+                <span
+                    class="card-title text-hover-primary font-weight-bolder font-size-h5 text-dark mb-1"><%= subscription.formation_annee.formation.nom %>
+                </span>
+                <span class="text-muted font-weight-bold"> <i
+                        class="flaticon2-calendar-9 mr-2"></i><%= subscription.s_type.humanize %>
+                    <%= subscription.school_year.nom.humanize %>
+
+                    <% if subscription.redoublant %>
+                    - Redoublant(e)
+                    <% end %>
+                </span>
+                <!--end::Title-->
+            </div>
+            <!--end::Info-->
+            <!--begin::Toolbar-->
+
+            <!--begin::Toolbar-->
+            <div class="card-toolbar mb-auto">
+                <div class="dropdown dropdown-inline">
+                    <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        Actions
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover">
+                            <% if (can? :edit_modalite, subscription) && subscription.can_update %>
+                            <li class="navi-item">
+                                <%= link_to edit_modalite_admin_manage_student_user_financier_subscription_path(@student.uuid, subscription.id), method: :get, remote: true, class: "navi-link" do %>
+                                <span class="navi-icon">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                                <span class="navi-text">Modifier modalité de paiement</span>
+                                <% end %>
+                            </li>
+                            <% else %>
+                            <li class="navi-item">
+                                <%= link_to new_admin_accounting_accounting_alert_path(user_financier_subscription_id: subscription.id), method: :get, remote: true, class: "navi-link" do %>
+                                <span class="navi-icon">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                                <span class="navi-text">Signaler changement de modalité</span>
+                                <% end %>
+                            </li>
+                            <% end %>
+                            <% if (can? :edit_instalments, subscription) && subscription.can_update_instalments %>
+                            <li class="navi-item">
+                                <%= link_to edit_instalments_admin_manage_student_user_financier_subscription_path(@student.uuid, subscription.id), method: :get, remote: true, class: "navi-link" do %>
+                                <span class="navi-icon">
+                                    <i class="far fa-edit"></i>
+                                </span>
+                                <span class="navi-text">Modifier l'échéancier</span>
+                                <% end %>
+                            </li>
+                            <% end %>
+                            <% if (can? :new, UserFinancierSubscriptionCredit) %>
+                            <li class="navi-item">
+                                <%= link_to new_admin_manage_student_user_financier_subscription_user_financier_subscription_credit_path(@student.uuid, subscription.id), method: :get, remote: true, class: "navi-link" do %>
+                                <span class="navi-icon">
+                                    <i class="far fa-arrow-alt-circle-left"></i>
+                                </span>
+                                <span class="navi-text">Enregistrer un avoir</span>
+                                <% end %>
+                            </li>
+                            <% end %>
+                            <% if (can? :facture_proforma_pdf, subscription) && !subscription.apprentissage? %>
+                            <li class="navi-item">
+                                <%= link_to facture_proforma_pdf_admin_manage_student_user_financier_subscription_path(@student.uuid, subscription.id), method: :get, remote: false, class: "navi-link" do %>
+                                <span class="navi-icon">
+                                    <i class="far fa-file-pdf"></i>
+                                </span>
+                                <span class="navi-text">Télécharger Facture Pro Forma</span>
+                                <% end %>
+                            </li>
+                            <% end %>
+                            <% if (can? :facture_pdf, subscription) && !subscription.apprentissage? %>
+                            <li class="navi-item">
+                                <%= link_to facture_pdf_admin_manage_student_user_financier_subscription_path(@student.uuid, subscription.id), method: :get, remote: false, class: "navi-link" do %>
+                                <span class="navi-icon">
+                                    <i class="far fa-file-pdf"></i>
+                                </span>
+                                <span class="navi-text">Télécharger Facture</span>
+                                <% end %>
+                            </li>
+                            <% end %>
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Toolbar-->
+            <!--end::Toolbar-->
+        </div>
+        <% if subscription.accounting_alerts.where(status: :waiting).any? %>
+        <div class="alert alert-warning font-weight-bolder mt-4" id="alert_amount" role="alert">
+            <%= link_to edit_admin_accounting_accounting_alert_path(subscription.accounting_alerts.where(status: :waiting).last), remote: true, class: "text-white" do %>
+            Alerte comptable en attente de traitement
+            <% end %>
+        </div>
+        <% end %>
+        <h6 class="mt-7">Écheances/Factures</h6>
+        <div class="alert alert-warning font-weight-bolder mt-4" id="alert_amount" role="alert"
+            style="<%= @amount > @school_fees ? '' : 'display: none;' %>">
+            La somme
+            des frais de scolarité (<%= @amount %>€)
+            ne cadre pas avec le
+            coût de la formation (<%= @school_fees %>€).
+        </div>
+        <table class="table table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Montant</th>
+                    <th>Type</th>
+                    <th>Mode</th>
+                    <th>Avoir</th>
+                    <th>Statut</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% subscription.user_financier_subscription_instalments.each do |instalment| %>
+                <%= link_to admin_manage_student_user_financier_subscription_user_financier_subscription_instalment_path(instalment.user_financier_subscription.user_financier.user.id, instalment.user_financier_subscription.id,instalment.id), remote: true, method: :get, class: "btn btn-link-primary" do %>
+                <tr style="cursor: pointer;" class="<%= instalment.formation_changed ? '' : '' %>"
+                    data-href="<%= admin_manage_student_user_financier_subscription_user_financier_subscription_instalment_path(instalment.user_financier_subscription.user_financier.user.id, instalment.user_financier_subscription.id,instalment.id) %>">
+                    <th style="width: 50px; vertical-align: middle;">
+                        <%= instalment.facture.blank? ? "N/C" : instalment.facture %></th>
+                    <td style="width: 50px; vertical-align: middle;"><%= instalment.echeance.strftime("%d/%m/%Y") %>
+                    </td>
+                    <td style="width: 50px; vertical-align: middle;"><%= instalment.montant %>€</td>
+                    <td style="width: 50px; vertical-align: middle;"><%= instalment.v_type.humanize %></td>
+                    <td style="width: 50px; vertical-align: middle;"><%= instalment.v_mode.humanize %></td>
+                    <td style="width: 50px; vertical-align: middle;">
+                        <%= (instalment.refunded ? "<i class='fas fa-check-circle text-success'></i>" : "").html_safe %>
+                    </td>
+                    <td style="width: 110px; vertical-align: middle;"><%= instalment.statut_humanized_label.html_safe %>
+                    </td>
+                    <td style="width: 150px; vertical-align: middle; text-align: right;">
+                        <% if instalment.done? %>
+                        <%= link_to facture_pdf_admin_manage_student_user_financier_subscription_user_financier_subscription_instalment_path(instalment.user_financier_subscription.user_financier.user.id, instalment.user_financier_subscription.id,instalment.id), remote: false, method: :get, class: "btn btn-secondary btn-sm btn-icon mr-1" do %>
+                        <i class="fas fa-file-pdf"></i>
+                        <% end %>
+                        <% end %>
+
+                        <% if ((can? :init_retry, UserFinancierSubscriptionInstalment) && (instalment.failed? or instalment.refused?) && !instalment.rescheduled) or 
+                        ((can? :force_turnover, UserFinancierSubscriptionInstalment) && instalment.can_force_turnover && subscription.can_update) %>
+                        <div class="dropdown float-right">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <i class="fas fa-cogs  icon-md"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <% if (can? :init_retry, UserFinancierSubscriptionInstalment) && instalment.failed? && subscription.can_update %>
+                                <%= link_to init_retry_admin_manage_student_user_financier_subscription_user_financier_subscription_instalment_path(instalment.user_financier_subscription.user_financier.user.id, instalment.user_financier_subscription.id,instalment.id), remote: true, method: :get, class: "dropdown-item" do %>
+                                Reprogrammer
+                                <% end %>
+                                <% end %>
+                                <% if (can? :rescheduled, UserFinancierSubscriptionInstalment) && (instalment.failed? or instalment.refused?) %>
+                                <%= link_to rescheduled_admin_manage_student_user_financier_subscription_user_financier_subscription_instalment_path(instalment.user_financier_subscription.user_financier.user.id, instalment.user_financier_subscription.id,instalment.id), remote: true, method: :patch, class: "dropdown-item", data: {confirm: "Confirmez-vous la replanification manuelle ?"} do %>
+                                Marquer "replanifiée"
+                                <% end %>
+                                <% end %>
+                                <% if ((can? :force_turnover, UserFinancierSubscriptionInstalment) && instalment.can_force_turnover) && subscription.can_update %>
+                                <%= link_to force_turnover_admin_manage_student_user_financier_subscription_user_financier_subscription_instalment_path(instalment.user_financier_subscription.user_financier.user.id, instalment.user_financier_subscription.id,instalment.id), remote: true, method: :patch, class: "dropdown-item", data: {confirm: "Confirmez-vous la création d'un CA pour cette échéance ?"} do %>
+                                Forcer VT3
+                                <% end %>
+                                <% end %>
+                            </div>
+                        </div>
+                        <% end %>
+
+                        <% if (can? :canceled, UserFinancierSubscriptionInstalment) && instalment.can_canceled_closure %>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <i class="fas fa-cogs  icon-md"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <% if (can? :canceled, UserFinancierSubscriptionInstalment) && instalment.can_canceled_closure %>
+                                <%= link_to canceled_admin_manage_student_user_financier_subscription_user_financier_subscription_instalment_path(instalment.user_financier_subscription.user_financier.user.id, instalment.user_financier_subscription.id,instalment.id), remote: true, method: :patch, class: "dropdown-item", data: {confirm: "Confirmez-vous l'annulation ?"} do %>
+                                Annuler
+                                <% end %>
+                                <% end %>
+                            </div>
+                        </div>
+                        <% end %>
+
+                    </td>
+                </tr>
+                <% end %>
+                <% end %>
+
+            </tbody>
+        </table>
+        <% if subscription.user_financier_subscription_credits.any? %>
+        <h6 class="mt-7">Avoirs</h6>
+        <table class="table table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>Facture associée</th>
+                    <th>Date</th>
+                    <th>Montant</th>
+                    <th>Libellé</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <% subscription.user_financier_subscription_credits.each do |credit| %>
+                <tr class="">
+                    <th style=""><%= credit.facture_ref %></th>
+                    <td style=""><%= credit.echeance.strftime("%d/%m/%Y") %></td>
+                    <td style=""><%= credit.montant %>€</td>
+                    <td style=""><%= credit.libelle %></td>
+                </tr>
+                <% end %>
+
+            </tbody>
+        </table>
+        <% end %>
+    </div>
+</div>
+<% end %>

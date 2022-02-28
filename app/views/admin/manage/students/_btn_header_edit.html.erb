@@ -1,0 +1,27 @@
+<span class="switch switch-icon switch-outline switch-success">
+    <label>
+        <input class="checkbox-follow" type="checkbox" data-user-uuid="<%= @student.uuid %>"
+            <%= @student.user_financier.follow ? "checked" : "" %> name="select" />
+        <span></span>
+    </label>
+</span>
+<span class="text-white font-weight-bold ml-2 mr-7">Suivre</span>
+
+<% if @student.user_financier.dont_relaunch %>
+<span class="switch switch-icon switch-outline switch-success" data-toggle="tooltip"
+    title="<%= @student.user_financier.dont_relaunch_comment %>">
+    <label>
+        <input class="checkbox-relaunch" type="checkbox" data-user-uuid="<%= @student.uuid %>" checked name="select" />
+        <span></span>
+    </label>
+</span>
+<span class="text-white font-weight-bold ml-2">Ne pas relancer</span>
+<% else %>
+<span class="switch switch-icon switch-outline switch-success">
+    <label>
+        <input class="checkbox-relaunch" type="checkbox" data-user-uuid="<%= @student.uuid %>" name="select" />
+        <span></span>
+    </label>
+</span>
+<span class="text-white font-weight-bold ml-2">Ne pas relancer</span>
+<% end %>

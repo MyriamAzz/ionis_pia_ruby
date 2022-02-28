@@ -1,0 +1,31 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modification année scolaire</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <%= form_for @school_year ,:url => { :controller => "school_years", :action => "update" }, remote: :true do |f| %>
+            <div class="form-group">
+                <label>Libellé</label>
+                <%= f.text_field :nom, class: "form-control form-control-solid", placeholder: "ex : 2020/2021", :required => true %>
+            </div>
+            <div class="form-group">
+                <label>Date de début</label>
+                <%= f.date_field :debut, class: "form-control form-control-solid", placeholder: "ex : 2020/2021", :required => true %>
+            </div>
+            <div class="form-group">
+                <label>Date de fin</label>
+                <%= f.date_field :fin, class: "form-control form-control-solid", placeholder: "ex : 2020/2021", :required => true %>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" value="submit"
+                form="edit_school_year_<%= @school_year.id %>">Enregistrer</button>
+        </div>
+        <% end %>
+    </div>
+</div>

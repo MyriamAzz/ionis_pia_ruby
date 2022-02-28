@@ -1,0 +1,23 @@
+<select class="select-container__select u-full-width ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+    name="test-webhook-action" id="test-webhook-action" required="" ng-disabled="!ctrl.form.resource"
+    ng-model="ctrl.form.action"
+    ng-options="action as action for (action, _) in ctrl.availableCauses[ctrl.form.resource]" aria-invalid="true"
+    style="">
+    <option value="?" selected="selected"></option>
+    <option label="created" value="string:created">created</option>
+    <option label="customer_approval_granted" value="string:customer_approval_granted">customer_approval_granted
+    </option>
+    <option label="customer_approval_denied" value="string:customer_approval_denied">customer_approval_denied</option>
+    <option label="submitted" value="string:submitted">submitted</option>
+    <option label="confirmed" value="string:confirmed">confirmed</option>
+    <option label="chargeback_cancelled" value="string:chargeback_cancelled">chargeback_cancelled</option>
+    <option label="paid_out" value="string:paid_out">paid_out</option>
+    <option label="late_failure_settled" value="string:late_failure_settled">late_failure_settled</option>
+    <option label="chargeback_settled" value="string:chargeback_settled">chargeback_settled</option>
+    <option label="surcharge_fee_credited" value="string:surcharge_fee_credited">surcharge_fee_credited</option>
+    <option label="surcharge_fee_debited" value="string:surcharge_fee_debited">surcharge_fee_debited</option>
+    <option label="failed" value="string:failed">failed</option>
+    <option label="charged_back" value="string:charged_back">charged_back</option>
+    <option label="cancelled" value="string:cancelled">cancelled</option>
+    <option label="resubmission_requested" value="string:resubmission_requested">resubmission_requested</option>
+</select>

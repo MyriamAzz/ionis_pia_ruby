@@ -1,0 +1,5 @@
+$(".nav-centre").removeClass("active");
+$("#nav-centre-<%= @centre.id %>").addClass("active");
+$("#formation_centre").html(
+  "<%= escape_javascript(render partial: 'admin/settings/formations/campus') %>"
+);

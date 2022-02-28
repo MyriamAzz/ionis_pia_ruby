@@ -1,0 +1,11 @@
+$("#modal").html("<%= escape_javascript(render 'new') %>")
+$('#modal').modal('show')
+
+$('#user_financier_subscription_s_type').on('change', function() {
+  if (this.value == "reinscription") {
+      $('#etudiant_confirm_reinscription').show()
+  } else {
+      $('#etudiant_confirm_reinscription').hide()
+      $('#user_financier_subscription_etudiant_confirm_reinscription').prop("checked", false);
+  }
+});

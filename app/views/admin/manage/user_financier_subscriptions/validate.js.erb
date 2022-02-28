@@ -1,0 +1,6 @@
+<% if @error %>
+    toastr.error("Validation impossible")
+<% else %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/users/edit/formations') %>")
+    toastr.success("Validation acceptée")
+<% end %>

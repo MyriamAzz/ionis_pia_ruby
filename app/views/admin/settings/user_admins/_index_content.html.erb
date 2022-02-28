@@ -1,0 +1,196 @@
+<div class="card card-custom">
+  <div class="card-header flex-wrap border-0 pt-6 pb-0">
+    <div class="card-title">
+      <div class="input-icon">
+        <input type="text" class="form-control" placeholder="Rechercher..." id="kt_datatable_search_query" />
+        <span>
+          <i class="flaticon2-search-1 text-muted"></i>
+        </span>
+      </div>
+    </div>
+    <div class="card-toolbar">
+
+      <div class="btn-group btn-group-toggle float-right mr-2" data-toggle="buttons" id="btn-groups-statuts">
+        <label class="btn btn-primary font-weight-bolder">
+          <input type="radio" name="radio_statuts" value="false" id="btn_actived" checked="checked" />
+          Actifs
+        </label>
+        <label class="btn btn-secondary font-weight-bolder">
+          <input type="radio" name="radio_statuts" value="true" id="btn_archived" /> Archivés
+        </label>
+      </div>
+
+
+      <%= link_to new_admin_settings_user_admin_path, remote: true, class: "btn btn-success font-weight-bolder" do %>
+      <span class="svg-icon svg-icon-md">
+        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+          viewBox="0 0 24 24" version="1.1">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <rect x="0" y="0" width="24" height="24" />
+            <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+            <path
+              d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+              fill="#000000" />
+          </g>
+        </svg>
+        <!--end::Svg Icon-->
+      </span>Ajouter un utilisateur
+      <% end %>
+      <!--end::Button-->
+    </div>
+  </div>
+  <div class="card-body">
+
+    <!--begin: Datatable-->
+    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+    <!--end: Datatable-->
+  </div>
+</div>
+<script>
+  "use strict";
+  // Class definition
+
+  var KTDatatableStudent = function () {
+    // Private functions
+
+    // basic demo
+    var table = function () {
+
+      var datatable = $('#kt_datatable').KTDatatable({
+        // datasource definition
+        data: {
+          type: 'remote',
+          source: {
+            read: {
+              method: 'GET',
+              url: '/admin/settings/user_admins/json',
+              // sample custom headers
+              // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
+              map: function (raw) {
+                // sample data mapping
+                var dataSet = raw;
+                if (typeof raw.data !== 'undefined') {
+                  dataSet = raw.data;
+                }
+                return dataSet;
+              },
+            },
+          },
+          pageSize: 20,
+          serverPaging: false,
+          serverFiltering: false,
+          serverSorting: false,
+        },
+        pageSizeSelect: [20, 30, 50, 100],
+
+        // layout definition
+        layout: {
+          scroll: false,
+          footer: false,
+          spinner: {
+            message: 'Chargement...',
+          }
+        },
+
+        // column sorting
+        sortable: true,
+
+        pagination: true,
+
+        rows: {
+          beforeTemplate: function (row, data, index) {
+            row.on('click', function (e) {
+              if (!$(e.target).parent().is("label")) {
+                Rails.ajax({
+                  url: '/admin/settings/user_admins/' + data.id + '/edit',
+                  type: "get",
+                  data: "",
+                  success: function (data) {},
+                  error: function (data) {}
+                })
+              }
+            });
+          },
+        },
+
+        translate: {
+          records: {
+            processing: "Veuillez patienter...",
+            noRecords: "Aucun résultat"
+          },
+        },
+
+        search: {
+          input: $('#kt_datatable_search_query'),
+          key: 'generalSearch'
+        },
+
+        // columns definition
+        columns: [{
+            field: 'lastname',
+            title: 'nom',
+            class: 'font-weight-bolder'
+          },
+          {
+            field: 'firstname',
+            title: 'prénom',
+          },
+          {
+            field: 'email',
+            title: 'Email',
+          },
+          {
+            field: 'segments',
+            title: 'Campus',
+          },
+          {
+            field: 'role',
+            title: 'Rôle',
+            template: function (data) {
+              if (data.role == "admin") {
+                return '<span class="label label-default label-inline font-weight-normal label-lg">Administratif</span>';
+              } else if (data.role == "supervisor") {
+                return '<span class="label label-dark label-inline font-weight-normal label-lg">Superviseur</span>';
+              } else if (data.role == "super_admin") {
+                return '<span class="label label-success label-inline font-weight-normal label-lg">Administrateur</span>';
+              } else {
+                return '<span class="label label-primary label-inline font-weight-normal label-lg">Comptabilité</span>';
+              }
+            },
+          },
+          {
+            field: 'admin',
+            title: 'Accès Admin',
+            template: function (data) {
+              if (data.admin == true) {
+                return '<span class="label label-warning label-inline font-weight-normal label-lg">Oui</span>';
+              } else {
+                return '<span class="label label-default label-inline font-weight-normal label-lg">Non</span>';
+              }
+            },
+          },
+          {
+            field: 'updated_at',
+            title: 'modification',
+            template: function (data) {
+              return data.updated_at;
+            },
+          },
+
+        ],
+      });
+    };
+
+    return {
+      // public functions
+      init: function () {
+        table();
+      },
+    };
+  }();
+
+  $(document).ready(function () {
+    KTDatatableStudent.init();
+  });
+</script>

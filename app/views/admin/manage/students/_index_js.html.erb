@@ -1,0 +1,272 @@
+<script>
+    "use strict";
+    // Class definition
+
+    var KTDatatableRemoteAjaxDemo = function () {
+        // Private functions
+
+        // basic demo
+        var demo = function () {
+
+            var datatable = $('#kt_datatable').KTDatatable({
+
+                // datasource definition
+                data: {
+                    saveState: {
+                        cookie: false
+                    },
+                    type: 'remote',
+                    source: {
+                        read: {
+                            method: 'GET',
+                            url: "<%= table_json_admin_manage_students_path %>",
+                            // sample custom headers
+                            // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
+                            map: function (raw) {
+                                // sample data mapping
+                                var dataSet = raw;
+                                if (typeof raw.data !== 'undefined') {
+                                    dataSet = raw.data;
+                                }
+                                return dataSet;
+                            },
+                        },
+                    },
+                    pageSize: 10,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false,
+                },
+
+
+                // layout definition
+                layout: {
+                    scroll: false,
+                    footer: false,
+                    spinner: {
+                        message: 'Chargement...',
+                    }
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#kt_datatable_search_query'),
+                    key: 'generalSearch',
+                },
+                translate: {
+                    records: {
+                        processing: "Veuillez patienter...",
+                        noRecords: "Aucun résultat"
+                    },
+                },
+
+                rows: {
+                    beforeTemplate: function (row, data, index) {
+                        row.on('click', function (e) {
+                            if (!$(e.target).parent().is("label")) {
+                                window.open('/admin/manage/students/' + data
+                                    .uuid + '/edit', '_blank');
+
+                            }
+                        });
+                    },
+                },
+
+                // columns definition
+                columns: [{
+                        field: 'etu_nom',
+                        title: 'Étudiant',
+                        width: 300,
+                        template: function (data) {
+
+                            return '\<div class="d-flex align-items-center">\
+								<div class="symbol symbol-40 symbol-light-info flex-shrink-0">\
+									<span class="symbol-label font-size-h4 font-weight-bold">' + data.etu_nom.substring(0, 1) + '</span>\
+								</div>\
+								<div class="ml-4">\
+									<div class="text-dark-75 font-weight-bolder font-size-lg mb-0">' + data.etu_nom + ' ' + data.etu_prenom + '</div>\
+									<span class="text-muted font-weight-bold text-hover-primary">' + data.etu_email + '</span>\
+								</div>\
+							</div>';
+
+                        }
+                    },
+                    {
+                        field: 'nom',
+                        title: 'Responsable financier',
+                        width: 300,
+                        template: function (data) {
+                            return data.nom + ' ' + data.prenom;
+                        }
+                    },
+                    {
+                        field: 'centre',
+                        title: 'campus',
+                        width: 100,
+
+
+                    },
+
+                    {
+                        field: 'formation',
+                        title: 'formation',
+                        width: 300,
+                        class: 'font-weight-bolder'
+
+                    },
+                    {
+                        field: 'annee_scolaire',
+                        title: 'annee scolaire',
+                        width: 100,
+
+                    },
+                    {
+                        field: 'souscription_type',
+                        title: 'type',
+                        width: 100,
+
+                    },
+
+                    {
+                        field: 'souscription_status',
+                        title: 'statut',
+                        width: 200,
+                        template: function (row) {
+                            var status = {
+                                0: {
+                                    'title': 'En attente étudiant(e)',
+                                    'class': 'label-warning'
+                                },
+                                1: {
+                                    'title': 'En attente admin',
+                                    'class': 'label-warning'
+                                },
+                                2: {
+                                    'title': 'En attente comptabilité',
+                                    'class': 'label-primary'
+                                },
+                                3: {
+                                    'title': 'Actif',
+                                    'class': 'label-success'
+                                },
+                                4: {
+                                    'title': 'Terminé',
+                                    'class': 'label-success'
+                                },
+                                5: {
+                                    'title': 'Annulé',
+                                    'class': 'label-danger'
+                                },
+                                6: {
+                                    'title': 'Traitement comptable partiel',
+                                    'class': 'label-warning'
+                                },
+                                7: {
+                                    'title': 'Traitement comptable partiel',
+                                    'class': 'label-warning'
+                                },
+                                8: {
+                                    'title': 'Démission avant rentrée',
+                                    'class': 'label-danger'
+                                },
+                                9: {
+                                    'title': 'Démission',
+                                    'class': 'label-danger'
+                                },
+                            };
+                            if (typeof status[row.souscription_status] === 'undefined') {
+                                return row.souscription_status;
+                            }
+                            return '<span class="label label-lg font-weight-bold ' + status[row
+                                    .souscription_status]
+                                .class + ' label-inline">' + status[row.souscription_status]
+                                .title + '</span>';
+                        },
+
+                    },
+
+                    // {
+                    //     field: 'centre',
+                    //     title: 'Campus',
+                    //     sortable: false,
+                    //     // callback function support for column rendering
+                    //     template: function (row) {
+                    //         return '<span class="label label-lg label-light-primary label-pill label-inline">' +
+                    //             row.centre + '</span>';
+                    //     },
+                    // },
+                    // {
+                    //     field: 'Actions',
+                    //     title: 'Actions',
+                    //     sortable: false,
+                    //     width: 125,
+                    //     overflow: 'visible',
+                    //     autoHide: false,
+                    //     template: function (row) {
+                    //         return '\<a href="/admin/manage/students/' + row.uuid + '/edit" method="get" class="btn btn-icon btn-light">\
+                    //             \<span class="svg-icon "><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Design/Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                    //             \   <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                    //                 \<rect x="0" y="0" width="24" height="24"/>\
+                    //                     \<path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
+                    //                     \<rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
+                    //                 </g>\
+                    //             \</svg><!--end::Svg Icon--></span>\
+                    //     </a>\
+                    //         ';
+                    //     },
+                    // }
+                ],
+
+            });
+
+            $('#kt_datatable_search_centre').on('change', function () {
+                datatable.search($(this).val().toLowerCase(), 'centre');
+            });
+
+            $('#kt_datatable_search_formation').on('change', function () {
+                datatable.search($(this).val().toLowerCase(), 'formation');
+            });
+
+            $('#kt_datatable_search_type').on('change', function () {
+                datatable.search($(this).val().toLowerCase(), 'souscription_type');
+            });
+
+            $('#kt_datatable_search_statut').on('change', function () {
+                datatable.search($(this).val().toLowerCase(), 'souscription_status');
+            });
+
+
+            $('#kt_datatable_search_centre, #kt_datatable_search_statut, #select_school_year, #kt_datatable_search_formation')
+                .selectpicker();
+        };
+
+        return {
+            // public functions
+            init: function () {
+                demo();
+            },
+        };
+    }();
+
+    jQuery(document).ready(function () {
+        KTDatatableRemoteAjaxDemo.init();
+    });
+
+    $(function () {
+        $('#select_school_year').selectpicker('val', "<%= session[:students_filter_school_year] %>");
+
+        $('#select_school_year').on('change', function () {
+            var school_year_id = $(this).val();
+            Rails.ajax({
+                url: "/admin/manage/students/filter?school_year=" + school_year_id,
+                type: "get",
+                success: function (data) {},
+                error: function (data) {}
+            })
+        });
+    });
+</script>

@@ -1,0 +1,101 @@
+<div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Appliquer une remise commerciale</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h5 class="pl-3"><i class="fas fa-angle-double-down mr-2"></i> Échéancier actuel
+                - Modalité <%= @user_financier_subscription.modalite %> fois</h5>
+            <table class="table table-hover mt-3">
+                <thead>
+                    <tr class="d-flex">
+                        <th class="col-3">Écheance</th>
+                        <th class="col-3">Montant (€)</th>
+                        <th class="col-2">Type</th>
+                        <th class="col-2">Mode</th>
+                        <th class="col-2">Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @user_financier_subscription.user_financier_subscription_instalments.where(v_type: :frais_scolarite).each do |instalment| %>
+                    <tr class="d-flex">
+                        <td class="col-3"><%= instalment.echeance.strftime("%d/%m/%Y") %></td>
+                        <td class="col-3"><%= instalment.montant %>€</td>
+                        <td class="col-2"><%= instalment.v_type.humanize %></td>
+                        <td class="col-2"><%= instalment.v_mode.humanize %></td>
+                        <td class="col-2"><%= instalment.statut_humanized_label.html_safe %></td>
+                    </tr>
+                    <% end %>
+
+                </tbody>
+            </table>
+
+            <div class="row d-none">
+                <div class="col-6">
+                    <div class="card-body d-flex flex-column p-0">
+                        <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                            <div class="d-flex flex-column mr-2">
+                                <span class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">Montant
+                                    débité ou en cours</span> </div>
+                            <span class="">
+                                <span
+                                    class="symbol-label font-weight-bolder text-success font-size-h6"><%= @already %>€</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card-body d-flex flex-column p-0">
+                        <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                            <div class="d-flex flex-column mr-2">
+                                <span class="text-dark-75 text-hover-primary font-weight-bolder font-size-h5">Montant
+                                    restant</span>
+                            </div>
+                            <span class="">
+                                <span
+                                    class="symbol-label font-weight-bolder text-warning font-size-h6"><%= @reste %>€</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-dark-75 font-weight-bolder font-size-h6 mb-5">Veuillez saisir votre remise en euros OU en
+                pourcentage :</div>
+            <%= form_for @user_financier_subscription ,:url => { :controller => "user_financier_subscriptions", :action => "simulate_discount" }, method: :post, remote: :true do |f| %>
+            <div class="form-group row">
+                <div class="col-lg-3">
+                    <label>Remise en €</label>
+                    <%= number_field_tag :discount_euros, {}, class: "form-control", placeholder: "Ex: 500", min: 1, onfocus: "document.getElementById('discount_percent').value = ''" %>
+                </div>
+                <div class="col-lg-3">
+                    <label>Remise en %</label>
+                    <%= number_field_tag :discount_percent, {}, class: "form-control", placeholder: "Ex: 15", min: 1, max: 100, onfocus: "document.getElementById('discount_euros').value = ''" %>
+                </div>
+                <div class="col-lg-3">
+                    <label>Mode d'application</label>
+                    <%= select_tag :mode, options_for_select([ ["Sur une écheance", 0], ["Sur toutes les écheances", 1]]), class: "form-control" %>
+                </div>
+                <div class="col-lg-3">
+                    <label>&emsp;&emsp;</label>
+                    <button class="btn btn-warning font-weight-bold btn-block">Simuler la remise</button>
+                </div>
+            </div>
+            <% end %>
+
+            <%= form_for @user_financier_subscription ,:url => { :controller => "user_financier_subscriptions", :action => "apply_discount" }, method: :post, remote: :true, :html => { id: "form-discount" } do |f| %>
+            <div id="preview-discount"></div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" id="btn_submit" value="submit"
+                form="form-discount" onclick="return confirm('Confirmez-vous la modification ?')"
+                style="display: none;">Appliquer la
+                remise</button>
+        </div>
+        <% end %>
+    </div>
+</div>

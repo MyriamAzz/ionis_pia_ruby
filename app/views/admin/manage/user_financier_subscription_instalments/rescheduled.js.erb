@@ -1,0 +1,6 @@
+<% if @error %>
+    toastr.error("Opération impossible")
+<% else %>
+    toastr.success("Échéance replanifiée manuellement")
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/paiements') %>")
+<% end %>

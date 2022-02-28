@@ -1,0 +1,6 @@
+<% if @error %>
+toastr.error("Erreur")
+<% else %>
+$("#simulation").html("<%= escape_javascript(render 'simulate_change_formation') %>")
+$("#btn_submit").show("")
+<% end %>

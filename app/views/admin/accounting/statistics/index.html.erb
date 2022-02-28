@@ -1,0 +1,318 @@
+<%= render "admin/layouts/head" %>
+<!--end::Head-->
+<!--begin::Body-->
+<%= render "admin/layouts/header" %>
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-12 subheader-transparent" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Heading-->
+                <div class="d-flex flex-column">
+                    <!--begin::Title-->
+                    <h2 class="text-white font-weight-bold my-2 mr-5">Statistiques</h2>
+                    <!--end::Title-->
+                    <!--begin::Breadcrumb-->
+                    <div class="d-flex align-items-center font-weight-bold my-2">
+                        <!--begin::Item-->
+
+                        <!--end::Item-->
+
+                    </div>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Heading-->
+            </div>
+            <!--end::Info-->
+            <div class="d-flex align-items-center">
+
+                <select class="form-control" id="select_school_year">
+                    <% current_user.user_admin.current_centre.school_program.school_years.each do |school_year| %>
+                    <option value="<%= school_year.id %>"
+                        <%= session[:students_filter_school_year] == school_year.id ? '' : 'selected' %>>
+                        Année
+                        <%= school_year.nom%></option>
+                    <% end %>
+                </select>
+                <!--begin::Button-->
+                <% link_to export_rf_without_mandate_admin_accounting_logs_path(format: :csv), method: :get, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+                <i class="fas fa-bug"></i>
+                Export RF sans mandat
+                <% end %>
+                <% link_to export_codes_tiers_admin_accounting_logs_path(format: :csv), method: :get, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+                <i class="fas fa-barcode"></i>
+                Export Codes Tiers
+                <% end %>
+                <% link_to export_ibans_admin_accounting_logs_path(format: :csv), method: :get, class: "btn btn-transparent-white font-weight-bold py-3 px-6 mr-2" do %>
+                <i class="fas fa-money-check"></i>
+                Export IBANs
+                <% end %>
+                <!--end::Button-->
+
+            </div>
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Dashboard-->
+            <div id="index_content">
+                <%= render partial: "index_content" %>
+            </div>
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+<%= render "admin/layouts/footer" %>
+
+<script>
+    $(function () {
+        $('#select_school_year').selectpicker('val', "<%= session[:stats_filter_school_year] %>");
+
+        $('#select_school_year').on('change', function () {
+            var school_year_id = $(this).val();
+            Rails.ajax({
+                url: "/admin/accounting/statistics/filter?school_year=" + school_year_id,
+                type: "get",
+                success: function (data) {},
+                error: function (data) {}
+            })
+        });
+
+        $('#kt_datatable_stats_centre').selectpicker('val', "<%= session[:stats_filter_centre] %>");
+
+        $('#kt_datatable_stats_centre').on('change', function () {
+            var centre_id = $(this).val();
+            Rails.ajax({
+                url: "/admin/accounting/statistics/filter?centre=" + centre_id,
+                type: "get",
+                success: function (data) {},
+                error: function (data) {}
+            })
+        });
+
+    });
+</script>
+
+<script>
+    "use strict";
+    // Class definition
+
+    var KTDatatableRemoteAjax = function () {
+        // Private functions
+
+        var ktDatatableLogs = function () {
+
+            var datatableLogs = $('#kt_datatable_stats_students').KTDatatable({
+
+                // datasource definition
+                data: {
+                    saveState: {
+                        cookie: false
+                    },
+                    type: 'remote',
+                    source: {
+                        read: {
+                            method: 'GET',
+                            url: "<%= data_students_admin_accounting_statistics_path %>",
+                            // sample custom headers
+                            // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
+                            map: function (raw) {
+                                // sample data mapping
+                                var dataSet = raw;
+                                if (typeof raw.data !== 'undefined') {
+                                    dataSet = raw.data;
+                                }
+                                return dataSet;
+                            },
+                        },
+                    },
+                    pageSize: 10,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false,
+                },
+
+
+                // layout definition
+                layout: {
+                    scroll: false,
+                    footer: false,
+                    spinner: {
+                        message: 'Chargement...',
+                    }
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#kt_datatable_search_query'),
+                    key: 'generalSearch',
+                },
+
+                translate: {
+                    records: {
+                        processing: "Veuillez patienter...",
+                        noRecords: "Aucun résultat"
+                    },
+                },
+
+                // columns definition
+                columns: [{
+                        field: 'student',
+                        title: 'Étudiant',
+                        class: 'font-weight-bolder'
+
+                    },
+                    {
+                        field: 'formation',
+                        title: 'formation',
+
+                    },
+                    {
+                        field: 'souscription_type',
+                        title: 'statut étudiant',
+
+                    },
+                    {
+                        field: 'souscription_mode',
+                        title: 'Mode réglement scolarité',
+
+                    },
+                    {
+                        field: 'inactive',
+                        title: 'non facturé',
+                        template: function (row) {
+                            return '<span class="label label-inline label-lg label-default font-weight-bold">' +
+                                row.inactive + '</span>'
+                        }
+
+                    },
+                    {
+                        field: 'sales',
+                        title: 'vente',
+                        template: function (row) {
+                            return '<span class="label label-inline label-lg label-primary font-weight-bold">' +
+                                row.sales + '</span>'
+                        }
+
+                    },
+                    {
+                        field: 'charged',
+                        title: 'encaissé',
+                        template: function (row) {
+                            return '<span class="label label-inline label-lg label-success font-weight-bold">' +
+                                row.charged + '</span>'
+                        }
+
+
+                    },
+
+                    {
+                        field: 'failed',
+                        title: 'Échu',
+                        template: function (row) {
+                            return '<span class="label label-inline label-lg label-danger font-weight-bold">' +
+                                row.failed + '</span>'
+                        }
+
+                    },
+                    {
+                        field: 'relaunch',
+                        title: 'ne pas relancer',
+                        template: function (row) {
+                            if (row.relaunch == true) {
+                                return '<span class="switch switch-outline switch-icon" data-toggle="tooltip" title="' +
+                                    row.relaunch_comment +
+                                    '"><label><input class="checkbox-relaunch" data-user-uuid="' +
+                                    row.uuid +
+                                    '" type="checkbox" checked name="select"/><span></span></label></span>'
+                            } else {
+                                return '<span class="switch  switch-outline switch-icon"><label><input class="checkbox-relaunch" data-user-uuid="' +
+                                    row.uuid +
+                                    '" type="checkbox" name="select"/><span></span></label></span>'
+                            }
+                        }
+                    },
+                    {
+                        field: 'Actions',
+                        title: '',
+                        sortable: false,
+                        overflow: 'visible',
+                        autoHide: false,
+
+
+                        template: function (row) {
+                            return '\<a href="/admin/accounting/invoices/' + row
+                                .souscription_id + '/echeancier" data-container="body" data-toggle="tooltip" data-placement="right" title="Échéancier" method="get" data-remote="true" class="btn btn-light-primary btn-text-info btn-icon mr-1">\
+                                \
+                                \<span class="svg-icon svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Design/Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                    \<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                    \ <rect x="0" y="0" width="24" height="24"/>\
+                                    \ <path d="M10.5,5 L19.5,5 C20.3284271,5 21,5.67157288 21,6.5 C21,7.32842712 20.3284271,8 19.5,8 L10.5,8 C9.67157288,8 9,7.32842712 9,6.5 C9,5.67157288 9.67157288,5 10.5,5 Z M10.5,10 L19.5,10 C20.3284271,10 21,10.6715729 21,11.5 C21,12.3284271 20.3284271,13 19.5,13 L10.5,13 C9.67157288,13 9,12.3284271 9,11.5 C9,10.6715729 9.67157288,10 10.5,10 Z M10.5,15 L19.5,15 C20.3284271,15 21,15.6715729 21,16.5 C21,17.3284271 20.3284271,18 19.5,18 L10.5,18 C9.67157288,18 9,17.3284271 9,16.5 C9,15.6715729 9.67157288,15 10.5,15 Z" fill="#000000"/>\
+                                    \ <path d="M5.5,8 C4.67157288,8 4,7.32842712 4,6.5 C4,5.67157288 4.67157288,5 5.5,5 C6.32842712,5 7,5.67157288 7,6.5 C7,7.32842712 6.32842712,8 5.5,8 Z M5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 C6.32842712,10 7,10.6715729 7,11.5 C7,12.3284271 6.32842712,13 5.5,13 Z M5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 C6.32842712,15 7,15.6715729 7,16.5 C7,17.3284271 6.32842712,18 5.5,18 Z" fill="#000000" opacity="0.3"/>\
+                                    </g>\
+                                    \</svg><!--end::Svg Icon--></span>\
+                                \
+                        </a>\
+                        \<a href="/admin/manage/students/' + row.uuid + '/edit" data-container="body" target="_blank" data-toggle="tooltip" data-placement="right" title="Voir le profil" method="get" class="btn btn-light btn-text-info btn-icon">\
+                          <i class="fas fa-user-cog"></i>\
+                        \</a>\
+                            ';
+
+                        },
+                    }
+                ],
+
+            });
+
+
+
+            datatableLogs.on(
+                'datatable-on-layout-updated',
+                function (e) {
+                    $('[data-toggle="tooltip"]').tooltip()
+                });
+
+
+
+        };
+
+        return {
+            // public functions
+            init: function () {
+                ktDatatableLogs();
+            },
+        };
+    }();
+
+    jQuery(document).ready(function () {
+        KTDatatableRemoteAjax.init();
+
+        $(document).on("change", ".checkbox-relaunch", function () {
+            var value = $(this).is(":checked");
+            var uuid = $(this).data("user-uuid");
+            Rails.ajax({
+                url: "/admin/manage/students/" + uuid + "/change_relaunch?value=" + value,
+                type: "get",
+                success: function (data) {},
+                error: function (data) {}
+            })
+        });
+    });
+</script>
+
+</body>
+<!--end::Body-->
+
+</html>

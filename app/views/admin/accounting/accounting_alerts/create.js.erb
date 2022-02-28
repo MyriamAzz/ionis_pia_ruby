@@ -1,0 +1,6 @@
+<% if @error %>
+    toastr.error("Ajout impossible")
+<% else %>
+    $('#modal').modal('hide')
+    toastr.success("Ajoutée")
+<% end %>

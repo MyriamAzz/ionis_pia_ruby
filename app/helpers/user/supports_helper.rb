@@ -1,0 +1,2 @@
+module User::SupportsHelper
+end

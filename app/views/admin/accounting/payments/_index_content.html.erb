@@ -1,0 +1,67 @@
+<%= render_async widgets_admin_accounting_payments_path, container_id: 'data_widgets', replace_container: false do %>
+<div class="text-center mb-7">
+    <img src="/assets/loaders/tail-spin.svg" width="40">
+    <div class="mt-5 font-weight-bold text-white text-size-h5">
+        Chargement...
+    </div>
+</div>
+<% end %>
+
+
+
+<div class="row mt-5">
+    <div class="col-xl-12">
+        <!--begin::List Widget 1-->
+        <div class="card card-custom card-stretch gutter-b">
+            <!--begin::Header-->
+            <div class="card-body pt-8">
+                <div class="mb-7">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 my-2 my-md-0">
+                                    <div class="input-icon">
+                                        <input type="text" class="form-control" placeholder="Rechercher..."
+                                            id="kt_datatable_search_query" />
+                                        <span>
+                                            <i class="flaticon2-search-1 text-muted"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 my-2 my-md-0">
+                                    <div class="d-flex align-items-center">
+                                        <select class="form-control " id="kt_datatable_echeances_statut">
+                                            <option value="">Tous les statuts</option>
+                                            <option>Non facturée</option>
+                                            <option>En attente</option>
+                                            <option>En cours</option>
+                                            <option>Payée</option>
+                                            <option>Échouée</option>
+                                            <option>Refusée</option>
+                                            <option>Annulée</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 my-2 my-md-0">
+                                    <div class="d-flex align-items-center">
+                                        <select class="form-control " id="kt_datatable_echeances_campus">
+                                            <% if @centres.count > 1 %>
+                                            <option value="">Tous les campus</option>
+                                            <% end %>
+                                            <% @centres.each do |centre| %>
+                                            <option><%= centre.nom %></option>
+                                            <% end %>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_echeances"></div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::List Widget 1-->
+    </div>
+</div>

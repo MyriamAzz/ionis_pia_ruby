@@ -1,0 +1,47 @@
+<html>
+   <head>
+      <!-- Load the client script. -->
+      <script type="application/javascript" src="https://dropin-sandbox.gocardless.com/script.js"></script>
+      <!-- Url for live environment is https://dropin.gocardless.com/script.js -->
+   </head>
+
+   <body>
+      <!-- Add a button to your page HTML -->
+      <button id="pay-with-gocardless-button">Pay with GoCardless</button>
+   </body>
+
+   <script type="application/javascript">
+      var gocardlessHandler = function() {
+         var gocardlessClient = GoCardlessClient({
+            token: "PAT_NB5kbWasIwZQ3_bw6A5LbaMpOFC5ji7Rbeavu09E",
+         });
+
+         gocardlessClient.create({
+            onSave: function(payerAuthorisationId, confirmCallback, metadata) {
+               // 1. Optional: store the payerAuthorisationId server-side
+               // 2. Mandatory: call confirmCallback to let the Drop-in flow continue
+               /* Note: If storing the payerAuthorisationId on server-side, call confirmCallback only after it is saved. And you should create payments, subscriptions etc once you receive the payer_authorizations completed webhook on the server side. */
+               confirmCallback();
+            },
+            onComplete: function(metadata) {
+               // The customer completed successfully
+               alert("Drop-in flow completed!");
+            },
+            onExit: function(error, metadata) {
+               if (error === undefined) {
+                  // The customer left intentionally the Drop-in flow
+                  // (for example they closed the modal interface).
+               } else {
+                  // The customer left due to unrecoverable error.
+               }
+            }
+         });
+      };
+
+      document.addEventListener("DOMContentLoaded", function() {
+         document
+            .getElementById("pay-with-gocardless-button")
+            .addEventListener("click", gocardlessHandler);
+      });
+   </script>
+</html>

@@ -1,0 +1,11 @@
+<% if @centres.any? %>
+<div class="d-flex ">
+    <!--begin::Aside-->
+    <%= render partial: 'sidebar_campus' %>
+    <div id="formation_centre" class="flex-row-fluid ml-lg-8">
+        <%= render partial: 'empty_centre' %>
+    </div>
+</div>
+<% else %>
+<%= render partial: 'empty' %>
+<% end %>

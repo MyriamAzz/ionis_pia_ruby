@@ -1,0 +1,4 @@
+<% if @csv_file %>
+window.open("<%= @csv_file %>", "_blank")
+toastr.success("Fichier CSV téléchargé")
+<% end %>

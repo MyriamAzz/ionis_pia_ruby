@@ -1,0 +1,318 @@
+<div class="row">
+    <div class="col-xl-12 d-none d-xl-block d-lg-block">
+        <!--begin::Engage Widget 7-->
+        <div class="card card-custom card-stretch gutter-b">
+            <div class="card-body d-flex p-0">
+                <div class="flex-grow-1 p-12 card-rounded bgi-no-repeat d-flex flex-column justify-content-center align-items-start"
+                    style="background-position: right bottom; background-size: auto 100%; background-image: url(/assets/media/svg/humans/custom-8.svg)">
+                    <h4 class=" font-weight-bolder m-0 text-info">Bienvenue sur la plateforme de gestion des
+                        inscriptions et réinscriptions des écoles
+                        <%= current_user.user_financier.centre.school_program.school.nom %>.</h4>
+                    <p class="text-dark-50 my-4 font-size-xl font-weight-bold">
+                        Vous pouvez visualiser sur la plateforme le détail administratif de la formation que vous
+                        financez.<br>
+                        Retrouvez aussi votre échéancier de paiement si vous avez opté pour un prelevement en plusieurs
+                        fois.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--end::Engage Widget 7-->
+    </div>
+    <div class="col-xl-12 d-block d-sm-none d-md-block d-lg-none">
+        <!--begin::Engage Widget 7-->
+        <div class="card card-custom bgi-no-repeat card-stretch gutter-b"
+            style="background-position: right top; background-size: 30% auto; background-image: url(/assets/media/svg/shapes/abstract-1.svg)">
+            <div class="card-body d-flex p-0">
+                <div
+                    class="flex-grow-1 p-12 card-rounded bgi-no-repeat d-flex flex-column justify-content-center align-items-start">
+                    <h4 class=" font-weight-bolder m-0 text-info">Bienvenue sur la plateforme de gestion des
+                        inscriptions et réinscriptions des écoles
+                        <%= current_user.user_financier.centre.school_program.school.nom %>.</h4>
+                    <p class="text-dark-50 my-4 font-size-xl font-weight-bold">
+                        Vous pouvez visualiser sur la plateforme le détail administratif de la formation que vous
+                        financez.<br>
+                        Retrouvez aussi votre échéancier de paiement si vous avez opté pour un prelevement en plusieurs
+                        fois.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--end::Engage Widget 7-->
+    </div>
+</div>
+
+<div class="row">
+    <!--begin::Col-->
+    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b">
+            <!--begin::Body-->
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Responsable financier pour
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body pt-4">
+
+                <div class="d-flex align-items-center mb-7">
+                    <div
+                        class="symbol symbol-circle symbol-60 symbol-xxl-75 mr-5 align-self-start align-self-xxl-center">
+                        <div class="symbol-label" style="background-image:url('/assets/media/users/default.jpg')">
+                        </div>
+
+                    </div>
+                    <div>
+                        <span class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">
+                            <%= current_user.user_financier.etu_nom %> <span
+                                class=""><%= current_user.user_financier.etu_prenom %></span></span>
+                        <div>
+                            <span
+                                class="label label-inline label-lg label-light-primary mt-2"><%= current_user.user_financier.centre.nom %></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--begin::Info-->
+                <div class="mb-7">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-dark-75 font-weight-bolder mr-2">Email:</span>
+                        <span class="text-muted text-hover-primary"><%= current_user.user_financier.etu_email %></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-cente my-1">
+                        <span class="text-dark-75 font-weight-bolder mr-2">Statut:</span>
+                        <span class="text-muted text-hover-primary">Étudiant(e)</span>
+                    </div>
+
+                </div>
+                <!--end::Info-->
+                <% link_to user_profil_path, class: "btn btn-block btn-sm btn-success font-weight-bolder text-uppercase", method: :get do %>
+                Voir le détail
+                <% end %>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Card-->
+        <% if current_user.user_financier.centre.bank_details.attached? %>
+        <%= link_to current_user.user_financier.centre.bank_details, class: "btn btn-primary btn-block btn-lg mb-8", target: "_blank" do %>
+        Télécharger RIB de l'école
+        <% end %>
+        <% elsif current_user.user_financier.centre.school_program.bank_details.attached? %>
+        <%= link_to current_user.user_financier.centre.school_program.bank_details, class: "btn btn-primary btn-block btn-lg mb-8", target: "_blank" do %>
+        Télécharger RIB de l'école
+        <% end %>
+        <% end %>
+    </div>
+    <!--end::Col-->
+    <div class="col-xl-8 col-lg-6 col-md-12 col-sm-12">
+
+        <% if !current_user.user_financier.user_financier_subscriptions.where.not(statut: :waiting_admin).any? %>
+
+        <div class="card card-custom mb-8 mb-lg-0">
+            <div class="card-body">
+                <div class="d-flex align-items-center p-4">
+                    <div class="mr-6">
+                        <span class="svg-icon svg-icon-danger svg-icon-4x">
+                            <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/General/Attachment2.svg--><svg
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                    <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1" />
+                                    <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon--></span>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <a href="#" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">
+                            Aucune formation n'est rattachée à ce profil étudiant actuellement !
+                        </a>
+                        <div class="text-dark-75">
+                            Pas d'inquiétude, le traitement administratif des inscriptions et réinscriptions peut
+                            prendre
+                            plusieurs jours.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% else %>
+        <% current_user.user_financier.user_financier_subscriptions.where.not(statut: :waiting_admin).order(created_at: :desc).each do |subscription| %>
+        <div class="card card-custom gutter-b">
+            <div class="card-header">
+                <div class="card-title">
+                    <%= subscription.statut_financier_humanized_label.html_safe %>
+                </div>
+                <div class="card-toolbar">
+                    <% if (can? :facture_proforma_pdf, :facture) && !subscription.apprentissage? %>
+                    <%= button_to facture_proforma_pdf_user_factures_path(subscription.id), remote: false, method: :get, class: "btn btn-light-danger" do %>
+                    <i class="fas fa-file-pdf"></i> Télécharger facture pro forma
+                    <% end %>
+                    <% end %>
+                    <% if (can? :facture_pdf, :facture) && !subscription.apprentissage? %>
+                    <%= button_to facture_pdf_user_factures_path(subscription.id), remote: false, method: :get, class: "btn btn-light-danger" do %>
+                    <i class="fas fa-file-pdf"></i> Télécharger facture
+                    <% end %>
+                    <% end %>
+                    <% if (can? :attestation_scolarite, :dashboard) && (subscription.apprentissage? or subscription.is_frais_inscription_payed) %>
+                    <%= button_to user_attestation_scolarite_path(subscription.id), remote: false, method: :get, class: "btn btn-light-primary ml-2" do %>
+                    <i class="fas fa-file-pdf"></i> Attestation scolarité
+                    <% end %>
+                    <% end %>
+                </div>
+            </div>
+            <!--begin::Body-->
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <!--begin::Pic-->
+                    <div class="flex-shrink-0 mr-4 symbol symbol-65 symbol-circle">
+                        <span class="symbol-label">
+                            <span class="svg-icon svg-icon-3x svg-icon-primary">
+                                <!--begin::Svg Icon | path:/metronic/theme/html/demo2/dist/assets/media/svg/icons/Shopping/Cart3.svg-->
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                        <path
+                                            d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
+                                            fill="#000000" fill-rule="nonzero"></path>
+                                        <path
+                                            d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
+                                            fill="#000000" opacity="0.3"></path>
+                                    </g>
+                                </svg>
+                                <!--end::Svg Icon-->
+                            </span>
+                        </span>
+                    </div>
+                    <!--end::Pic-->
+                    <!--begin::Info-->
+                    <div class="d-flex flex-column mr-auto">
+                        <!--begin: Title-->
+                        <span
+                            class="card-title text-hover-primary font-weight-bolder font-size-h5 text-dark mb-1"><%= subscription.formation_annee.formation.nom %>
+                        </span>
+                        <span class="text-muted font-weight-bold"> <i
+                                class="flaticon2-calendar-9 mr-2"></i><%= subscription.s_type.humanize %>
+                            <%= subscription.school_year.nom.humanize %>
+
+                            <% if subscription.redoublant %>
+                            - Redoublant(e)
+                            <% end %>
+                        </span>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Info-->
+
+                </div>
+                <div class="ml-3 mt-3">
+                    Modalité en <%= subscription.modalite %> fois
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mt-3">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px">Écheance</th>
+                                <th style="width: 40px">Montant</th>
+                                <th style="width: 50px">Type</th>
+                                <th style="width: 120px;">Mode</th>
+                                <th style="width: 120px;">Statut</th>
+                                <% if (can? :facture_echeance_pdf, :facture) %>
+                                <th style="width: 50px">Facture</th>
+                                <% end %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% subscription.user_financier_subscription_instalments.each do |instalment| %>
+                            <tr>
+                                <td style="width: 50px"><%= instalment.echeance.strftime("%d/%m/%Y") %></td>
+                                <td style="width: 40px"><%= instalment.montant %>€</td>
+                                <td style="width: 50px"><%= instalment.v_type_humanized %></td>
+                                <td style="width: 50px"><%= instalment.v_mode.humanize %></td>
+                                <td style="width: 120px;">
+                                    <%= instalment.statut_user_humanized_label.html_safe %></td>
+                                <td style="width: 50px;">
+                                    <% if (can? :facture_echeance_pdf, :facture) && instalment.done? %>
+                                    <%= link_to facture_echeance_pdf_user_factures_path(instalment.id), remote: false, method: :get, class: "btn btn-link-danger" do %>
+                                    <i class="fas fa-file-pdf"></i> Facture
+                                    <% end %>
+                                    <% end %>
+                                </td>
+                            </tr>
+                            <% end %>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <% discards = subscription.user_financier_subscription_instalment_events.where(gocardless_status: [:failed]) %>
+                <% if discards.any? %>
+
+                <div class="ml-3 mt-3 font-weight-bolder">
+                    <span class="svg-icon svg-icon-danger">
+                        <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo4\dist/../src/media/svg/icons\Code\Warning-2.svg--><svg
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                <rect fill="#000000" x="11" y="7" width="2" height="8" rx="1" />
+                                <rect fill="#000000" x="11" y="16" width="2" height="2" rx="1" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon--></span> Historique des rejets
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mt-3">
+                        <thead>
+                            <tr>
+                                <th>Écheance</th>
+                                <th>Montant</th>
+                                <th>Type</th>
+                                <th>Mode</th>
+                                <th>Date rejet</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% discards.each do |reject| %>
+                            <tr>
+
+                                <td style="width: 50px">
+                                    <%= reject.user_financier_subscription_instalment.echeance.strftime("%d/%m/%Y") %>
+                                </td>
+                                <td style="width: 50px"><%= reject.user_financier_subscription_instalment.montant %>€
+                                </td>
+                                <td style="width: 100px">
+                                    <%= reject.user_financier_subscription_instalment.v_type_humanized %></td>
+                                <td style="width: 50px">
+                                    <%= reject.user_financier_subscription_instalment.v_mode.humanize %></td>
+                                <td style="width: 50px">
+                                    <%= reject.created_at.strftime("%d/%m/%Y") %></td>
+                                <td style="width: 110px">
+                                    <% if reject.charged_back? %>
+                                    <span class="label label-danger font-weight-bolder label-inline label-lg">Rejeté
+                                    </span>
+                                    <% elsif reject.failed? %>
+                                    <span class="label label-danger font-weight-bolder label-inline label-lg">Échoué
+                                    </span>
+                                    <% end %>
+                                </td>
+                            </tr>
+                            <% end %>
+
+                        </tbody>
+                    </table>
+                </div>
+                <% end %>
+
+            </div>
+        </div>
+        <% end %>
+        <% end %>
+    </div>
+</div>

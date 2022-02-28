@@ -1,0 +1,267 @@
+<script>
+    "use strict";
+    // Class definition
+
+    var KTDatatableRemoteAjax = function () {
+        // Private functions
+
+        var ktDatatableLogs = function () {
+
+            var datatableLogs = $('#kt_datatable_logs').KTDatatable({
+
+                // datasource definition
+                data: {
+                    saveState: {
+                        cookie: false
+                    },
+                    type: 'remote',
+                    source: {
+                        read: {
+                            method: 'GET',
+                            url: "<%= table_json_logs_admin_accounting_logs_path %>",
+                            // sample custom headers
+                            // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
+                            map: function (raw) {
+                                // sample data mapping
+                                var dataSet = raw;
+                                if (typeof raw.data !== 'undefined') {
+                                    dataSet = raw.data;
+                                }
+                                return dataSet;
+                            },
+                        },
+                    },
+                    pageSize: 10,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false,
+                },
+
+
+                // layout definition
+                layout: {
+                    scroll: false,
+                    footer: false,
+                    spinner: {
+                        message: 'Chargement...',
+                    }
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#kt_datatable_search_query'),
+                    key: 'generalSearch',
+                },
+
+                translate: {
+                    records: {
+                        processing: "Veuillez patienter...",
+                        noRecords: "Aucun résultat"
+                    },
+                },
+
+                // columns definition
+                columns: [{
+                        field: 'id',
+                        title: '#',
+                        sortable: false,
+                        width: 20,
+                        selector: {
+                            class: ''
+                        },
+                        textAlign: 'center',
+                    }, {
+                        field: 'code_journal',
+                        title: 'Code',
+                        sortable: false,
+                        width: 40,
+
+                    }, {
+                        field: 'numero_facture',
+                        title: 'Facture',
+                        sortable: false,
+                        width: 90,
+
+                    }, {
+                        field: 'libelle',
+                        title: 'Libellé',
+                        sortable: false,
+
+                    }, {
+                        field: 'nom_complet',
+                        title: 'Nom',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'debit',
+                        title: 'Débit',
+                        width: 50,
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'credit',
+                        title: 'Crédit',
+                        width: 50,
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'type_ecriture',
+                        title: 'Écriture',
+                        width: 70,
+                        sortable: false,
+
+                    }, {
+                        field: 'date_echeance',
+                        title: 'Écheance',
+                        sortable: false,
+
+                    }, {
+                        field: 'date_import',
+                        title: 'Date Import',
+                        sortable: false,
+
+                    }, {
+                        field: 'exported',
+                        title: 'Exporté',
+                        autoHide: false,
+                        sortable: false,
+                        width: 70,
+                        template: function (row) {
+                            if (row.exported == true) {
+                                return '<i class="fas fa-check-circle text-success"></i>';
+                            } else {
+                                return '';
+
+                            }
+                        },
+                    }, {
+                        field: 'modalite',
+                        title: 'Modalité',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'type_frais',
+                        title: 'Type Frais',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'annee',
+                        title: 'Année',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'mode_reglement',
+                        title: 'Mode Réglement',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'analytique',
+                        title: 'Analytique',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'compte_tiers',
+                        title: 'Compte Tiers',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'compte_general',
+                        title: 'Compte Général',
+                        sortable: false,
+
+                    },
+                    {
+                        field: 'reference',
+                        title: 'Réference',
+                        sortable: false,
+
+                    }
+
+                ],
+
+            });
+
+            datatableLogs.on(
+                'datatable-on-check datatable-on-uncheck',
+                function (e) {
+                    var checkedNodes = datatableLogs.rows('.datatable-row-active').nodes();
+                    var count = checkedNodes.length;
+                    if (count > 0) {
+                        $('.process-all').hide();
+                        $('#kt_datatable_export_selected').show();
+                    } else {
+                        $('.process-all').show();
+                        datatableLogs.find('.checkbox-all > [type="checkbox"]').prop("checked", false);
+                        $('#kt_datatable_export_selected').hide();
+                    }
+                    var ids = datatableLogs.rows('.datatable-row-active').
+                    nodes().
+                    find('.checkbox > [type="checkbox"]').
+                    map(function (i, chk) {
+                        return $(chk).val();
+                    });
+                });
+
+            datatableLogs.on(
+                'datatable-on-layout-updated',
+                function (e) {
+                    $('[data-toggle="tooltip"]').tooltip()
+                });
+
+            $('#kt_datatable_export_selected').on('click', function (e) {
+                $("#kt_datatable_export_selected").prop("disabled", true);
+                $("#kt_datatable_export_selected").html(
+                    "<img src='/assets/loaders/tail-spin.svg' width='18' class='mr-2' /> Génération en cours..."
+                );
+                var ids = datatableLogs.rows('.datatable-row-active').
+                nodes().
+                find('.checkbox > [type="checkbox"]').
+                map(function (i, chk) {
+                    return $(chk).val();
+                }).get();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: "GET",
+                    url: "<%= export_selected_admin_accounting_logs_path %>",
+                    data: {
+                        'records': ids
+                    },
+                    success: function (data) {
+                        $("#kt_datatable_export_selected").prop("disabled", false);
+                        $("#kt_datatable_export_selected").html(
+                            "<i class='fas fa-file-export'></i> Exporter la sélection");
+
+                    },
+                });
+
+            })
+
+        };
+
+        return {
+            // public functions
+            init: function () {
+                ktDatatableLogs();
+            },
+        };
+    }();
+
+    jQuery(document).ready(function () {
+        KTDatatableRemoteAjax.init();
+    });
+</script>

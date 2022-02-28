@@ -1,0 +1,187 @@
+<div class="card card-custom">
+    <!--begin::Header-->
+    <div class="card-header py-3">
+        <div class="card-title align-items-start flex-column">
+            <h3 class="card-label font-weight-bolder text-dark">Informations Bancaires</h3>
+            <span class="text-muted font-weight-bold font-size-sm mt-1">Gestion des informations
+                bancaires et statut GoCardless</span>
+        </div>
+        <% if (can? :update, User) && false %>
+        <div class="card-toolbar">
+            <button type="submit" class="btn btn-success mr-2" form="edit_user_<%= @student.id %>"
+                data-disable-with="Enregistrement...">Enregistrer</button>
+            <button type="reset" form="edit_user_<%= @student.id %>" class="btn btn-secondary">Annuler</button>
+        </div>
+        <% end %>
+    </div>
+    <!--end::Header-->
+    <!--begin::Form-->
+    <!--begin::Body-->
+    <div class="card-body">
+        <%= form_for @student, url: admin_manage_student_path(@student), method: :patch, remote: true do |f| %>
+
+        <%= f.fields_for :user_financier do |ff|%>
+        <%= ff.fields_for :user_financier_rib do |user_financier_rib|%>
+        <div class="form-group">
+            <label class="">IBAN</label>
+            <%= user_financier_rib.text_field :iban, class: "form-control form-control-lg form-control-solid", :required => true, readonly: "readonly" %>
+        </div>
+        <div class="form-group">
+            <label class="">BIC</label>
+            <%= user_financier_rib.text_field :bic, class: "form-control form-control-lg form-control-solid", :required => true %>
+        </div>
+        <div class="form-group">
+            <label class="">RUM</label>
+            <%= user_financier_rib.text_field :rum, class: "form-control form-control-lg form-control-solid", :required => true, readonly: "readonly" %>
+        </div>
+        <% end %>
+        <% end %>
+        <% end %>
+
+        </table>
+
+    </div>
+    <!--end::Body-->
+    <!--end::Form-->
+</div>
+
+<% if @student.user_financier.gocardless_customer_id %>
+<div class="card card-custom gutter-b mt-5 mb-5">
+    <!--begin::Body-->
+    <div class="card-body">
+        <!--begin::Section-->
+        <div class="d-flex align-items-center">
+            <!--begin::Pic-->
+            <div class="">
+                <img width="175" src="/assets/gocardless.png" alt="image">
+            </div>
+            <!--end::Pic-->
+            <!--begin::Info-->
+
+            <!--end::Info-->
+
+        </div>
+        <!--end::Section-->
+        <!--begin::Content-->
+        <div class="d-flex flex-wrap mt-10">
+            <div class="mr-12 d-flex flex-column ">
+                <span class="d-block mb-2 text-dark-50">Client ID</span>
+                <span class="font-weight-bold font-size-h6 pt-1">
+                    <%= @student.user_financier.gocardless_customer_id %>
+                </span>
+            </div>
+
+            <div class="mr-12 d-flex flex-column ">
+                <span class="d-block mb-2 text-dark-50">Account ID</span>
+                <span class="font-weight-bold font-size-h6 pt-1">
+                    <%= @student.user_financier.user_financier_rib.gocardless_account_id %></span>
+            </div>
+            <div class="mr-12 d-flex flex-column ">
+                <span class="d-block mb-2 text-dark-50">Mandate ID</span>
+                <span class="font-weight-bold font-size-h6 pt-1">
+                    <%= @student.user_financier.user_financier_rib.gocardless_mandate_id %></span>
+            </div>
+
+            <!--end::Item-->
+
+        </div>
+        <!--end::Content-->
+    </div>
+    <!--end::Body-->
+
+</div>
+<% else %>
+<div class="card card-custom gutter-b mt-5 mb-5">
+    <!--begin::Body-->
+    <div class="card-body">
+        <!--begin::Section-->
+        <div class="d-flex align-items-center">
+            <!--begin::Pic-->
+            <div class="">
+                <img width="175" src="/assets/gocardless.png" alt="image">
+            </div>
+            <!--end::Pic-->
+            <!--begin::Info-->
+
+            <!--end::Info-->
+
+        </div>
+        <!--end::Section-->
+        <!--begin::Content-->
+        <div class="d-flex flex-wrap mt-10">
+            <div class="mr-12 d-flex flex-column ">
+                <span class="d-block mb-2 text-dark-50">Client ID</span>
+                <span class="font-weight-bold text-warning font-size-h6 pt-1">
+                    Non initialisé
+                </span>
+            </div>
+
+            <div class="mr-12 d-flex flex-column ">
+                <span class="d-block mb-2 text-dark-50">Compte Bancaire</span>
+                <span class="font-weight-bold font-size-h6 pt-1">
+                    --</span>
+            </div>
+            <div class="mr-12 d-flex flex-column ">
+                <span class="d-block mb-2 text-dark-50">Mandat</span>
+                <span class="font-weight-bold font-size-h6 pt-1">
+                    --</span>
+            </div>
+
+            <!--end::Item-->
+
+        </div>
+        <!--end::Content-->
+    </div>
+    <!--end::Body-->
+
+</div>
+<% end %>
+
+<% if @student.user_financier.user_financier_mandates.any? %>
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Mandats SEPA
+                <small>Créés via la plateforme PIA</small></h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Réference (RUM)</th>
+                        <th>Date création</th>
+                        <th>Statut</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @student.user_financier.user_financier_mandates.order(created_at: :desc).each do |mandate| %>
+                    <tr>
+                        <td><%= mandate.rum %></td>
+                        <td><%= mandate.created_at.strftime("%d/%m/%Y à %H:%M") %></td>
+                        <td>
+                            <% if mandate.actif %>
+                            <span class="label label-success label-inline font-weight-bold">Actif</span>
+                            <% else %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% if can? :download, UserFinancierMandate %>
+                            <%= link_to admin_manage_student_user_financier_mandate_download_path(@student.id, mandate.id), remote: false, method: :get, class: "btn btn-link-danger" do %>
+                            <i class="fas fa-file-pdf"></i> Télécharger
+                            <% end %>
+                            <% end %>
+                        </td>
+                    </tr>
+                    <% end %>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<% end %>
+
+<%= render "admin/manage/students/edit/mandat_events" %>

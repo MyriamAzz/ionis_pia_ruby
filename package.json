@@ -1,0 +1,13 @@
+{
+  "name": "GestionCommercialeWeb",
+  "private": true,
+  "dependencies": {
+    "@rails/actioncable": "^6.0.0",
+    "@rails/activestorage": "^6.0.0",
+    "@rails/ujs": "^6.0.0",
+    "chart.js": "^3.7.0",
+    "chartkick": "^4.1.1",
+    "turbolinks": "^5.2.0"
+  },
+  "version": "0.1.0"
+}

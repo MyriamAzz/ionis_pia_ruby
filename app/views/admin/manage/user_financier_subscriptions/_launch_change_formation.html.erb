@@ -1,0 +1,69 @@
+<div class="modal-dialog modal-xl " role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modifier la formation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <h5 class="pl-3"><i class="fas fa-angle-double-down mr-2"></i> Échéancier actuel
+                - Modalité <%= @user_financier_subscription.modalite %> fois</h5>
+            <table class="table table-hover mt-3">
+                <thead>
+                    <tr class="d-flex">
+                        <th class="col-3">Écheance</th>
+                        <th class="col-3">Montant (€)</th>
+                        <th class="col-2">Type</th>
+                        <th class="col-2">Mode</th>
+                        <th class="col-2">Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @user_financier_subscription.user_financier_subscription_instalments.each do |instalment| %>
+                    <tr class="d-flex">
+                        <td class="col-3"><%= instalment.echeance.strftime("%d/%m/%Y") %></td>
+                        <td class="col-3"><%= instalment.montant %>€</td>
+                        <td class="col-2"><%= instalment.v_type.humanize %></td>
+                        <td class="col-2"><%= instalment.v_mode.humanize %></td>
+                        <td class="col-2"><%= instalment.statut_humanized_label.html_safe %></td>
+                    </tr>
+                    <% end %>
+
+                </tbody>
+            </table>
+
+
+
+            <%= form_for @user_financier_subscription ,:url => { :controller => "user_financier_subscriptions", :action => "simulate_change_formation" }, method: :get, remote: :true do |f| %>
+            <div class="form-group row mt-5">
+                <div class="col-lg-6">
+                    <label for=""><strong>Nouvelle formation</strong>
+                        <span class="text-danger">*</span></label>
+                    <%= select_tag :formation_id, options_for_select(@formations.map { |value| [value.nom, value.id] }), { :include_blank => true, class: "form-control  font-weight-bolder", :required => true } %>
+                </div>
+                <div class="col-lg-3">
+                    <label for=""><strong>Base tarifaire</strong>
+                        <span class="text-danger">*</span></label>
+                    <%= select_tag :base_school_year_id, options_for_select(@school_years.map { |value| [value.nom, value.id] }), { :include_blank => true, class: "form-control  font-weight-bolder", :required => true } %>
+                </div>
+                <div class="col-lg-3">
+                    <label>&emsp;&emsp;</label>
+                    <button class="btn btn-warning font-weight-bold btn-block">Simuler la modification</button>
+                </div>
+            </div>
+            <% end %>
+            <div id="simulation"></div>
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" id="btn_submit" value="submit"
+                form="form-apply-change-formation" onclick="return confirm('Confirmez-vous la modification ?')"
+                style="display: none;">Valider le
+                changement</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+var container = document.getElementById("data_widgets");
+var event = new Event("refresh");
+container.dispatchEvent(event);
+
+$("#kt_datatable_echeances").KTDatatable("reload");

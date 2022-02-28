@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_stylesheet_link_tag "pdf" -%>
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    table {
+        left: 0px;
+        padding-left: 0px;
+        margin-left: 0px;
+        margin-bottom: 0px;
+        margin-bottom: 0px;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-tr-header {
+        font-weight: bold;
+        background-color: #1c2c7a;
+        border: solid 1px #cfcfcf;
+        color: white;
+    }
+
+    .table-tr-normal {
+        border: solid 1px #cfcfcf;
+        font-size: 18px;
+    }
+
+    .table-td-normal {
+        border: solid 1px #cfcfcf;
+        font-size: 16px;
+    }
+
+    #content {
+        margin-top: 150px;
+    }
+</style>
+
+<body onload='number_pages'>
+    <div id="content">
+        <div style="margin-top: 200px;"></div>
+        <table>
+            <tr>
+                <td style="width: 50%; text-align: left">
+                    <img src="<%= Rails.application.routes.default_url_options[:host] %><%= url_for(@data.user_financier.user.mailer_logo_school) %>"
+                        height="100">
+                </td>
+                <td style="text-align: center">
+                    <div style="font-weight: 800; color: #9e9e9e; font-size: 40px; margin-bottom: 40px;">
+                        FACTURE <br>PRO FORMA</div>
+
+                </td>
+            </tr>
+        </table>
+        <table style="margin-top: 50px;">
+            <tr>
+                <td style="width: 40%; text-align: left"></td>
+                <td style="text-align: left; padding-left:100px">
+                    <span style="font-size: 18px;">Date d'émission :
+                        <strong><%= @data.created_at.strftime("%d/%m/%Y") %></strong></span><br>
+                </td>
+            </tr>
+        </table>
+        <table style="margin-top: 75px;">
+            <tr>
+                <td style="width: 40%; text-align: left;"><span style="font-size: 18px;">
+                        <br><br>
+                        <strong><%= @data.user_financier.centre.nom.upcase %></strong><br>
+                        <%= @data.user_financier.centre.adresse %><br>
+                        <%= @data.user_financier.centre.cp %>
+                        <%= @data.user_financier.centre.ville %><br>
+                        <%= @data.user_financier.centre.tel %><br>
+                        SIRET : <%= @data.user_financier.centre.siret %>
+                    </span>
+                </td>
+                <td style="text-align: left; padding-left:100px">
+                    <div style="font-weight: 600; font-size: 18px;">
+                        <strong>CLIENT</strong></div><br>
+                    <span style="font-size: 18px;">
+                        <%= @data.user_financier.nom %>
+                        <%= @data.user_financier.prenom %><br>
+                        <%= @data.user_financier.adresse %><br>
+                        <%= @data.user_financier.code_postal %>
+                        <%= @data.user_financier.ville %><br><br>
+                        Pour : <%= @data.user_financier.etu_nom %>
+                        <%= @data.user_financier.etu_prenom %>
+
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <div style="margin-top:75px">
+            <div style="margin-bottom: 10px;">Frais de scolarité <%= @data.school_year.nom %></div>
+            <table>
+                <thead>
+                    <tr class="table-tr-header">
+                        <td style="padding: 5px;">
+                            <span style="font-size: 18px;">DESCRIPTION</span>
+                        </td>
+                        <td style="padding: 5px; text-align: right; width: 150px;">
+                            <span style="font-size: 18px;">MONTANT</span>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% total = @data.formation_annee.frais_inscription %>
+                    <tr class="table-tr-normal">
+                        <td class="table-td-normal" style="padding: 5px;">
+                            <%= @data.formation_annee.formation.nom %> -
+                            1er Frais scolarité
+                        </td>
+                        <td class="table-td-normal" style="padding: 5px; text-align: right;">
+                            <%= @data.formation_annee.frais_inscription %> €
+                        </td>
+                    </tr>
+                    <% if @data.formation_annee.frais_technique > 0 && !@data.contrat_pro? %>
+                    <% total += @data.formation_annee.frais_technique %>
+
+                    <tr class="table-tr-normal">
+                        <td class="table-td-normal" style="padding: 5px;">
+                            <%= @data.formation_annee.formation.nom %> -
+                            Frais techniques
+                        </td>
+                        <td class="table-td-normal" style="padding: 5px; text-align: right;">
+                            <%= @data.formation_annee.frais_technique %> €
+                        </td>
+                    </tr>
+                    <% end %>
+                    <% if !@data.contrat_pro? %>
+                    <% if @data.reduction == 0 %>
+                    <tr class="table-tr-normal">
+                        <td class="table-td-normal" style="padding: 5px;">
+                            <%= @data.formation_annee.formation.nom %> -
+                            Frais scolarité
+                        </td>
+                        <td class="table-td-normal" style="padding: 5px; text-align: right;">
+                            <% total += @data.formation_annee.read_attribute("modalite_#{@data.modalite}") %>
+                            <%= @data.formation_annee.read_attribute("modalite_#{@data.modalite}") %> €
+                        </td>
+                    </tr>
+                    <% else %>
+                    <tr class="table-tr-normal">
+                        <td class="table-td-normal" style="padding: 5px;">
+                            <%= @data.formation_annee.formation.nom %> -
+                            Frais scolarité (Remise commerciale <%= @data.reduction %>€)
+                        </td>
+                        <td class="table-td-normal" style="padding: 5px; text-align: right;">
+                            <% total += @data.formation_annee.read_attribute("modalite_#{@data.modalite}") - @data.reduction %>
+                            <%= @data.formation_annee.read_attribute("modalite_#{@data.modalite}") - @data.reduction %>
+                            €
+                        </td>
+                    </tr>
+                    <% end %>
+                    <% end %>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th style="text-align: right; padding: 5px;">SOUS TOTAL</th>
+                        <td class="table-td-normal" style="text-align: right; padding: 5px;"><%= total %> €</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right; padding: 5px;">TOTAL TTC</th>
+                        <td class="table-td-normal" style="text-align: right; padding: 5px;">
+                            <strong><%= total %>
+                                €</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

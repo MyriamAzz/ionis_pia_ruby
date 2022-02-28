@@ -1,0 +1,7 @@
+$('[data-toggle="tooltip"]').tooltip("hide");
+$("#btn_header_edit").html(
+  "<%= escape_javascript(render partial: 'admin/manage/students/btn_header_edit') %>"
+);
+$('[data-toggle="tooltip"]').tooltip();
+$("#modal").modal("hide");
+$("#kt_datatable_stats_students").KTDatatable("reload");

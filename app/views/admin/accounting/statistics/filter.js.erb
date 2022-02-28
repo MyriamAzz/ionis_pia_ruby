@@ -1,0 +1,8 @@
+<% if params[:centre] %>
+$("#kt_datatable_stats_students").KTDatatable("reload");
+<% else %>
+$("#kt_datatable_stats_students").KTDatatable("reload");
+var container = document.getElementById("data_generals");
+var event = new Event("refresh");
+container.dispatchEvent(event);
+<% end %>

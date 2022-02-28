@@ -1,0 +1,27 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Clonage</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-info mb-5" role="alert">Seules les formations non existantes sur le campus de
+                destination seront clonées.</div>
+            <%= form_tag clone_admin_settings_formations_path, method: :post, id: "form-clone", remote: :true do %>
+            <div class="form-group">
+                <label>Cloner les formations de <%= @centre.nom %> vers</label>
+                <%= select_tag :centre_dest_id, options_from_collection_for_select(current_user.centres.where(school_program: current_user.user_admin.current_centre.school_program).where.not(id: @centre.id), "id", "nom"), {prompt: 'Veuillez sélectionner un campus', class: "form-control font-weight-bold", :required => true } %>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-warning font-weight-bold" value="submit" form="form-clone"
+                data-confirm="Confirmez-vous cette action ?">Lancer le
+                clonage des formations</button>
+        </div>
+        <% end %>
+    </div>
+</div>

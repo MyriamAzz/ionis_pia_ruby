@@ -1,0 +1,7 @@
+
+$("#modal").html("<%= escape_javascript(render 'process_done') %>")
+$('#modal').modal('show')
+$('#kt_datatable_process_selected').hide();
+$('.process-all').show();
+$('#kt_datatable').KTDatatable('reload');
+$('#kt_datatable_done').KTDatatable('reload');

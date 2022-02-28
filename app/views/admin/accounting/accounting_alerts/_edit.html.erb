@@ -1,0 +1,63 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Alerte</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <%= form_for @accounting_alert ,:url => { :controller => "accounting_alerts", :action => "update" }, remote: :true, html: { style: "display:inline;" } do |f| %>
+            <%= hidden_field_tag :student_view, @student_view %>
+            <% if @accounting_alert.done? or @accounting_alert.refused? %>
+            <div class="alert alert-primary font-weight-bold" role="alert">
+                Traitée par <%= @accounting_alert.handled_by.nom_complet %> le
+                <%= @accounting_alert.updated_at.strftime("%d/%m/%Y à %H:%M") %>
+            </div>
+            <% end %>
+            <div class="row">
+                <div class="form-group col-12">
+                    <label class="col-form-label">Type *</label>
+                    <%= f.select :atype, @types.map { |a| [a.humanize, a]}, {}, include_blank: true, class: "form-control", required: true, disabled: true %>
+                </div>
+                <% if @accounting_alert.alert_demission? or @accounting_alert.alert_exclusion? %>
+                <div class="form-group col-12 divfc1">
+                    <label class="col-form-label fc1-label">Montant à rembourser *</label>
+                    <%= f.number_field :amount, class: "form-control fc1", disabled: true %>
+                </div>
+                <% elsif @accounting_alert.alert_discount? %>
+                <div class="form-group col-12 divfc1">
+                    <label class="col-form-label fc1-label">Montant ou pourcentage de la remise *</label>
+                    <%= f.number_field :amount, class: "form-control fc1", disabled: true %>
+                </div>
+                <% end %>
+
+                <div class="form-group col-12">
+                    <label class="col-form-label">Message *</label>
+                    <%= f.text_area :comment, class: "form-control", maxlength: 255, required: true, disabled: true %>
+                </div>
+
+                <div class="form-group col-12">
+                    <label for="">Statut
+                        <span class="text-danger">*</span></label>
+                    <%= f.select :status, AccountingAlert.statuses.map { |value| [value[0].humanize, value[0]] }, {}, { class: "form-control font-weight-bolder", :required => true } %>
+                </div>
+
+                <div class="form-group col-12">
+                    <label class="col-form-label">Commentaire (obligatoire)</label>
+                    <%= f.text_area :comment_1, class: "form-control", required: true, maxlength: 255 %>
+                </div>
+
+
+            </div>
+        </div>
+        <% if can? :update, @accounting_alert %>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" value="submit"
+                form="edit_accounting_alert_<%= @accounting_alert.id %>">Enregistrer</button>
+        </div>
+        <% end %>
+        <% end %>
+    </div>
+</div>

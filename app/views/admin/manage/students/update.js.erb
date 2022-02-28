@@ -1,0 +1,16 @@
+<% if @error %>
+    toastr.error("Modification impossible")
+<% else %>
+    toastr.success("Modifications enregistrées")
+    <% if session[:admin_manage_edit_user_navbar] == 1 %>
+        $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/informations_personnelles') %>")
+    <% elsif session[:admin_manage_edit_user_navbar] == 2 %>
+        $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/formations') %>")
+    <% elsif session[:admin_manage_edit_user_navbar] == 3 %>
+        $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/paiements') %>")
+   <% elsif session[:admin_manage_edit_user_navbar] == 6 %>
+        $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/informations_bancaires') %>")
+    <% elsif session[:admin_manage_edit_user_navbar] == 4 %>
+        window.location.reload();
+    <% end %>
+<% end %>

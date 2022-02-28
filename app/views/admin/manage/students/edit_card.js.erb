@@ -1,0 +1,18 @@
+$("#edit_user_sidebar").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/sidebar') %>")
+
+<% if session[:admin_manage_edit_user_navbar] == 1 %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/informations_personnelles') %>")
+<% elsif session[:admin_manage_edit_user_navbar] == 2 %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/chronologie') %>")
+<% elsif session[:admin_manage_edit_user_navbar] == 3 %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/paiements') %>")
+<% elsif session[:admin_manage_edit_user_navbar] == 4 %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/parametres') %>")
+<% elsif session[:admin_manage_edit_user_navbar] == 5 %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/formations') %>")
+<% elsif session[:admin_manage_edit_user_navbar] == 6 %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/informations_bancaires') %>")
+<% elsif session[:admin_manage_edit_user_navbar] == 7 %>
+    $("#edit_user_card").html("<%= escape_javascript(render partial: 'admin/manage/students/edit/rejets') %>")
+
+<% end %>

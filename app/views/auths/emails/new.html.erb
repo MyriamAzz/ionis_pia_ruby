@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= SITE_NAME %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application' %>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <link href="/assets/css/pages/login/login-4.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+</head>
+<!--begin::Body-->
+
+<body id="kt_body"
+    class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading">
+    <!--begin::Main-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Login-->
+        <div class="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid">
+            <!--begin::Content-->
+            <div
+                class="login-container order-2 order-lg-1 d-flex flex-center flex-row-fluid px-7 pt-lg-0 pb-lg-0 pt-4 pb-6 bg-white">
+                <!--begin::Wrapper-->
+                <div class="login-content d-flex flex-column pt-lg-0 pt-12">
+                    <!--begin::Logo-->
+                    <% if params[:p] %>
+                    <% if params[:p].split('_')[1] %>
+                    <% school_program = SchoolProgram.find_by(nom: params[:p].split('_')[1]) rescue nil%>
+                    <% else %>
+                    <% school_program = School.find_by(nom: params[:p]).school_programs.first rescue nil%>
+                    <% end %>
+                    <% if school_program %>
+                    <div class="login-logo pb-xl-15 pb-10">
+                        <%= image_tag school_program.logo_color, class: "max-h-100px " %>
+                    </div>
+                    <% end %>
+                    <% end %>
+                    <!--end::Logo-->
+                    <!--begin::Signin-->
+                    <div class="login-form">
+                        <!--begin::Form-->
+                        <%= form_tag email_oublie_path(p: params[:p]), method: :post do %>
+                        <!--begin::Title-->
+                        <div class="pb-5 pb-lg-15">
+                            <h3 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Login oublié
+                            </h3>
+                            <p class="font-size-h5">Saisissez l'adresse email de l'étudiant(e).</p>
+                            <p>Nous allons vous envoyer un email vous rappelant votre login de
+                                connexion.</p>
+                        </div>
+
+                        <% if flash.alert %>
+                        <div class="alert alert-custom alert-notice alert-light-danger fade show mb-15" role="alert">
+                            <div class="alert-icon">
+                                <i class="flaticon-warning"></i>
+                            </div>
+                            <div class="alert-text"><%= flash.alert %></div>
+                            <div class="alert-close">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">
+                                        <i class="ki ki-close"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <% end %>
+                        <% if flash.notice %>
+                        <div class="alert alert-custom alert-notice alert-light-success fade show mb-15" role="alert">
+                            <div class="alert-icon">
+                                <i class="flaticon2-checkmark
+                                "></i>
+                            </div>
+                            <div class="alert-text"><%= flash.notice %></div>
+                            <div class="alert-close">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">
+                                        <i class="ki ki-close"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <% end %>
+
+                        <!--begin::Title-->
+                        <!--begin::Form group-->
+                        <div class="form-group">
+                            <div class="d-flex justify-content-between mt-n5">
+                                <label class="font-size-h6 font-weight-bolder text-dark pt-5">Email Étudiant</label>
+
+                            </div>
+                            <%= email_field_tag :email, nil, {autofocus: true, autocomplete: "email", class: "form-control form-control-solid h-auto py-7 px-6 rounded-lg border-0", required: true} %>
+
+                        </div>
+                        <!--end::Form group-->
+
+                        <!--begin::Action-->
+                        <div class="pb-lg-0 pb-5">
+                            <button type="submit" id="kt_login_singin_form_submit_button"
+                                class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Retrouver
+                                mon login</button>
+                            <%= link_to "Page Connexion", new_user_session_path(p: params[:p]) %><br />
+
+                        </div>
+                        <!--end::Action-->
+                        <% end %>
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Signin-->
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--begin::Content-->
+            <!--begin::Aside-->
+            <div class="login-aside order-1 order-lg-2 bgi-no-repeat bgi-position-x-right">
+                <div class="login-conteiner bgi-no-repeat bgi-position-x-right bgi-position-y-bottom"
+                    style="background-image: url(/assets/media/svg/illustrations/login-visual-4.svg);">
+                    <!--begin::Aside title-->
+                    <h3
+                        class="pt-lg-40 pl-lg-20 pb-lg-0 pl-10 py-20 m-0 d-flex justify-content-lg-start font-weight-boldest display5 display1-lg text-white">
+                        <br />
+                        <br /></h3>
+                    <!--end::Aside title-->
+                </div>
+            </div>
+            <!--end::Aside-->
+        </div>
+        <!--end::Login-->
+    </div>
+    <!--end::Main-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="/assets/js/pages/features/miscellaneous/toastr.js"></script>
+    <script src="/assets/plugins/global/plugins.bundle.js"></script>
+
+    <!--end::Page Scripts-->
+</body>
+<!--end::Body-->
+
+</html>

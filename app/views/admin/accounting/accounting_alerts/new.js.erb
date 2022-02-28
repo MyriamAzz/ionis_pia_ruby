@@ -1,0 +1,27 @@
+$("#modal").html("<%= escape_javascript(render 'new') %>");
+$("#modal").modal("show");
+
+$("#accounting_alert_atype").on("change", function () {
+  if (
+    this.value == "alert_other" ||
+    this.value == "alert_change_payment_modality"
+  ) {
+    $(".divfc1").hide();
+    $(".fc1").prop("required", false);
+  } else if (this.value == "alert_discount") {
+    $(".divfc1").show();
+    $(".fc1").prop("required", true);
+    $(".fc1-label").html("Montant de la remise ou pourcentage *");
+  } else if (this.value == "alert_demission") {
+    $(".divfc1").show();
+    $(".fc1").prop("required", true);
+    $(".fc1-label").html("Montant à rembourser *");
+  } else if (this.value == "alert_exclusion") {
+    $(".divfc1").show();
+    $(".fc1").prop("required", true);
+    $(".fc1-label").html("Montant à rembourser *");
+  } else {
+    $(".divfc1").show();
+    $(".fc1").prop("required", true);
+  }
+});

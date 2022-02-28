@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-lg-12">
+        <!--begin::Card-->
+        <div class="card card-custom ">
+            <div class="card-body p-0">
+                <div class="flex-grow-1 p-12 card-rounded bgi-no-repeat d-flex flex-column justify-content-center align-items-start"
+                    style="  background-position: right bottom; background-size: auto 100%; background-image: url(/assets/media/svg/humans/custom-8.svg)">
+                    <h4 class="text-danger font-weight-bolder m-0">Aucune année scolaire existante</h4>
+                    <p class="text-dark-50 my-5 font-size-xl font-weight-bold">Vous devez ajouter une premiere
+                        période
+                        pour pouvoir créer des formations.</p>
+                    <%= link_to admin_manage_school_years_path, class: "btn btn-danger font-weight-bold py-2 px-6", method: :get do %>
+                    Ajouter une année scolaire
+                    <% end %>
+                </div>
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
+</div>

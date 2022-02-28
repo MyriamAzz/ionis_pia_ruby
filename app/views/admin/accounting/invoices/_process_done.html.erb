@@ -1,0 +1,72 @@
+<div class="modal-dialog " role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Retour</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <% if @done == 0 && @error.count == 0 %>
+            <div class="alert alert-custom alert-warning" role="alert">
+                <div class="alert-icon">
+                    <i class="flaticon-warning"></i>
+                </div>
+                <div class="alert-text font-weight-bold font-size-h5"> Aucun élément à traiter.</div>
+            </div>
+            <% end %>
+            <% if (@done - @error.count) == 1 %>
+            <div class="alert alert-custom alert-success" role="alert">
+                <div class="alert-icon">
+                    <i class="flaticon2-check-mark"></i>
+                </div>
+                <div class="alert-text font-weight-bold font-size-h5"> <%= @done - @error.count %> élément a été
+                    ajouté au journal des ventes et
+                    pris en compte
+                    dans les
+                    prochains prélèvements GoCardless.</div>
+            </div>
+            <% elsif (@done - @error.count) > 1 %>
+            <div class="alert alert-custom alert-success" role="alert">
+                <div class="alert-icon">
+                    <i class="flaticon2-check-mark"></i>
+                </div>
+                <div class="alert-text font-weight-bold font-size-h5"> <%= @done - @error.count %> éléments ont été
+                    ajoutés au journal de ventes et
+                    pris en compte
+                    dans les
+                    prochains prélèvements GoCardless.</div>
+            </div>
+            <% end %>
+            <% if @error.count == 1 %>
+            <div class="alert alert-custom alert-danger" role="alert">
+                <div class="alert-icon">
+                    <i class="flaticon2-warning"></i>
+                </div>
+                <div class="alert-text font-weight-bold font-size-h5"> <%= @error.count %> élément n'a pu
+                    être traité correctement.
+                </div>
+            </div>
+            <% elsif @error.count > 1 %>
+            <div class="alert alert-custom alert-danger" role="alert">
+                <div class="alert-icon">
+                    <i class="flaticon2-warning"></i>
+                </div>
+                <div class="alert-text font-weight-bold font-size-h5"> <%= @error.count %> éléments n'ont pu
+                    être traités correctement.
+                </div>
+            </div>
+            <% end %>
+            <% if @error.count > 0 %>
+            <strong>Élements concernés :</strong>
+            <ul>
+                <% @error.each do |er| %>
+                <li>
+                    <%= er[:student] %>
+                </li>
+                <% end %>
+            </ul>
+            <% end %>
+        </div>
+    </div>
+</div>

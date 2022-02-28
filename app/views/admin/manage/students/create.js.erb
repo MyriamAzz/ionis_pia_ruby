@@ -1,0 +1,5 @@
+<% if @error %>
+toastr.error("Création impossible")
+<% else %>
+window.location = '<%= edit_admin_manage_student_path(@user.uuid) %>'
+<% end %>

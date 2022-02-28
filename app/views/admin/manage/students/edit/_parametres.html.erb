@@ -1,0 +1,80 @@
+<div class="card card-custom">
+    <!--begin::Header-->
+    <div class="card-header py-3">
+        <div class="card-title align-items-start flex-column">
+            <h3 class="card-label font-weight-bolder text-dark">Paramètres du compte</h3>
+            <span class="text-muted font-weight-bold font-size-sm mt-1">Transfère ou suppression du compte</span>
+        </div>
+    </div>
+    <!--end::Header-->
+    <!--begin::Form-->
+    <!--begin::Body-->
+    <div class="card-body">
+        <%= form_for @student, url: admin_manage_student_path(@student.uuid), method: :patch, remote: true do |f| %>
+        <%= f.fields_for :user_financier do |user_financier|%>
+        <div class="form-group">
+            <label class="">Compte Tiers</label>
+
+            <%= user_financier.text_field :code_tiers, class: "form-control form-control-lg form-control-solid", disabled: true %>
+
+        </div>
+        <% end %>
+        <div class="form-group">
+            <label class="">Login</label>
+
+            <%= f.text_field :username, class: "form-control form-control-lg form-control-solid", disabled: true %>
+
+        </div>
+        <% end %>
+
+        <% if can? :send_email_ids, User %>
+        <div class="form-group ">
+
+            <%= link_to send_email_ids_admin_manage_student_path(@student.uuid), method: :post, remote: true, class: "btn btn-light-primary font-weight-bold float-right", data: { confirm: "Confirmez-vous l'envoi de nouveaux identifiants de connexion au responsable financier ?", disable_with: "<img src='/assets/loaders/tail-spin.svg' width='18' class='mr-2' /> Traitement en cours..." } do %>
+            <i class="flaticon2-email"></i>
+            Envoyer de nouveaux identifiants
+            <% end %>
+
+        </div>
+        <% end %>
+    </div>
+    <!--end::Body-->
+    <!--end::Form-->
+</div>
+
+<% if can? :transfer, @student %>
+<div class="card card-custom gutter-b mt-5">
+    <div class="card-body">
+        <%= form_for @student, url: transfer_admin_manage_student_path(@student.uuid), method: :patch, remote: true do |f| %>
+        <%= f.fields_for :user_financier do |user_financier|%>
+
+        <div class="form-group">
+            <label class="">Campus</label>
+            <%= user_financier.select :centre_id, current_user.user_admin.current_centre.school_program.centres.collect {|x| [x.nom, x.id]}, {}, class: "form-control form-control-lg" %>
+        </div>
+        <% end %>
+        <div class="form-group">
+            <label class=""></label>
+            <%= button_tag type: :submit, class: "btn btn-light-warning font-weight-bold float-right", data: { confirm: "ATTENTION ! Confirmez-vous le transfert vers un autre campus ?", disable_with: "Transfert en cours..."} do %>
+            <i class="fas fa-exchange-alt"></i> Transférer le compte
+            <% end %>
+        </div>
+
+        <% end %>
+    </div>
+</div>
+</div>
+<% end %>
+
+<% if (can? :destroy, @student) && !@student.user_financier.user_financier_subscriptions.any? %>
+<div class="card card-custom gutter-b mt-5">
+    <div class="card-body">
+        <div class="float-right">
+            <%= button_to admin_manage_student_path(@student.uuid), method: :delete, class: "btn btn-light-danger font-weight-bold", data: { confirm: "ATTENTION ! Confirmez-vous la suppression du compte ?"} do %>
+            Supprimer le compte (irréversible)
+            <% end %>
+        </div>
+    </div>
+</div>
+</div>
+<% end %>

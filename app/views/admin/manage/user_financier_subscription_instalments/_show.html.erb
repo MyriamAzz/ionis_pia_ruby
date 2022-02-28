@@ -1,0 +1,116 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Détail de l'échéance</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <% if !@instalment.user_financier_subscription_instalment_events.any? %>
+            <div class="alert alert-custom alert-light-primary fade show mb-5" role="alert">
+                <div class="alert-icon">
+                    <i class="flaticon-warning"></i>
+                </div>
+                <div class="alert-text">Aucune information à afficher pour l'instant !</div>
+
+            </div>
+            <% else %>
+            <h5 class="mb-10"><i class="fas fa-history mr-2"></i> Historique du paiement</h5>
+            <div class="timeline timeline-3">
+                <div class="timeline-items">
+                    <% @instalment.user_financier_subscription_instalment_events.each do |event| %>
+                    <div class="timeline-item">
+                        <div class="timeline-media">
+                            <% if event.created? %>
+                            <i class="fas fa-plus text-warning"></i>
+                            <% elsif event.submitted? %>
+                            <i class="far fa-paper-plane text-warning"></i>
+                            <% elsif event.confirmed? %>
+                            <i class="fas fa-check text-success"></i>
+                            <% elsif event.paid_out? %>
+                            <i class="fas fa-check text-success"></i>
+                            <% elsif event.resubmission_requested? %>
+                            <i class="fas fa-redo text-warning"></i>
+                            <% elsif event.charged_back? or event.failed? or event.late_failure_settled? or event.cancelled? or event.chargeback_settled? %>
+                            <i class="fas fa-exclamation-triangle text-danger"></i>
+                            <% end %>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div class="mr-2">
+                                    <% if event.created? %>
+                                    <span
+                                        class="label label-warning font-weight-bolder label-inline label-lg">Créé</span>
+                                    <% elsif event.submitted? %>
+                                    <span class="label label-warning font-weight-bolder label-inline label-lg">Soumis
+                                        à la banque</span>
+                                    <% elsif event.confirmed? %>
+                                    <span class="label label-success font-weight-bolder label-inline label-lg">Confirmé
+                                    </span>
+                                    <% elsif event.paid_out? %>
+                                    <span class="label label-success font-weight-bolder label-inline label-lg">Payé
+                                    </span>
+                                    <% elsif event.charged_back? or event.chargeback_settled? %>
+                                    <span class="label label-danger font-weight-bolder label-inline label-lg">Rejeté
+                                    </span>
+                                    <% elsif event.cancelled? %>
+                                    <span class="label label-danger font-weight-bolder label-inline label-lg">Annulé
+                                    </span>
+                                    <% elsif event.failed? or event.late_failure_settled? %>
+                                    <span class="label label-danger font-weight-bolder label-inline label-lg">Échoué
+                                    </span>
+                                    <% elsif event.resubmission_requested? %>
+                                    <span
+                                        class="label label-warning font-weight-bolder label-inline label-lg">Reprogrammé
+                                    </span>
+                                    <% end %>
+                                    <span class="text-dark-75 text-hover-primary font-weight-bold ml-2">
+                                        <%= event.created_at.strftime("%d/%m/%Y à %H:%M") %>
+                                    </span>
+                                </div>
+
+                            </div>
+                            <p class="p-0">
+                                <div><%= event.gocardless_description %></div>
+                                <% if (can? :init_retry, UserFinancierSubscriptionInstalment) && event.failed? && event.gocardless_cause != "invalid_bank_details" && !event.done && !@instalment.rescheduled  %>
+                                <%= link_to init_retry_admin_manage_student_user_financier_subscription_user_financier_subscription_instalment_path(@instalment.user_financier_subscription.user_financier.user.id, @instalment.user_financier_subscription.id,@instalment.id), remote: true, method: :get, class: "btn btn-light-danger font-weight-bold mt-5" do %>
+                                <i class="fas fa-redo"></i>
+                                Reprogrammer le
+                                prélèvement
+                                <% end %>
+                                <% end %>
+                            </p>
+                        </div>
+                    </div>
+                    <% end %>
+                    <% if @instalment.rescheduled %>
+                    <div class="timeline-item">
+                        <div class="timeline-media">
+                            <i class="fas fa-redo text-primary"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div class="mr-2">
+                                    <span
+                                        class="label label-primary font-weight-bolder label-inline label-lg">Replanifié
+                                        manuellement</span>
+                                </div>
+
+                            </div>
+                            <p class="p-0">
+                                Une nouvelle écheance a été créée par l'utilisateur
+                            </p>
+                        </div>
+                    </div>
+                    <% end %>
+
+                </div>
+            </div>
+            <% end %>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default font-weight-bold" data-dismiss="modal">Fermer</button>
+        </div>
+    </div>
+</div>

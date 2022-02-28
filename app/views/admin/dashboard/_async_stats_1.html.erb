@@ -1,0 +1,388 @@
+<div class="row">
+    <div class="col-lg-12 order-md-2 order-lg-2">
+        <!--begin::Charts Widget 6-->
+        <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+            <div class="card-header border-0 pt-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="card-label font-weight-bolder text-dark pt-2">États des souscriptions</span>
+                </h3>
+                <div class="card-toolbar">
+                    <% if can? :index, :student %>
+                    <%= link_to admin_manage_students_path, class: "btn btn-light-primary btn-md py-2 font-weight-bolder" do %>
+                    <span class="svg-icon">
+                        <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo2\dist/../src/media/svg/icons\General\Expand-arrows.svg--><svg
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path
+                                    d="M10.5857864,12 L5.46446609,6.87867966 C5.0739418,6.48815536 5.0739418,5.85499039 5.46446609,5.46446609 C5.85499039,5.0739418 6.48815536,5.0739418 6.87867966,5.46446609 L12,10.5857864 L18.1923882,4.39339828 C18.5829124,4.00287399 19.2160774,4.00287399 19.6066017,4.39339828 C19.997126,4.78392257 19.997126,5.41708755 19.6066017,5.80761184 L13.4142136,12 L19.6066017,18.1923882 C19.997126,18.5829124 19.997126,19.2160774 19.6066017,19.6066017 C19.2160774,19.997126 18.5829124,19.997126 18.1923882,19.6066017 L12,13.4142136 L6.87867966,18.5355339 C6.48815536,18.9260582 5.85499039,18.9260582 5.46446609,18.5355339 C5.0739418,18.1450096 5.0739418,17.5118446 5.46446609,17.1213203 L10.5857864,12 Z"
+                                    fill="#000000" opacity="0.3"
+                                    transform="translate(12.535534, 12.000000) rotate(-360.000000) translate(-12.535534, -12.000000) " />
+                                <path
+                                    d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z"
+                                    fill="#000000" fill-rule="nonzero" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                    Voir tout
+                    <% end %>
+                    <% end %>
+                </div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body pt-2">
+                <!--begin::Table-->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" rowspan="2"></th>
+                                <th scope="col" colspan="2" class="text-center">Inscription</th>
+                                <th scope="col" colspan="2" class="text-center">Réinscription</th>
+                                <th scope="col" class="text-center " rowspan="2"
+                                    style="vertical-align : middle;text-align:center;">
+                                    Total</th>
+                            </tr>
+                            <tr>
+                                <th scope="col" class="text-center bg-gray-200">Étu.</th>
+                                <th scope="col" class="text-center">Alt.</th>
+                                <th scope="col" class="text-center bg-gray-200">Étu.</th>
+                                <th scope="col" class="text-center">Alt.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">
+                                    <span class="label label-inline label-default label-lg font-weight-bolder">En
+                                        attente
+                                        retour étudiant /
+                                        financier</span>
+                                </th>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :inscription, statut: [:waiting_user], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :inscription, statut: [:waiting_user], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :reinscription, statut: [:waiting_user], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :reinscription, statut: [:waiting_user], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-400">
+                                    <%= @students.where(statut: [:waiting_user]).count %></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="label label-inline label-primary label-lg font-weight-bolder">
+                                        En attente comptabilité
+                                    </span>
+                                </th>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :inscription, statut: [:waiting_compta], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :inscription, statut: [:waiting_compta], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :reinscription, statut: [:waiting_compta], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :reinscription, statut: [:waiting_compta], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-400">
+                                    <%= @students.where(statut: [:waiting_compta]).count %></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span
+                                        class="label label-inline label-warning label-lg font-weight-bolder">Traitement
+                                        comptable partiel
+                                    </span>
+                                </th>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :inscription, statut: [:partial_inscription, :partial_techniques], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :inscription, statut: [:partial_inscription, :partial_techniques], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :reinscription, statut: [:partial_inscription, :partial_techniques], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :reinscription, statut: [:partial_inscription, :partial_techniques], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-400">
+                                    <%= @students.where(statut: [:partial_inscription, :partial_techniques]).count %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="label label-inline label-success label-lg font-weight-bolder">
+                                        Actif
+                                    </span>
+                                </th>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :inscription, statut: :active, statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :inscription, statut: :active, statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :reinscription, statut: :active, statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :reinscription, statut: :active, statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-400">
+                                    <%= @students.where(statut: :active).count %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="label label-inline label-danger label-lg font-weight-bolder">
+                                        Démission
+                                    </span>
+                                </th>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :inscription, statut: [:demission_before_start, :demission], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :inscription, statut: [:demission_before_start, :demission], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :reinscription, statut: [:demission_before_start, :demission], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :reinscription, statut: [:demission_before_start, :demission], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-400">
+                                    <%= @students.where(statut: [:demission_before_start, :demission]).count %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <span class="label label-inline label-danger label-lg font-weight-bolder">
+                                        Exclusion
+                                    </span>
+                                </th>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :inscription, statut: [:exclusion], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :inscription, statut: [:exclusion], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-200">
+                                    <%= @students.where(s_type: :reinscription, statut: [:exclusion], statut_etu: :etudiant).count %>
+                                </td>
+                                <td class="text-center">
+                                    <%= @students.where(s_type: :reinscription, statut: [:exclusion], statut_etu: [:contrat_pro, :apprentissage]).count %>
+                                </td>
+                                <td class="text-center bg-gray-400">
+                                    <%= @students.where(statut: [:exclusion]).count %>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--end::table-->
+            </div>
+            <!--begin::Body-->
+        </div>
+
+        <!--end::Charts Widget 6-->
+    </div>
+    <div class="col-lg-12 order-md-3 order-lg-4">
+        <!--begin::List Widget 10-->
+        <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+            <div class="card-header border-0">
+                <div class="card-title">
+                    <h3 class="card-label font-weight-bolder">Alertes
+                        <small>5 plus récentes</small></h3>
+                </div>
+
+                <div class="card-toolbar">
+                    <% if can? :manage, :invoice %>
+                    <%= link_to admin_accounting_accounting_alerts_path, class: "btn btn-light-primary btn-md py-2 font-weight-bolder" do %>
+                    <span class="svg-icon">
+                        <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo2\dist/../src/media/svg/icons\General\Expand-arrows.svg--><svg
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path
+                                    d="M10.5857864,12 L5.46446609,6.87867966 C5.0739418,6.48815536 5.0739418,5.85499039 5.46446609,5.46446609 C5.85499039,5.0739418 6.48815536,5.0739418 6.87867966,5.46446609 L12,10.5857864 L18.1923882,4.39339828 C18.5829124,4.00287399 19.2160774,4.00287399 19.6066017,4.39339828 C19.997126,4.78392257 19.997126,5.41708755 19.6066017,5.80761184 L13.4142136,12 L19.6066017,18.1923882 C19.997126,18.5829124 19.997126,19.2160774 19.6066017,19.6066017 C19.2160774,19.997126 18.5829124,19.997126 18.1923882,19.6066017 L12,13.4142136 L6.87867966,18.5355339 C6.48815536,18.9260582 5.85499039,18.9260582 5.46446609,18.5355339 C5.0739418,18.1450096 5.0739418,17.5118446 5.46446609,17.1213203 L10.5857864,12 Z"
+                                    fill="#000000" opacity="0.3"
+                                    transform="translate(12.535534, 12.000000) rotate(-360.000000) translate(-12.535534, -12.000000) " />
+                                <path
+                                    d="M6,18 L9,18 C9.66666667,18.1143819 10,18.4477153 10,19 C10,19.5522847 9.66666667,19.8856181 9,20 L4,20 L4,15 C4,14.3333333 4.33333333,14 5,14 C5.66666667,14 6,14.3333333 6,15 L6,18 Z M18,18 L18,15 C18.1143819,14.3333333 18.4477153,14 19,14 C19.5522847,14 19.8856181,14.3333333 20,15 L20,20 L15,20 C14.3333333,20 14,19.6666667 14,19 C14,18.3333333 14.3333333,18 15,18 L18,18 Z M18,6 L15,6 C14.3333333,5.88561808 14,5.55228475 14,5 C14,4.44771525 14.3333333,4.11438192 15,4 L20,4 L20,9 C20,9.66666667 19.6666667,10 19,10 C18.3333333,10 18,9.66666667 18,9 L18,6 Z M6,6 L6,9 C5.88561808,9.66666667 5.55228475,10 5,10 C4.44771525,10 4.11438192,9.66666667 4,9 L4,4 L9,4 C9.66666667,4 10,4.33333333 10,5 C10,5.66666667 9.66666667,6 9,6 L6,6 Z"
+                                    fill="#000000" fill-rule="nonzero" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                    Voir tout
+                    <% end %>
+                    <% end %>
+                </div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body pt-0">
+                <!--begin::Item-->
+                <% if @alerts.any? %>
+                <% @alerts.each do |alert| %>
+                <div class="mb-2">
+                    <!--begin::Content-->
+                    <div class="d-flex align-items-center flex-grow-1">
+                        <!--begin::Checkbox-->
+
+                        <!--end::Checkbox-->
+                        <!--begin::Section-->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between w-100">
+                            <!--begin::Info-->
+                            <div class="d-flex flex-column align-items-cente py-2">
+                                <!--begin::Title-->
+                                <%= link_to edit_admin_manage_student_path(alert.user_financier_subscription.user_financier.user.uuid), class: "text-dark-75 font-weight-bold text-hover-primary font-size-lg" do %>
+                                <%= alert.atype.humanize %>
+
+                                <% end %>
+                                <!--end::Title-->
+                                <!--begin::Data-->
+
+
+                                <span class="text-muted font-weight-bold">
+                                    Dossier <%= alert.user_financier_subscription.user_financier.etu_nom_prenom %> - Il
+                                    y a
+                                    <%= time_ago_in_words(alert.created_at) %></span>
+                                <!--end::Data-->
+                            </div>
+                            <!--end::Info-->
+                            <!--begin::Label-->
+
+
+
+
+                            <% if alert.waiting? %>
+                            <span class="label label-warning label-inline font-weight-bolder label-lg"><i
+                                    class="fas fa-spinner text-white mr-2"></i> En attente</span>
+                            <% elsif alert.done? %>
+                            <span class="label label-success label-inline font-weight-bolder label-lg"> <i
+                                    class="fas fa-check-circle text-white mr-2"></i> Traité</span>
+                            <% elsif alert.refused? %>
+                            <span class="label label-danger label-inline font-weight-bolder label-lg"><i
+                                    class="fas fa-times-circle text-white mr-2"></i>Refusé</span>
+                            <% end %>
+                            <!--end::Label-->
+                        </div>
+                        <!--end::Section-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <% end %>
+                <% else %>
+                <div class="text-center mt-10 mb-10">
+                    <span class="svg-icon svg-icon-3x ">
+                        <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Add-user.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                            height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <path
+                                    d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z"
+                                    fill="#000000" opacity="0.3" />
+                                <path
+                                    d="M10.875,15.75 C10.6354167,15.75 10.3958333,15.6541667 10.2041667,15.4625 L8.2875,13.5458333 C7.90416667,13.1625 7.90416667,12.5875 8.2875,12.2041667 C8.67083333,11.8208333 9.29375,11.8208333 9.62916667,12.2041667 L10.875,13.45 L14.0375,10.2875 C14.4208333,9.90416667 14.9958333,9.90416667 15.3791667,10.2875 C15.7625,10.6708333 15.7625,11.2458333 15.3791667,11.6291667 L11.5458333,15.4625 C11.3541667,15.6541667 11.1145833,15.75 10.875,15.75 Z"
+                                    fill="#000000" />
+                                <path
+                                    d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z"
+                                    fill="#000000" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>
+                    <div class="mt-4 font-weight-bold">Aucune alerte existante</div>
+                </div>
+                <% end %>
+                <!--end::Item-->
+
+            </div>
+            <!--end: Card Body-->
+        </div>
+        <!--end: Card-->
+        <!--end: List Widget 10-->
+    </div>
+    <div class="col-lg-12 order-md-3 order-lg-5">
+
+        <!--begin::Charts Widget 6-->
+        <div class="card card-custom gutter-b">
+            <!--begin::Header-->
+            <div class="card-header h-auto border-0">
+                <div class="card-title py-5">
+                    <h3 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder">Souscriptions actives</span>
+                    </h3>
+                </div>
+                <div class="card-toolbar">
+
+                </div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col" class="text-center">Inscription</th>
+                            <th scope="col" class="text-center">Réinscription</th>
+                            <th scope="col" class="text-center">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Total</th>
+                            <td class="text-center">
+                                <%= @students.where(s_type: :inscription, statut: :active).count %>
+                            </td>
+                            <td class="text-center">
+                                <%= @students.where(s_type: :reinscription, statut: :active).count %>
+                            </td>
+                            <td class="text-center">
+                                <span class="label label-inline label-lg label-light-primary font-weight-bolder">
+                                    <%= @students.where(statut: :active).count %>
+                                </span>
+                            </td>
+                        </tr>
+                        <% @formations.group(:nom).each do |f| %>
+                        <tr>
+                            <th scope="row"><%= f.nom %></th>
+                            <td class="text-center">
+                                <%= @students.joins(formation_annee: [:formation]).where(s_type: :inscription, statut: :active).where("formations.nom = ?", f.nom).count %>
+                            </td>
+                            <td class="text-center">
+                                <%= @students.joins(formation_annee: [:formation]).where(s_type: :reinscription, statut: :active).where("formations.nom = ?", f.nom).count %>
+                            </td>
+                            <td class="text-center">
+                                <span class="label label-inline label-lg label-light-primary font-weight-bolder">
+                                    <%= @students.joins(formation_annee: [:formation]).where(statut: :active).where("formations.nom = ?", f.nom).count %>
+                                </span>
+                            </td>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Charts Widget 6-->
+    </div>
+
+</div>

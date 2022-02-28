@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset='utf-8' />
+  <%= wicked_pdf_stylesheet_link_tag "pdf" -%>
+  <%= wicked_pdf_javascript_include_tag "number_pages" %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+</head>
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  table {
+    left: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-bottom: 0px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  td {
+    font-size: 14px;
+
+  }
+
+  .label {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+</style>
+
+<body onload='number_pages'>
+  <div id="content">
+    <div style="margin-top: 0px;"></div>
+    <table>
+      <tr>
+        <td style="width: 50%; text-align: left;">
+          <img
+            src="<%= Rails.application.routes.default_url_options[:host] %><%= url_for(@user_financier.user.mailer_logo_school) %>"
+            height="100">
+        </td>
+        <td style="text-align: center">
+          <div style="font-weight: 800; color: black; font-size: 32px; margin-bottom: 40px;">
+            MANDAT <br>
+            DE PRÉLÈVEMENT SEPA</div>
+        </td>
+      </tr>
+    </table>
+
+    <div style="margin-top: 50px;">
+      En signant ce mandat de prélèvement, vous autorisez (A)
+      <%= @user_financier.centre.school_program.school.nom %> à envoyer des
+      instructions à votre banque pour débiter votre compte, et (B) votre banque à débiter votre compte
+      conformément aux instructions
+      d'<%= @user_financier.centre.school_program.school.nom %>.
+
+      En cas de contestation d’un prélèvement, une demande de
+      remboursement doit être présentée :<br><br>
+      - dans les 8 semaines suivant la date de débit de votre compte pour un prélèvement autorisé,<br>
+      - sans tarder et au plus tard dans les 13 mois en cas de prélèvement non autorisé.<br><br>
+      Vos droits concernant le présent mandat sont expliqués dans un document que vous pouvez obtenir auprès de votre
+      banque.
+    </div>
+
+  </div>
+  <table style="margin-top: 50px;">
+    <tr>
+      <td style="border: 1px solid black; width: 50%; padding: 10px">
+        <div class="label">Nom / Prénom du débiteur </div>
+        <%= @user_financier.nom + " " + @user_financier.prenom %>
+        <div class="label">Adresse du débiteur </div>
+        <%= @user_financier.adresse %>
+        <div class="label">Code postal du débiteur </div>
+        <%= @user_financier.code_postal %>
+        <div class="label">Ville du débiteur </div>
+        <%= @user_financier.ville %>
+        <div class="label">Pays du débiteur </div>
+        <%= @user_financier.pays %>
+
+        <div class="label">Coordonnées bancaires du débiteur</div>
+        IBAN : <%= @mandate.iban %><br>
+        BIC : <%= @mandate.bic %>
+
+      </td>
+      <td style="border: 1px solid black; padding: 10px">
+        <div class="label">Nom du créancier </div>
+        <%= @user_financier.centre.school_program.school.nom %>
+        <div class="label">Adresse du créancier </div>
+        <%= @creancier.adresse %>
+        <div class="label">Code postal du créancier </div>
+        <%= @creancier.cp %>
+        <div class="label">Ville du créancier </div>
+        <%= @creancier.ville %>
+        <div class="label">Pays du créancier </div>
+        FRANCE
+        <div class="label"> Identifiant créancier SEPA </div>
+        <%= @creancier.ics %>
+      </td>
+    </tr>
+  </table>
+  <table style="margin-top: 50px;">
+    <tr>
+      <td style="background-color: #e7e7e7; padding: 10px;">
+        <div class="label"> Type de paiement :</div>
+        Paiement récurrent / répétitif
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: #e7e7e7; padding: 10px">
+        <div class="label"> Date :</div>
+        <%= @mandate.created_at.strftime("%d/%m/%Y") %>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="background-color: #e7e7e7; padding: 10px">
+        <div class="label"> Signature:</div>
+        Signé éléctroniquement
+      </td>
+    </tr>
+  </table>
+
+
+  </div>
+</body>
+
+</html>

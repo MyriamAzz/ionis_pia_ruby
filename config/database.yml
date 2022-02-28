@@ -1,0 +1,18 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  socket: /tmp/mysql.sock
+
+development:
+  <<: *default
+  database: IONIS_PIA
+  username: <%= Rails.application.credentials.mysql[:username] %>
+  password: <%= Rails.application.credentials.mysql[:password] %>
+  
+production:
+  <<: *default
+  socket: /var/run/mysqld/mysqld.sock
+  database: <%= Rails.application.credentials.mysql[:db] %>
+  username: <%= Rails.application.credentials.mysql[:username] %>
+  password: <%= Rails.application.credentials.mysql[:password] %>

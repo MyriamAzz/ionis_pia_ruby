@@ -1,0 +1,33 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ajout</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <%= form_for @user_financier_timeline ,:url => { :controller => "user_financier_timelines", :action => "create" }, remote: :true do |f| %>
+            <div class="form-group">
+                <label for="exampleSelect1">Commentaire
+                    <span class="text-danger">*</span></label>
+                <%= f.text_area :descr, class: "form-control", :required => true, maxlength: 250, rows: 5 %>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-list">
+                    <label class="checkbox">
+                        <%= f.check_box :comment_pin, {}, value: true %>
+                        <span></span>Commentaire financier</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success font-weight-bold" value="submit"
+                form="new_user_financier_timeline">Ajouter</button>
+        </div>
+        <% end %>
+    </div>
+</div>

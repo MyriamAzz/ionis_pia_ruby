@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-lg-6 order-md-1 order-lg-1">
+        <%= render_async async_stats_admin_dashboard_path, container_id: 'data_1', replace_container: false do %>
+        <div class="text-center">
+            <img src="/assets/loaders/loading-blue.svg" width="40">
+            <div class="mt-5 font-weight-bold">
+                Chargement...
+            </div>
+        </div>
+        <% end %>
+        <!--begin::Charts Widget 6-->
+        <div>
+            <!--begin::Charts Widget 6-->
+            <div class="card card-custom gutter-b">
+                <!--begin::Header-->
+                <div class="card-header h-auto border-0">
+                    <div class="card-title py-5">
+                        <h3 class="card-label">
+                            <span class="d-block text-dark font-weight-bolder">Inscriptions</span>
+                        </h3>
+                    </div>
+                    <div class="card-toolbar">
+
+                    </div>
+                </div>
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body">
+                    <%= area_chart chart_new_registrations_admin_dashboard_path, empty: "Aucune donnée", label: "Souscriptions", colors: ["#8950fc", "#666"] %>
+
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::Charts Widget 6-->
+        </div>
+        <div class="">
+            <!--begin::Charts Widget 6-->
+            <div class="card card-custom gutter-b">
+                <!--begin::Header-->
+                <div class="card-header h-auto border-0">
+                    <div class="card-title py-5">
+                        <h3 class="card-label">
+                            <span class="d-block text-dark font-weight-bolder">Réinscriptions</span>
+                        </h3>
+                    </div>
+                    <div class="card-toolbar">
+
+                    </div>
+                </div>
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body">
+                    <%= line_chart chart_registrations_admin_dashboard_path, empty: "Aucune donnée", label: "Souscriptions" %>
+
+                </div>
+                <!--end::Body-->
+            </div>
+            <!--end::Charts Widget 6-->
+        </div>
+        <!--end::Charts Widget 6-->
+    </div>
+    <div class="col-lg-6 order-md-1 order-lg-1">
+        <%= render_async async_stats_1_admin_dashboard_path, container_id: 'data_2', replace_container: false do %>
+        <div class="text-center">
+            <img src="/assets/loaders/loading-blue.svg" width="40">
+            <div class="mt-5 font-weight-bold">
+                Chargement...
+            </div>
+        </div>
+        <% end %>
+    </div>
+
+
+</div>

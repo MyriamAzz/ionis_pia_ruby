@@ -1,0 +1,6 @@
+$("#preview-update-modalite").html("<%= escape_javascript(render 'preview_update_modalite') %>")
+<% if @reste != 0 or @montant == 0  %>
+$("#btn_submit").show("")
+<% else %>
+$("#btn_submit").hide("")
+<% end %>

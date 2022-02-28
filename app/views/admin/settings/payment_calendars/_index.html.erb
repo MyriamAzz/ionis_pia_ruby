@@ -1,0 +1,73 @@
+<% if !current_user.user_admin.current_centre.school_program.payment_plans.any? %>
+
+<% elsif current_user.user_admin.current_centre.school_program.school_years.any? %>
+<% current_user.user_admin.current_centre.school_program.school_years.each do |school_year| %>
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">
+                <i class="far fa-calendar-alt mr-2"></i> <%= school_year.nom %>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <button type="submit" class="btn btn-success font-weight-bolder float-right"
+                form="form_<%=school_year.id%>">Enregistrer</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <%= form_tag "/admin/settings/payment_calendars/table", remote: :true, method: :post, id: "form_#{school_year.id}" do %>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Échéance frais inscription (date inscription + N jours)</label>
+                    <%= number_field_tag "date[#{school_year.id}][frais_inscription_jours]", school_year.frais_inscription_jours, class: "form-control", min: 5, required: true %>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Échéance frais techniques</label>
+                    <%= date_field_tag "date[#{school_year.id}][frais_techniques_date]", school_year.frais_techniques_date, class: "form-control", required: true %>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <% current_user.user_admin.current_centre.school_program.payment_plans.each do |plan| %>
+            <div class="col-lg-3">
+                <table class="table table-striped">
+                    <thead class="bg-primary text-white rounded-lg rounded-bottom-0">
+                        <tr>
+                            <th scope="col">En <%= plan.plan %> fois</th>
+                            <th scope="col"></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% (1..plan.plan).each do |i| %>
+                        <tr>
+                            <th class="font-weight-normal pt-6">Échéance <%= i %></th>
+                            <th class="">
+
+                                <%= date_field_tag "date[#{school_year.id}][#{plan.plan}][#{i}]", (school_year.payment_calendars.find_by(plan_order: i, plan: plan.plan).plan_date rescue nil), class: "form-control", required: true %>
+                            </th>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+            <% end %>
+
+        </div>
+        <% end %>
+    </div>
+</div>
+<% end %>
+<% else %>
+<div class="alert alert-custom alert-warning" role="alert">
+    <div class="alert-icon">
+        <i class="flaticon-warning"></i>
+    </div>
+    <div class="alert-text">Vous devez d'abord paramétrer les années scolaires !<br>
+        <a href="/admin/settings/school_years">Cliquez-ici</a>
+    </div>
+</div>
+<% end %>

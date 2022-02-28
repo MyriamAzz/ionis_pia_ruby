@@ -1,0 +1,238 @@
+<div class="card card-custom">
+    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+        <div class="card-title">
+            <div class="input-icon">
+                <input type="text" class="form-control" placeholder="Rechercher..." id="kt_datatable_search_query" />
+                <span>
+                    <i class="flaticon2-search-1 text-muted"></i>
+                </span>
+            </div>
+        </div>
+        <div class="card-toolbar">
+            <div class="btn-group btn-group-toggle float-right mr-2" data-toggle="buttons" id="btn-groups-statuts">
+                <label class="btn btn-primary font-weight-bolder">
+                    <input type="radio" name="radio_statuts" value="false" id="btn_actived" checked="checked" />
+                    Actives
+                </label>
+                <label class="btn btn-secondary font-weight-bolder">
+                    <input type="radio" name="radio_statuts" value="true" id="btn_archived" /> Archivées
+                </label>
+            </div>
+
+
+            <% if (can? :init_clone, Formation) && @formations.any? %>
+            <%= link_to init_clone_admin_settings_formations_path(@centre.id), remote: :true, class: "btn btn-warning font-weight-bolder mr-2" do %>
+            <span class="svg-icon svg-icon-md svg-icon-white">
+                <!--begin::Svg Icon | path:/assets/media/svg/icons/Communication/Add-user.svg-->
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                    height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24" />
+                        <path
+                            d="M15.9956071,6 L9,6 C7.34314575,6 6,7.34314575 6,9 L6,15.9956071 C4.70185442,15.9316381 4,15.1706419 4,13.8181818 L4,6.18181818 C4,4.76751186 4.76751186,4 6.18181818,4 L13.8181818,4 C15.1706419,4 15.9316381,4.70185442 15.9956071,6 Z"
+                            fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                        <path
+                            d="M10.1818182,8 L17.8181818,8 C19.2324881,8 20,8.76751186 20,10.1818182 L20,17.8181818 C20,19.2324881 19.2324881,20 17.8181818,20 L10.1818182,20 C8.76751186,20 8,19.2324881 8,17.8181818 L8,10.1818182 C8,8.76751186 8.76751186,8 10.1818182,8 Z"
+                            fill="#000000" />
+                    </g>
+                </svg>
+                <!--end::Svg Icon-->
+            </span>Cloner les formations
+            <% end %>
+            <% end %>
+            <% if can? :create, Formation %>
+            <%= link_to new_admin_settings_formation_path, remote: :true, class: "btn btn-success font-weight-bolder" do %>
+            <span class="svg-icon svg-icon-md svg-icon-white">
+                <!--begin::Svg Icon | path:/assets/media/svg/icons/Communication/Add-user.svg-->
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                    height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24" />
+                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                        <path
+                            d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z"
+                            fill="#000000" />
+                    </g>
+                </svg>
+                <!--end::Svg Icon-->
+            </span>Ajouter une formation
+            <% end %>
+            <% end %>
+
+
+        </div>
+    </div>
+    <div class="card-body">
+        <% if !@formations.any? %>
+        <div class="alert alert-warning" role="alert">
+            Vous devez ajouter les formations pour ce campus !
+        </div>
+        <% end %>
+        <!--begin: Datatable-->
+        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+        <!--end: Datatable-->
+    </div>
+</div>
+<script>
+    "use strict";
+    // Class definition
+
+    var KTDatatableStudent = function () {
+        // Private functions
+
+        // basic demo
+        var table = function () {
+
+            var datatable = $('#kt_datatable').KTDatatable({
+                // datasource definition
+                responsive: true,
+                data: {
+                    type: 'remote',
+                    source: {
+                        read: {
+                            method: 'GET',
+                            url: '/admin/settings/formations/json',
+                            // sample custom headers
+                            // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
+                            map: function (raw) {
+                                // sample data mapping
+                                var dataSet = raw;
+                                if (typeof raw.data !== 'undefined') {
+                                    dataSet = raw.data;
+                                }
+                                return dataSet;
+                            },
+                        },
+                    },
+                    pageSize: 20,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false,
+                },
+                pageSizeSelect: [20, 30, 50, 100],
+
+                // layout definition
+                layout: {
+                    scroll: false,
+                    footer: false,
+                    spinner: {
+                        message: 'Chargement...',
+                    }
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                rows: {
+                    beforeTemplate: function (row, data, index) {
+                        row.on('click', function (e) {
+                            if (!$(e.target).parent().is("a") && !$(e.target).parent().is(
+                                    "span")) {
+                                Rails.ajax({
+                                    url: '/admin/settings/formations/' + data.id +
+                                        '/edit',
+                                    type: "get",
+                                    data: "",
+                                    success: function (data) {},
+                                    error: function (data) {}
+                                })
+                            }
+                        });
+                    },
+                },
+
+                translate: {
+                    records: {
+                        processing: "Veuillez patienter...",
+                        noRecords: "Aucun résultat"
+                    },
+                },
+
+                search: {
+                    input: $('#kt_datatable_search_query'),
+                    key: 'generalSearch'
+                },
+
+                // columns definition
+                columns: [{
+                        field: 'name',
+                        title: 'nom',
+                        class: 'font-weight-bolder',
+                        width: 400,
+
+                    },
+                    {
+                        field: 'product_code',
+                        title: 'Code produit',
+                        width: 150,
+                    },
+                    {
+                        field: 'product_account_sage',
+                        title: 'compte produit',
+                        width: 150,
+                    },
+
+
+                    {
+                        field: 'updated_at',
+                        title: 'modification',
+                        width: 150,
+
+                        template: function (data) {
+                            return data.updated_at;
+                        },
+                    },
+                    {
+                        field: '',
+                        title: '',
+                        class: 'float-right',
+                        autoHide: false,
+                        template: function (row) {
+                            return '\
+              <a href="/admin/settings/formations/' + row.id + '/formation_annees" data-remote="true" data-method="get" class="btn btn-light-primary btn-sm font-weight-bold btn-pill" title="Editer" id="edit-btn">\
+                \ <span class="svg-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\Shopping\Euro.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                    \ <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                        \<rect x="0" y="0" width="24" height="24"/>\
+                        \ <path d="M4.3618034,10.2763932 L4.8618034,9.2763932 C4.94649941,9.10700119 5.11963097,9 5.30901699,9 L15.190983,9 C15.4671254,9 15.690983,9.22385763 15.690983,9.5 C15.690983,9.57762255 15.6729105,9.65417908 15.6381966,9.7236068 L15.1381966,10.7236068 C15.0535006,10.8929988 14.880369,11 14.690983,11 L4.80901699,11 C4.53287462,11 4.30901699,10.7761424 4.30901699,10.5 C4.30901699,10.4223775 4.32708954,10.3458209 4.3618034,10.2763932 Z M14.6381966,13.7236068 L14.1381966,14.7236068 C14.0535006,14.8929988 13.880369,15 13.690983,15 L4.80901699,15 C4.53287462,15 4.30901699,14.7761424 4.30901699,14.5 C4.30901699,14.4223775 4.32708954,14.3458209 4.3618034,14.2763932 L4.8618034,13.2763932 C4.94649941,13.1070012 5.11963097,13 5.30901699,13 L14.190983,13 C14.4671254,13 14.690983,13.2238576 14.690983,13.5 C14.690983,13.5776225 14.6729105,13.6541791 14.6381966,13.7236068 Z" fill="#000000" opacity="0.3"/>\
+                        \ <path d="M17.369,7.618 C16.976998,7.08599734 16.4660031,6.69750122 15.836,6.4525 C15.2059968,6.20749878 14.590003,6.085 13.988,6.085 C13.2179962,6.085 12.5180032,6.2249986 11.888,6.505 C11.2579969,6.7850014 10.7155023,7.16999755 10.2605,7.66 C9.80549773,8.15000245 9.45550123,8.72399671 9.2105,9.382 C8.96549878,10.0400033 8.843,10.7539961 8.843,11.524 C8.843,12.3360041 8.96199881,13.0779966 9.2,13.75 C9.43800119,14.4220034 9.7774978,14.9994976 10.2185,15.4825 C10.6595022,15.9655024 11.1879969,16.3399987 11.804,16.606 C12.4200031,16.8720013 13.1129962,17.005 13.883,17.005 C14.681004,17.005 15.3879969,16.8475016 16.004,16.5325 C16.6200031,16.2174984 17.1169981,15.8010026 17.495,15.283 L19.616,16.774 C18.9579967,17.6000041 18.1530048,18.2404977 17.201,18.6955 C16.2489952,19.1505023 15.1360064,19.378 13.862,19.378 C12.6999942,19.378 11.6325049,19.1855019 10.6595,18.8005 C9.68649514,18.4154981 8.8500035,17.8765035 8.15,17.1835 C7.4499965,16.4904965 6.90400196,15.6645048 6.512,14.7055 C6.11999804,13.7464952 5.924,12.6860058 5.924,11.524 C5.924,10.333994 6.13049794,9.25950479 6.5435,8.3005 C6.95650207,7.34149521 7.5234964,6.52600336 8.2445,5.854 C8.96550361,5.18199664 9.8159951,4.66400182 10.796,4.3 C11.7760049,3.93599818 12.8399943,3.754 13.988,3.754 C14.4640024,3.754 14.9609974,3.79949954 15.479,3.8905 C15.9970026,3.98150045 16.4939976,4.12149906 16.97,4.3105 C17.4460024,4.49950095 17.8939979,4.7339986 18.314,5.014 C18.7340021,5.2940014 19.0909985,5.62999804 19.385,6.022 L17.369,7.618 Z" fill="#000000"/>\
+                        \</g>\
+                    \</svg><!--end::Svg Icon--></span>\
+                            Gérer les tarifs </a>\
+                            ';
+                        },
+
+                    },
+                ],
+            });
+        };
+
+        return {
+            // public functions
+            init: function () {
+                table();
+            },
+        };
+    }();
+
+    $(document).ready(function () {
+        KTDatatableStudent.init();
+    });
+</script>
+
+<script>
+    $('input[type=radio][name="radio_statuts"]').on("change", function () {
+        $("#btn-groups-statuts label.btn-primary")
+            .removeClass("btn-primary")
+            .addClass("btn-secondary");
+        $(this).parent().removeClass("btn-secondary").addClass("btn-primary");
+        $.ajax({
+            url: "/admin/settings/formations/filter",
+            data: {
+                archived: $(this).val(),
+            },
+            type: "get",
+        });
+    });
+</script>

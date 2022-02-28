@@ -1,0 +1,61 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Détail de la souscription</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-8 d-flex flex-column">
+                        <span class="text-dark font-weight-bold mb-4">Mode paiement inscription</span>
+                        <span
+                            class="text-muted font-weight-bolder font-size-lg"><%= @user_financier_subscription.payment_mode_inscription.humanize %></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-8 d-flex flex-column">
+                        <span class="text-dark font-weight-bold mb-4">Mode paiement inscription commentaire</span>
+                        <span
+                            class="text-muted font-weight-bolder font-size-lg"><%= @user_financier_subscription.payment_mode_inscription_comment %></span>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="mb-8 d-flex flex-column">
+                        <span class="text-dark font-weight-bold mb-4">Mode paiement scolarité</span>
+                        <span
+                            class="text-muted font-weight-bolder font-size-lg"><%= @user_financier_subscription.payment_mode_scolarite.humanize %></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-8 d-flex flex-column">
+                        <span class="text-dark font-weight-bold mb-4">Mode paiement scolarité commentaire</span>
+                        <span
+                            class="text-muted font-weight-bolder font-size-lg"><%= @user_financier_subscription.payment_mode_scolarite_comment %></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex flex-column">
+                        <span class="text-dark font-weight-bold mb-4">Date de création</span>
+                        <span
+                            class="text-muted font-weight-bolder font-size-lg"><%= @user_financier_subscription.created_at.strftime("%d/%m/%Y à %H:%M") %></span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex flex-column">
+                        <span class="text-dark font-weight-bold mb-4">Dernière modification</span>
+                        <span
+                            class="text-muted font-weight-bolder font-size-lg"><%= @user_financier_subscription.updated_at.strftime("%d/%m/%Y à %H:%M") %></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light font-weight-bold" data-dismiss="modal">Fermer</button>
+        </div>
+    </div>
+</div>

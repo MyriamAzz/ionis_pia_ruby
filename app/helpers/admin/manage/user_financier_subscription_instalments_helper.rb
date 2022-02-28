@@ -1,0 +1,2 @@
+module Admin::Manage::UserFinancierSubscriptionInstalmentsHelper
+end

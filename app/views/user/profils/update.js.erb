@@ -1,0 +1,6 @@
+<% if @error %>
+    toastr.error("Erreur")
+<% else %>
+    $("#content").html("<%= escape_javascript(render partial: 'show_content') %>")
+    toastr.success("Enregistré")
+<% end %>

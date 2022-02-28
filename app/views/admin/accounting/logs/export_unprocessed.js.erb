@@ -1,0 +1,5 @@
+<% if @csv_file %>
+window.open("<%= @csv_file %>", "_blank")
+$('#kt_datatable_logs').KTDatatable('reload');
+toastr.success("Fichier exporté")
+<% end %>

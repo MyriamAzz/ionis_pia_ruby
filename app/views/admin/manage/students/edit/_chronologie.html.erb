@@ -1,0 +1,200 @@
+<div class="card card-custom">
+    <!--begin::Header-->
+    <div class="card-header py-3">
+        <div class="card-title">
+            <h3 class="card-label font-weight-bolder text-dark">Activité du compte</h3>
+        </div>
+        <div class="card-toolbar">
+            <%= link_to new_admin_manage_student_user_financier_timeline_path(student_id: @student.id), remote: true, class: "btn btn-success btn-icon font-weight-bold" do %>
+            <i class="fas fa-plus"></i>
+
+            <% end %>
+        </div>
+    </div>
+    <!--end::Header-->
+    <!--begin::Form-->
+    <!--begin::Body-->
+    <div class="card-body">
+        <div class="timeline timeline-3">
+            <div class="timeline-items">
+                <% @student.user_financier.user_financier_timelines.each do |tl| %>
+                <% if tl.comment %>
+                <div class="timeline-item">
+                    <div class="timeline-media timeline-border-none">
+                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                            <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Communication/Add-user.svg--><svg
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path
+                                        d="M16,15.6315789 L16,12 C16,10.3431458 14.6568542,9 13,9 L6.16183229,9 L6.16183229,5.52631579 C6.16183229,4.13107011 7.29290239,3 8.68814808,3 L20.4776218,3 C21.8728674,3 23.0039375,4.13107011 23.0039375,5.52631579 L23.0039375,13.1052632 L23.0206157,17.786793 C23.0215995,18.0629336 22.7985408,18.2875874 22.5224001,18.2885711 C22.3891754,18.2890457 22.2612702,18.2363324 22.1670655,18.1421277 L19.6565168,15.6315789 L16,15.6315789 Z"
+                                        fill="#000000" />
+                                    <path
+                                        d="M1.98505595,18 L1.98505595,13 C1.98505595,11.8954305 2.88048645,11 3.98505595,11 L11.9850559,11 C13.0896254,11 13.9850559,11.8954305 13.9850559,13 L13.9850559,18 C13.9850559,19.1045695 13.0896254,20 11.9850559,20 L4.10078614,20 L2.85693427,21.1905292 C2.65744295,21.3814685 2.34093638,21.3745358 2.14999706,21.1750444 C2.06092565,21.0819836 2.01120804,20.958136 2.01120804,20.8293182 L2.01120804,18.32426 C1.99400175,18.2187196 1.98505595,18.1104045 1.98505595,18 Z M6.5,14 C6.22385763,14 6,14.2238576 6,14.5 C6,14.7761424 6.22385763,15 6.5,15 L11.5,15 C11.7761424,15 12,14.7761424 12,14.5 C12,14.2238576 11.7761424,14 11.5,14 L6.5,14 Z M9.5,16 C9.22385763,16 9,16.2238576 9,16.5 C9,16.7761424 9.22385763,17 9.5,17 L11.5,17 C11.7761424,17 12,16.7761424 12,16.5 C12,16.2238576 11.7761424,16 11.5,16 L9.5,16 Z"
+                                        fill="#000000" opacity="0.3" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="d-flex align-items-center justify-content-between my-3">
+                            <div class="mr-2">
+                                <span class="text-dark-75 text-hover-primary font-weight-bold">
+                                    <%= tl.user.nom_complet %>
+                                </span>
+                                <div class="text-muted ml-1">
+                                    <%= tl.created_at.strftime("%d/%m/%Y à %H:%M") %>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="p-0">
+                            <% if tl.comment_pin %>
+                            <span class="svg-icon svg-icon-danger svg-icon-2x" title="Commentaire financier">
+                                <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\legacy\metronic\theme\html\demo2\dist/../src/media/svg/icons\Code\Thunder-circle.svg--><svg
+                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                        <path
+                                            d="M12.4208204,17.1583592 L15.4572949,11.0854102 C15.6425368,10.7149263 15.4923686,10.2644215 15.1218847,10.0791796 C15.0177431,10.0271088 14.9029083,10 14.7864745,10 L12,10 L12,7.17705098 C12,6.76283742 11.6642136,6.42705098 11.25,6.42705098 C10.965921,6.42705098 10.7062236,6.58755277 10.5791796,6.84164079 L7.5427051,12.9145898 C7.35746316,13.2850737 7.50763142,13.7355785 7.87811529,13.9208204 C7.98225687,13.9728912 8.09709167,14 8.21352549,14 L11,14 L11,16.822949 C11,17.2371626 11.3357864,17.572949 11.75,17.572949 C12.034079,17.572949 12.2937764,17.4124472 12.4208204,17.1583592 Z"
+                                            fill="#000000" />
+                                    </g>
+                                </svg>
+                                <!--end::Svg Icon--></span>
+
+
+                            <% end %>
+                            <%= tl.descr %>
+                        </p>
+                    </div>
+                </div>
+                <% else %>
+                <div class="timeline-item">
+                    <div class="timeline-media timeline-border-none">
+                        <% if tl.success? %>
+                        <span class="svg-icon svg-icon-success svg-icon-2x">
+                            <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Communication/Add-user.svg--><svg
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                    <path
+                                        d="M6.26193932,17.6476484 C5.90425297,18.0684559 5.27315905,18.1196257 4.85235158,17.7619393 C4.43154411,17.404253 4.38037434,16.773159 4.73806068,16.3523516 L13.2380607,6.35235158 C13.6013618,5.92493855 14.2451015,5.87991302 14.6643638,6.25259068 L19.1643638,10.2525907 C19.5771466,10.6195087 19.6143273,11.2515811 19.2474093,11.6643638 C18.8804913,12.0771466 18.2484189,12.1143273 17.8356362,11.7474093 L14.0997854,8.42665306 L6.26193932,17.6476484 Z"
+                                        fill="#000000" fill-rule="nonzero"
+                                        transform="translate(11.999995, 12.000002) rotate(-180.000000) translate(-11.999995, -12.000002) " />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <% elsif tl.info? %>
+                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                            <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Communication/Add-user.svg--><svg
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                    <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1" />
+                                    <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <% elsif tl.warning? %>
+                        <span class="svg-icon svg-icon-warning svg-icon-2x">
+                            <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Communication/Add-user.svg--><svg
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                    <rect fill="#000000" x="11" y="7" width="2" height="8" rx="1" />
+                                    <rect fill="#000000" x="11" y="16" width="2" height="2" rx="1" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <% elsif tl.danger? %>
+                        <span class="svg-icon svg-icon-danger svg-icon-2x">
+                            <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Communication/Add-user.svg--><svg
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path
+                                        d="M11.1669899,4.49941818 L2.82535718,19.5143571 C2.557144,19.9971408 2.7310878,20.6059441 3.21387153,20.8741573 C3.36242953,20.9566895 3.52957021,21 3.69951446,21 L21.2169432,21 C21.7692279,21 22.2169432,20.5522847 22.2169432,20 C22.2169432,19.8159952 22.1661743,19.6355579 22.070225,19.47855 L12.894429,4.4636111 C12.6064401,3.99235656 11.9909517,3.84379039 11.5196972,4.13177928 C11.3723594,4.22181902 11.2508468,4.34847583 11.1669899,4.49941818 Z"
+                                        fill="#000000" opacity="0.3" />
+                                    <rect fill="#000000" x="11" y="9" width="2" height="7" rx="1" />
+                                    <rect fill="#000000" x="11" y="17" width="2" height="2" rx="1" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <% else %>
+                        <% end %>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="d-flex align-items-center justify-content-between my-3">
+                            <div class="mr-2">
+                                <span class="text-dark-75 text-hover-primary font-weight-bold">
+                                    <% if tl.user_id == 0 %>
+                                    Plateforme
+                                    <% else %>
+                                    <%= tl.user.nom_complet %>
+                                    <% end %>
+                                </span><br>
+                                <div class="text-muted">
+                                    <%= tl.created_at.strftime("%d/%m/%Y à %H:%M") %>
+                                </div>
+                            </div>
+                            <% if tl.user_financier_subscription_id %>
+                            <%= link_to preview_admin_manage_student_user_financier_subscription_path(student_id: @student.id, id: tl.user_financier_subscription_id), remote: :true, class: "btn btn-hover-light-primary btn-sm btn-icon" do %>
+                            <i class="fas fa-link"></i>
+                            <% end %>
+                            <% end %>
+                        </div>
+                        <p class="p-0"><%= tl.descr %></p>
+                    </div>
+                </div>
+                <% end %>
+                <% end %>
+                <div class="timeline-item">
+                    <div class="timeline-media timeline-border-none">
+                        <span class="svg-icon svg-icon-success svg-icon-2x">
+                            <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-11-19-154210/theme/html/demo2/dist/../src/media/svg/icons/Communication/Add-user.svg--><svg
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                    <path
+                                        d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z"
+                                        fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                    <path
+                                        d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z"
+                                        fill="#000000" fill-rule="nonzero" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="d-flex align-items-center justify-content-between my-3">
+                            <div class="mr-2">
+                                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold">
+                                    Plateforme
+                                </a>
+                                <div class="text-muted ml-1">
+                                    <%= @student.created_at.strftime("%d/%m/%Y à %H:%M") %>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="p-0">Création du compte</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

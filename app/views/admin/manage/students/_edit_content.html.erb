@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-lg-3">
+        <div class="card card-custom">
+            <!--begin::Body-->
+            <div class="card-body pt-10">
+                <!--begin::User-->
+                <div class="d-flex align-items-center">
+                    <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
+                        <div class="symbol-label" style="background-image:url('/assets/media/users/blank.png')">
+                        </div>
+
+                    </div>
+                    <div>
+                        <span class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">
+                            <%= @student.user_financier.etu_nom %></span>
+                        <div class="text-muted font-size-h6"><%= @student.user_financier.etu_prenom %></div>
+                        <span
+                            class="label label-inline label-lg label-info mt-2"><%= @student.user_financier.centre.nom %></span>
+                    </div>
+                </div>
+                <!--end::User-->
+
+                <!--begin::Nav-->
+                <div class="navi navi-bold navi-hover navi-active navi-link-rounded pt-10" id="edit_user_sidebar">
+                    <%= render "admin/manage/students/edit/sidebar" %>
+                </div>
+                <!--end::Nav-->
+            </div>
+            <!--end::Body-->
+        </div>
+    </div>
+    <div class="col-lg-6" id="edit_user_card">
+        <%= render "admin/manage/students/edit/paiements" %>
+    </div>
+    <div class="col-lg-3" id="timeline">
+        <%= render "admin/manage/students/edit/chronologie" %>
+    </div>
+</div>

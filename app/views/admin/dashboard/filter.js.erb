@@ -1,0 +1,17 @@
+var container = document.getElementById("data_1");
+var event = new Event("refresh");
+container.dispatchEvent(event);
+
+var container = document.getElementById("data_2");
+var event = new Event("refresh");
+container.dispatchEvent(event);
+
+var container = document.getElementById("data_3");
+var event = new Event("refresh");
+container.dispatchEvent(event);
+
+chart = Chartkick.charts["chart-1"];
+chart.refreshData();
+
+chart = Chartkick.charts["chart-2"];
+chart.refreshData();

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= SITE_NAME %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application' %>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <link href="/assets/css/pages/login/login-4.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/custom.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<!--begin::Body-->
+
+<body id="kt_body"
+    class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading">
+    <!--begin::Main-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Login-->
+        <div class="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid">
+            <!--begin::Content-->
+            <div
+                class="login-container order-2 order-lg-1 d-flex flex-center flex-row-fluid px-7 pt-lg-0 pb-lg-0 pt-4 pb-6 bg-white">
+                <!--begin::Wrapper-->
+                <div class=" d-flex flex-column pt-lg-0 pt-12  max-w-600px">
+                    <!--begin::Logo-->
+
+                    <h1 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg mb-3">Bienvenue sur la
+                        plateforme de gestion des inscriptions, réinscriptions et frais de scolarité des écoles du
+                        Groupe Ionis.</h1>
+                    <div class="text-muted font-weight-bold">Cette plateforme propose un espace partagé dédié entre
+                        chaque répondant financier et les équipes de l’école en charge de l’administration et de la
+                        gestion des frais de scolarité.
+                    </div>
+
+                    <h5 class="mt-10">Veuillez sélectionner votre école :</h5>
+                    <div class="mt-8 row">
+                        <% SchoolProgram.joins(:logo_color_attachment).all.each do |school_program| %>
+                        <%= link_to new_user_session_path(p: "#{school_program.school.nom.upcase}#{school_program.school.school_programs.count > 1 ? '_' + school_program.nom : ''}"), class: "col-6 mb-7 text-center text-dark-75" do %>
+                        <div class="p-3 pt-5 pb-5 rounded portail-card">
+                            <%= image_tag school_program.logo_color, class: "max-h-70px" %>
+                            <div class="mt-4 font-weight-bolder">
+                                <%= school_program.school.nom %>
+                                <%= school_program.school.school_programs.count > 1 ? "#{school_program.nom}" : "" %>
+                            </div>
+                        </div>
+                        <% end %>
+                        <% end %>
+                    </div>
+
+                    <!--end::Signin-->
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--begin::Content-->
+            <%= render "auths/layouts/footer" %>

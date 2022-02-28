@@ -1,0 +1,7 @@
+<% if @error %>
+    toastr.error("Erreur")
+<% else %>
+    $('#kt_datatable').KTDatatable('reload');
+   $('#modal').modal('hide')
+    toastr.success("Modifiée")
+<% end %>
